@@ -5,21 +5,23 @@ const prisma = new PrismaClient()
 async function main() {
     const users = [
         {
-          email: 'john.doe@example.com',
-          username: 'john_doe',
-          password: 'password123', // Plain password, will be hashed
+          email: 'konber3@gmail.com',
+          username: 'akrazy47',
+          password: 'chattrAdmin01',
         },
         {
           email: 'jane.smith@example.com',
           username: 'jane_smith',
-          password: 'securepass456',
+          password: 'chattrAdmin02',
         },
         {
           email: 'admin@chatapp.com',
           username: 'admin_user',
-          password: 'admin789',
+          password: 'chattrAdmin03',
         },
       ];
+
+      await prisma.user.deleteMany();
 
       for (const user of users) {
         await prisma.user.create({
