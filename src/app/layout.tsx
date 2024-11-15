@@ -1,6 +1,8 @@
 import {AuthProvider} from './AuthProvider';
-import Home from './page';
-export default function RootLayout({
+import Header from '@/components/Header';
+
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -9,7 +11,12 @@ export default function RootLayout({
     <AuthProvider>
       <html lang="en">
         <body>
-          <Home/>
+          <header>
+            <Header/>
+          </header>
+          <main>
+            {children}
+          </main>
         </body>
       </html>
     </AuthProvider>

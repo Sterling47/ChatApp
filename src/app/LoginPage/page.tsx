@@ -6,9 +6,9 @@ import React from 'react'
 const Loginpage = () => {
   return (
     <main >
-       <LoginButton>
+      <LoginButton>
         <LoginLink>Sign In</LoginLink>
-    </LoginButton>
+      </LoginButton>
     </main>
   )
 }
