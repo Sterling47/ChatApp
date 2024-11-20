@@ -5,10 +5,13 @@ import { LoginButton } from '@/components/LoginButton';
 export default function LoginPage() {
   return (
     <div className='home'>
-      <h1>Welcome to ChatApp</h1>
-      <LoginButton>
-        <LoginLink className='l-link'>Sign In</LoginLink>
-      </LoginButton>
+
+      <div className='login-box'>      
+        <h1>Welcome to ChatApp</h1>
+        <LoginButton>
+          <LoginLink className='l-link'>Sign In</LoginLink>
+        </LoginButton>
+      </div>
     </div>
   );
 }

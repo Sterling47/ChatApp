@@ -2,41 +2,73 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  font-family: "Cambay";
 }
 :root {
-  --primary-color: rgb(33,42,55)
+  --primary-color: rgba(33,42,55, 0.2)
 }
 
-/* Header */
+/* Nav*/
 nav {
   list-style-type: none;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  margin-top: 1rem;
+  justify-content: start;
+  margin: .125rem;
+  grid-row: 1 / 13;
+  grid-column: 1 / 2;
+  border-radius: 6px;
+
+}
+
+.user-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: rgb(27, 27, 32);
+  border-radius: 6px;
+  margin: .125rem;
+}
+
+.user-bar h4 {
+  margin: 5px;
+  cursor: pointer;
 }
 
 .nav-menu-wrapper {
   list-style-type: none;
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 15rem;
+  flex-direction: row;
+}
+
+.icon {
+  height: 22px;
+  width: 22px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.user-select-display { 
+  height: 100%;
+  background-color: rgb(27, 27, 32);
+  margin: .25rem;
+  border-radius: 6px;
 }
 
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--primary-color);
+  background-color: rgb(27, 27, 32);
   color: white;
+  height: 100%;
+  width: 100vw;
 }
 
 .home {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 2rem;
+  height: 100vh;
 }
 button {
   padding: 0.75rem 1.5rem;
@@ -47,6 +79,19 @@ button {
 
 button:hover {
   cursor: pointer;
+}
+
+.login-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 29%;
+  height: 30%; 
+  /* padding: 4rem; */
+  background-color: rgba(250, 235, 215, 0.7);
+  border-radius: 12px;
 }
 
 .login-btn {
@@ -60,4 +105,48 @@ button:hover {
 .l-link {
   color: white;
   text-decoration: none;
+}
+
+/* Home Styles */
+.form-wrapper, nav, .view-box {
+  background-color:var(--primary-color);
+  margin: .125rem;
+}
+.user-dash {
+  display: grid;
+  height: 100vh;
+  grid-template-columns: repeat(9, 1fr);
+  grid-template-rows: repeat(12, 1fr);
+  padding: .25rem;
+}
+
+.view-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-row: 1 / 12 ;
+  grid-column: 2 /10;
+  border-radius: 6px;
+}
+
+.form-wrapper {
+  grid-row: 12 / 13;
+  grid-column: 2 / 10;
+  border-radius: 6px;
+}
+
+form {
+  margin: .25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 95%;
+}
+
+form input {
+  width: 98%;
+  background-color: rgb(27, 27, 32);
+  border: none;
+  height: 88%;
+  border-radius: 12px;
 }
