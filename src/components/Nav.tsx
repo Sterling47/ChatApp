@@ -1,11 +1,11 @@
-export default function Header() {
+export default function Nav() {
   return (
     <nav>
       <li>ChatApp</li>
-      <div className='nav-menu-wrapper'>
+      <ul className='nav-menu-wrapper'>
         <li>Public Chat</li>
         <li>Private Chat</li>
-      </div>
+      </ul>
     </nav>
   )
 }

@@ -1,5 +1,5 @@
 import {AuthProvider} from './AuthProvider';
-import Header from '@/components/Header';
+import Nav from '@/components/Nav';
 
 
 export default async function RootLayout({
@@ -11,9 +11,6 @@ export default async function RootLayout({
     <AuthProvider>
       <html lang="en">
         <body>
-          <header>
-            <Header/>
-          </header>
           <main>
             {children}
           </main>
