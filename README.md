@@ -8,16 +8,16 @@ Chattr is a real-time chat application that allows users to join, create and con
 - User-Friendly Interface: A simple, intuitive chat interface with instant updates and responsive design.
 
 ## MVP
-[ ]User logs in
-[ ]Invite friends to chat
-[ ] Have open or private rooms the require password to access
-[ ] User can create private room and assign a password
-[ ]Private Room (Upon logging in, can see friend list / main chat window where users can invite other users)
-[ ]Public room (for non-users, cannot chat unless they create an account
-[ ]1 room where non-users can interact with users
-[ ]Visual for how many users are online, if your friends are offline. Last logged in for friends
-[ ]Light/Dark theme toggle
-[ ]User Tracking (who’s online?)
+[x]User logs in <br/>
+[ ] Invite friends to chat <br/>
+[ ] Have open or private rooms the require password to access <br/>
+[ ] User can create private room and assign a password <br/>
+[ ] Private Room (Upon logging in, can see friend list / main chat window where users can invite other users) <br/>
+[ ] Public room (for non-users, cannot chat unless they create an account <br/>
+[ ] 1 room where non-users can interact with users <br/>
+[ ] Visual for how many users are online, if your friends are offline. Last logged in for friends <br/>
+[ ] Light/Dark theme toggle <br/>
+[ ] User Tracking (who’s online?) <br/>
 **Settings to change password / list all private rooms created by the user
 **Read/ Delivered and …User is typing 
 **Hashing private passwords
@@ -32,17 +32,17 @@ Design Inspos: https://cdn.dribbble.com/userupload/3348806/file/original-666b1df
 
 
  ## Front End: 
-It 1: [x] Initiate Kinde Auth
-[x] Research Kinde Auth Docs
-[x] Write up Auth Component in Next
+It 1: [x] Initiate Kinde Auth <br/>
+[x] Research Kinde Auth Docs <br/>
+[x] Write up Auth Component in Next <br/>
 [ ] Initialize API calls to communicate to BE
 
 
 
 ##  Back End: 
-It 1: Initiate PostGres DB (Users)
-[x] Write Users table with Prisma
-[x] Design schema for Table/PG
+It 1: Initiate PostGres DB (Users) <br/>
+[x] Write Users table with Prisma <br/>
+[x] Design schema for Table/PG <br/>
 [x] Migrate, seed table upon Kinde Auth
 
 [ ] Middleware: Initiate Web Socket (socket.io) 
