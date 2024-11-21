@@ -1,8 +1,12 @@
 import '../globals.css'
 import React from 'react'
 import Nav from '@/components/Nav'
+import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 
-const Home = () => {
+const Home = async () => {
+  const {getUser} = getKindeServerSession();
+  const user = await getUser();
+  console.log(user);
   return (
       <div className='user-dash'>
         <Nav/>

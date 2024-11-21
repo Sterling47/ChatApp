@@ -5,7 +5,6 @@ import { LoginButton } from '@/components/LoginButton';
 export default function LoginPage() {
   return (
     <div className='home'>
-
       <div className='login-box'>      
         <h1>Welcome to ChatApp</h1>
         <LoginButton>
