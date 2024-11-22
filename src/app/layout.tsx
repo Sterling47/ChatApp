@@ -9,7 +9,7 @@ export default async function RootLayout({
 }>) {
   return (
     <AuthProvider>
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
         <head>
           <title>My Next.js App</title>
           <meta name="description" content="This is a Next.js application" />
