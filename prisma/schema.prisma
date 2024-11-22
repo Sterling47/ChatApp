@@ -46,37 +46,3 @@ model Message {
   room      Room     @relation(fields: [roomID], references: [id])
   roomID    Int
 }
-
-// model User {
-//   id             Int       @id @default(autoincrement())
-//   email          String    @unique
-//   username       String    @unique
-//   password       String
-//   createdAt      DateTime  @default(now())
-//   lastLogin      DateTime?
-//   isOnline       Boolean   @default(false)
-//   messages       Message[] @relation("UserMessages") // Relation to messages they send
-//   rooms          Room[]    @relation("RoomUsers")    // Rooms the user participates in
-//   createdRooms   Room[]    @relation("RoomCreators") // Rooms the user has created
-// }
-
-// model Room {
-//   id         Int       @id @default(autoincrement())
-//   name       String    @unique
-//   password   String?   // Optional password for private rooms
-//   isPrivate  Boolean   @default(false)
-//   creatorID  Int
-//   creator    User      @relation("RoomCreators", fields: [creatorID], references: [id]) // Room creator relation
-//   chatters   User[]    @relation("RoomUsers")                                           // Participants in the room
-//   messages   Message[] // Messages in this room
-// }
-
-// model Message {
-//   id        Int      @id @default(autoincrement())
-//   content   String   // Message content
-//   timestamp DateTime @default(now())
-//   userID    Int
-//   user      User     @relation("UserMessages", fields: [userID], references: [id]) // Sender of the message
-//   roomID    Int
-//   room      Room     @relation(fields: [roomID], references: [id]) // Room where the message was sent
-// }

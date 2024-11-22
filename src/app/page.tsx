@@ -2,7 +2,8 @@ import './globals.css'
 import { LoginLink } from '@kinde-oss/kinde-auth-nextjs/components';
 import { LoginButton } from '@/components/LoginButton';
 
-export default function LoginPage() {
+export default async function LoginPage() {
+
   return (
     <div className='home'>
       <div className='login-box'>      
