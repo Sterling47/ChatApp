@@ -2,6 +2,8 @@ import '../globals.css'
 import React from 'react'
 import Nav from '@/components/Nav'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import CreateRoom from '@/components/CreateRoom';
+
 
 const Home = async () => {
   const {getUser} = getKindeServerSession();
@@ -38,6 +40,7 @@ const Home = async () => {
             <button className='send-message-bttn'><img className='send-arrow-img' src="send.png" alt="" /></button>
           </form>
         </div>
+        <CreateRoom user={userData}/>
       </div>
 
   )
