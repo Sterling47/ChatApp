@@ -40,7 +40,7 @@ const Home = async () => {
             <button className='send-message-bttn'><img className='send-arrow-img' src="send.png" alt="" /></button>
           </form>
         </div>
-        <CreateRoom user={userData}/>
+        {userData != null && <CreateRoom user={userData}/>}
       </div>
 
   )

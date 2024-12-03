@@ -23,12 +23,13 @@ const CreateRoom = ({user}:{user:User}) => {
       body: JSON.stringify({room})
     })
     const roomID = res.json();
-    router.push(`/room/${roomID}`)
+    console.log(roomID)
+    router.push(`/Room/${roomID}`)
   }
   return (
     <div className='create-room-bttn'>
       <Fab color="primary" aria-label="add" onClick={toggleModal}>
-      <AddIcon />
+        <AddIcon />
       </Fab>
       {isModalOpen && 
       (<div className="add-room-modal">
@@ -36,7 +37,7 @@ const CreateRoom = ({user}:{user:User}) => {
             <input type='text' name='room-name' value={roomName} onChange={e => setRoomName(e.target.value)}></input></label>
             <label>Private:
             <input type='checkbox' name='private' checked={isPrivate} onChange={e => setIsPrivate(e.target.checked)} ></input></label>
-            <button onClick={() => createRoom}>Submit</button>
+            <button onClick={() => createRoom(roomName,isPrivate)}>Submit</button>
         </div>
       )}
     </div>
