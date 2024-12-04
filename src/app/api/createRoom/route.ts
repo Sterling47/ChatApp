@@ -12,7 +12,7 @@ export async function POST(request:NextRequest) {
         creatorID: user.id
       }
     })
-    return NextResponse.json(createdRoom.id, { status: 201 })
+    return NextResponse.json(createdRoom.id)
   }
   catch (err) {
     return NextResponse.json({error: 'Failed to create new room'},{ status: 500 })

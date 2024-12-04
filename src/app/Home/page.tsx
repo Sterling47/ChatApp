@@ -3,10 +3,13 @@ import React from 'react'
 import Nav from '@/components/Nav'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import CreateRoom from '@/components/CreateRoom';
-
+import prisma from '@/lib/db';
 
 const Home = async () => {
   const {getUser} = getKindeServerSession();
+  const room = await prisma.room.findMany()
+  console.log('room:', room)
+
   let error, userData = null;
   try {
     const user = await getUser();
@@ -28,13 +31,12 @@ const Home = async () => {
 
   return (
       <div className='user-dash'>
-        <Nav/>
-        <div className='view-box'>
+        <Nav rooms={room}  user={userData}/>
         {error && <p className='error-msg'>{error}</p>}
+        <div className='view-box'>
           <h1>ViewBox</h1>
         </div>
         <div className="form-wrapper">
-
           <form action="">
             <input type="text" />
             <button className='send-message-bttn'><img className='send-arrow-img' src="send.png" alt="" /></button>

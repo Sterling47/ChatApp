@@ -2,21 +2,23 @@
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components"
 import { LogoutButton } from "./LogoutButton"
 import { useState } from "react"
+import type {Room,User} from '@prisma/client'
 
-
-export default function Nav() {
-
+interface RoomProps {
+  rooms: Room[]
+  user: User
+}
+const Nav:React.FC<RoomProps> = ({rooms,user}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-
   const toggleModal = () => {
     setIsModalOpen(prev => !prev);
   }
-
+  
   return (
     <nav>
       <div className="user-bar">
         <button className="user-bttn" onClick={toggleModal}>
-          <h4>user</h4>
+          <h4>{user.email}</h4>
         </button>
         {isModalOpen && (
           <div className="user-modal">
@@ -31,8 +33,16 @@ export default function Nav() {
         </ul>
       </div>
       <div className="user-select-display"> 
+        {rooms.map(({id,name}) => {
+        return (
+          <div key={id}>
+            <a href="">{name}</a>
+          </div>)
+        })}
       </div>
       
     </nav>
   )
 }
+
+export default Nav
