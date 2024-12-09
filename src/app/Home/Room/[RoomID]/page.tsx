@@ -1,9 +1,21 @@
-import React, { Children } from 'react'
+import React from 'react'
+import Viewbox from '@/components/Viewbox'
+import prisma from '@/lib/db'
 
-export default function RoomPage({Children}) {
+interface RoomPageProps {
+  params: {
+    id: number
+  }
+}
+export default async function RoomPage({params}:RoomPageProps) {
+  const {id} = params
+  const messages = await prisma.message.findMany({
+    where: {
+      roomID: id 
+    }
+  })
+  
   return (
-    <div className='viewbox'>{Children}</div>
+    <Viewbox messages={messages}/>
   )
 }
-
-//currently empty

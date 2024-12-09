@@ -38,19 +38,7 @@ export default async function Layout({
         {error && <p className='error-msg'>{error}</p>}
        
         {children}
-       <div className='view-box'>
-          <h1>ViewBox</h1>
-        </div>
-        <div className="form-wrapper">
-          <form 
-          // action={ async(formData: FormData) => {
-          // await sendMessage(formData)
-          // }}
-          >
-            <input type="text" name='message' />
-            <button className='send-message-bttn'><img className='send-arrow-img' src="send.png" alt="" /></button>
-          </form>
-        </div>
+
       </div>
 
   )
