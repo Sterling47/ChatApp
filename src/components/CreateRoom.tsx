@@ -7,8 +7,8 @@ import type {User} from '@prisma/client'
 import prisma from '@/lib/db';
 import { createRoomAction } from '@/app/actions/actions';
 const CreateRoom = ({user}:{user:User}) => {
-  // const router = useRouter();
   const [isModalOpen, setModalOpen] = useState(false);
+  // const router = useRouter();
 
   const toggleModal = () => {
     setModalOpen(prev => !prev);

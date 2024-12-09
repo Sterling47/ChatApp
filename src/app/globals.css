@@ -90,6 +90,16 @@ nav {
   border-radius: 6px;
 }
 
+.room-link {
+  color: grey;
+  text-decoration: none;
+  margin-left: 2rem;
+  font-size: 90%;
+}
+
+.room-link:hover {
+  color: #ff7f11;
+}
 
 .home {
   display: flex;

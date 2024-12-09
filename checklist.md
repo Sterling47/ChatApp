@@ -1,6 +1,12 @@
 ## header
 - [ ] Subscribe user to channel on input
 - [] Component to update database and propagate to all clients
-- [] Show channel information on sidebar
+- [x] Show channel information on sidebar
 - [] Create dynamic room
-- [] Write roomID dynamic route to render after room gets created
+- [x] Write roomID dynamic route to render after room gets created
+- [] Refactor Home route to root route
+- [] Refactor Login route to /Login
+- [] Create shared layout for user-dash with Home component and dynamic room route
+  - [] Create children as viewbox
+- [] Move form inside viewbox 
+- [] **Private room message encryption

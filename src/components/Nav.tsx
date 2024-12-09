@@ -3,17 +3,19 @@ import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components"
 import { LogoutButton } from "./LogoutButton"
 import { useState } from "react"
 import type {Room,User} from '@prisma/client'
+import CreateRoom from '@/components/CreateRoom';
 
 interface RoomProps {
   rooms: Room[]
   user: User
 }
 const Nav:React.FC<RoomProps> = ({rooms,user}) => {
+
   const [isModalOpen, setIsModalOpen] = useState(false)
   const toggleModal = () => {
     setIsModalOpen(prev => !prev);
   }
-  
+
   return (
     <nav>
       <div className="user-bar">
@@ -36,11 +38,11 @@ const Nav:React.FC<RoomProps> = ({rooms,user}) => {
         {rooms.map(({id,name}) => {
         return (
           <div key={id}>
-            <a href="">{name}</a>
+            <a  className='room-link' href={`/Home/${id}`}>{name}</a>
           </div>)
         })}
       </div>
-      
+      <CreateRoom user={user}/>
     </nav>
   )
 }

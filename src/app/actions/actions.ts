@@ -5,10 +5,9 @@ import prisma from '@/lib/db';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { revalidatePath } from 'next/cache';
 
+
 export async function createRoomAction(formData: FormData) {
   const {getUser} = getKindeServerSession();
-
-
   try {
     const user = await getUser();
     const existingUser = user.email? await prisma.user.findUnique({
@@ -20,7 +19,7 @@ export async function createRoomAction(formData: FormData) {
         isPrivate: formData.get('is-private') === 'on',
         creatorID: existingUser?.id || 1,
       },
-    });
+    });                                                       
 
     // Notify all subscribers about the new room
     await pusher.trigger('rooms', 'room-created', {
@@ -28,12 +27,18 @@ export async function createRoomAction(formData: FormData) {
       name: newRoom.name,
       isPrivate: newRoom.isPrivate,
     });
-
-    return newRoom;
+    revalidatePath('/Home') 
   } catch (error) {
     console.error('Error creating room:', error);
     throw new Error('Failed to create room');
   }
 
-  revalidatePath('/')
+
 }
+
+export async function sendMessage(formData: FormData ) {
+  return (
+    Response.json('')
+  )
+}
+
