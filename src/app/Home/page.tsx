@@ -1,10 +1,11 @@
-import Viewbox from '@/components/Viewbox'
 import React from 'react'
 
 const page = () => {
 
   return (
-    <Viewbox />
+    <div className='view-box'>
+      Viewbox
+      </div>
   )
 }
 
