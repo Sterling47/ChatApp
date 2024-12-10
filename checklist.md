@@ -4,9 +4,7 @@
 - [x] Show channel information on sidebar
 - [] Create dynamic room
 - [x] Write roomID dynamic route to render after room gets created
-- [] Refactor Home route to root route
-- [] Refactor Login route to /Login
-- [] Create shared layout for user-dash with Home component and dynamic room route
-  - [] Create children as viewbox
-- [] Move form inside viewbox 
+- [x] Create shared layout for user-dash with Home component and dynamic room route
+- [x] Create children as viewbox
+- [x] Move form inside viewbox 
 - [] **Private room message encryption

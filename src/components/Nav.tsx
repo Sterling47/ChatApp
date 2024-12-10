@@ -4,6 +4,7 @@ import { LogoutButton } from "./LogoutButton"
 import { useState } from "react"
 import type {Room,User} from '@prisma/client'
 import CreateRoom from '@/components/CreateRoom';
+import Link from "next/link"
 
 interface RoomProps {
   rooms: Room[]
@@ -38,7 +39,7 @@ const Nav:React.FC<RoomProps> = ({rooms,user}) => {
         {rooms.map(({id,name}) => {
         return (
           <div key={id}>
-            <a  className='room-link' href={`/Home/${id}`}>{name}</a>
+            <Link  className='room-link' href={`/Home/${id}`}>{name}</Link>
           </div>)
         })}
       </div>

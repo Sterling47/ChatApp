@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id           Int       @id @default(autoincrement())
+  id           Int       @id @unique @default(autoincrement())
   email        String    @unique
   username     String    @unique
   password     String
@@ -27,7 +27,7 @@ model User {
 }
 
 model Room {
-  id        Int       @id @default(autoincrement())
+  id        Int       @id @unique @default(autoincrement())
   name      String    @unique
   password  String?
   isPrivate Boolean   @default(false)
@@ -38,7 +38,7 @@ model Room {
 }
 
 model Message {
-  id        Int      @id @default(autoincrement())
+  id        Int      @id @unique @default(autoincrement())
   content   String
   timeStamp DateTime @default(now())
   user      User     @relation("UserMessages", fields: [userID], references: [id])
