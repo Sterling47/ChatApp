@@ -33,10 +33,18 @@ export async function createRoomAction(formData: FormData) {
     throw new Error('Failed to create room');
   }
 
-
 }
 
-export async function sendMessage(formData: FormData ) {
+export async function sendMessageAction(formData: FormData, RoomID: number, userID: number | undefined) {
+  const message = formData.get('message') as string
+
+  const newRoomMessage = await prisma.message.create({
+    data: {
+      content: message,
+      userID: userID || 1,
+      roomID: RoomID
+    }
+  })
   return (
     Response.json('')
   )

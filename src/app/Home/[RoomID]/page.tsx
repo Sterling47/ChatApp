@@ -1,8 +1,16 @@
 import React from 'react'
 import prisma from '@/lib/db'
+import SendMessage from '@/components/SendMessage';
+import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 
 export default async function RoomPage({params}:{params: Promise<{RoomID: string}>}) {
   let {RoomID} = await params
+  const {getUser} = getKindeServerSession();
+  const user = await getUser();
+  const existingUser = user.email? await prisma.user.findUnique({
+      where: {email: user.email}
+    }) : null
+  const userID = existingUser?.id
   const messages = await prisma.message.findMany({
     where: {
       roomID: +RoomID
@@ -22,20 +30,11 @@ export default async function RoomPage({params}:{params: Promise<{RoomID: string
       {messages.length === 0 ? <p>No messages found..</p> : messages.map(({ id, content, userID }) => {
         return (
         <div key={id}>
-            <p><span>{userID}</span>{content}</p>
+            <p>{content}</p>
         </div>)
       })}
       </div>
-      <div className="form-wrapper">
-        <form 
-        // action={ async(formData: FormData) => {
-        // await sendMessage(formData)
-        // }}
-        >
-          <input type="text" name='message' disabled/>
-          <button className='send-message-bttn'><img className='send-arrow-img' src="send.png" alt="" /></button>
-        </form>
-      </div>
+      <SendMessage RoomID={+RoomID} userID={userID}/>
   </>
   )
 }
