@@ -3,7 +3,7 @@ import { LoginLink } from '@kinde-oss/kinde-auth-nextjs/components';
 import { LoginButton } from '@/components/LoginButton';
 
 export default async function App() {
-
+  
   return (
     <div className='home'>
       <div className='login-box'>      

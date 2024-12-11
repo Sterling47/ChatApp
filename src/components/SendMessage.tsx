@@ -5,6 +5,7 @@ import { sendMessageAction } from '@/app/actions/actions'
 
 // (RoomID:number, userID:number | undefined)
 const SendMessage = ({RoomID,userID}:{RoomID:number,userID:number|undefined}) => {
+  //subscribe user
   return (
     <div className="form-wrapper">
         <form 

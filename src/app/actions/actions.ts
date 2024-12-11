@@ -20,7 +20,7 @@ export async function createRoomAction(formData: FormData) {
         creatorID: existingUser?.id || 1,
       },
     });                                                       
-
+    
     // Notify all subscribers about the new room
     await pusher.trigger('rooms', 'room-created', {
       id: newRoom.id,
@@ -45,6 +45,9 @@ export async function sendMessageAction(formData: FormData, RoomID: number, user
       roomID: RoomID
     }
   })
+
+
+  
   return (
     Response.json('')
   )

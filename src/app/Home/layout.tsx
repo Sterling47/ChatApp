@@ -2,9 +2,8 @@ import '../globals.css'
 import React from 'react'
 import Nav from '@/components/Nav'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
-
 import prisma from '@/lib/db';
-import { sendMessage } from '../actions/actions';
+
 export default async function Layout({
   children,
 }: Readonly<{
@@ -34,7 +33,7 @@ export default async function Layout({
 
   return (
       <div className='user-dash'>
-        <Nav rooms={room}  user={userData}/>
+        <Nav initialRooms={room}  user={userData}/>
         {error && <p className='error-msg'>{error}</p>}
        
         {children}

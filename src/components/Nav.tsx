@@ -1,22 +1,29 @@
 'use client'
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components"
 import { LogoutButton } from "./LogoutButton"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import type {Room,User} from '@prisma/client'
 import CreateRoom from '@/components/CreateRoom';
 import Link from "next/link"
+import { pusherClient } from '@/lib/pusher-client'
 
 interface RoomProps {
-  rooms: Room[]
+  initialRooms: Room[]
   user: User
 }
-const Nav:React.FC<RoomProps> = ({rooms,user}) => {
-
+const Nav:React.FC<RoomProps> = ({initialRooms,user}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [rooms, setRooms] = useState(initialRooms)
   const toggleModal = () => {
     setIsModalOpen(prev => !prev);
   }
-
+  useEffect(() => {
+    const channel = pusherClient.subscribe('rooms')
+    channel.bind('new-room', (data: { name: string; id: number; password: string | null; isPrivate: boolean; creatorID: number }) => {
+      setRooms(initialRooms => [...initialRooms,data])
+    })
+   },[])
+   
   return (
     <nav>
       <div className="user-bar">

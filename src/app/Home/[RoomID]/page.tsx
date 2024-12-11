@@ -2,7 +2,7 @@ import React from 'react'
 import prisma from '@/lib/db'
 import SendMessage from '@/components/SendMessage';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
-
+import { Messages } from '@/components/Messages';
 export default async function RoomPage({params}:{params: Promise<{RoomID: string}>}) {
   let {RoomID} = await params
   const {getUser} = getKindeServerSession();
@@ -27,12 +27,7 @@ export default async function RoomPage({params}:{params: Promise<{RoomID: string
       <div className='view-box'>
 
         <h2>{foundRoom?.name}</h2>
-      {messages.length === 0 ? <p>No messages found..</p> : messages.map(({ id, content, userID }) => {
-        return (
-        <div key={id}>
-            <p>{content}</p>
-        </div>)
-      })}
+      <Messages initialMessages={messages} RoomID={+RoomID}/>
       </div>
       <SendMessage RoomID={+RoomID} userID={userID}/>
   </>
