@@ -1,30 +1,39 @@
 'use client'
 import React, {useEffect, useState} from 'react'
 import { pusherClient } from '@/lib/pusher-client'
-import type {Message} from '@prisma/client'
 
 interface MessageProps {
     RoomID: number,
-    initialMessages: Message[]
+    initialMessages: {
+      text: string,
+      id: number
+    }[]
 }
 
 export const Messages: React.FC<MessageProps> = ({RoomID, initialMessages}) => {
-  const [messages, setMessages] = useState(initialMessages)
+  const [incomingMessages, setincomingMessages] = useState<string[]>([])
   useEffect(()=> {
-    const channel = pusherClient.subscribe(`${RoomID}`)
-    channel.bind('new-message', (data: { id: number; content: string; timeStamp: Date; userID: number; roomID: number }) => {
-      setMessages(initialMessages => [...initialMessages,data])
+    pusherClient.subscribe(`${RoomID}`)
+    pusherClient.bind('incoming-message', (text: string) => {
+      setincomingMessages((prev) => [...prev,text])
     })
     return () => {
       pusherClient.unsubscribe(`${RoomID}`)
     }
   }, [RoomID])
+
   return (
     <div>
-      {messages?.length === 0 ? <p>No messages found..</p> : messages.map(({ id, content, userID }) => {
+      {initialMessages?.length === 0 ? <p>No messages found..</p> : initialMessages.map(({ text, id }) => {
         return (
         <div key={id}>
-            <p>{content}</p>
+            <p>{text}</p>
+        </div>)
+      })}
+      {incomingMessages.map((text, i) => {
+        return (
+        <div key={i}>
+            <p>{text}</p>
         </div>)
       })}
     </div>

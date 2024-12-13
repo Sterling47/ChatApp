@@ -36,16 +36,22 @@ export async function createRoomAction(formData: FormData) {
 }
 
 export async function sendMessageAction(formData: FormData) {
-  const message = formData.get('message') as string
-  const userID = parseInt(formData.get('userID') as string , 10 || 1);
-  const roomID = parseInt(formData.get('RoomID') as string, 10)
-  const newRoomMessage = await prisma.message.create({
-    data: {
-      content: message,
-      userID: userID,
-      roomID: roomID
-    }
-  })
-
+  try {
+    const message = formData.get('message') as string
+    const userID = parseInt(formData.get('userID') as string, 10);
+    const roomID = parseInt(formData.get('RoomID') as string, 10)
+    const newRoomMessage = await prisma.message.create({
+      data: {
+        content: message,
+        userID: userID,
+        roomID: roomID
+      }
+    })
+    pusher.trigger(`${roomID}`, 'incoming-message', message)
+  }
+  catch (err) {
+    console.error('Error creating room:', err);
+    throw new Error ('Failed to create new message')
+  }
 }
 

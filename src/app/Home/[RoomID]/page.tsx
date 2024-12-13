@@ -23,12 +23,16 @@ export default async function RoomPage({params}:{params: Promise<{RoomID: string
       id: numericRoomID
     }
   })
+  const serializedMessages = messages.map((message) => ({
+    id: message.id,
+    text: message.content
+  }))
+ 
   return (
     <>
       <div className='view-box'>
-
         <h2>{foundRoom?.name}</h2>
-      <Messages initialMessages={messages} RoomID={+RoomID}/>
+      <Messages initialMessages={serializedMessages} RoomID={+RoomID}/>
       </div>
       <SendMessage RoomID={+RoomID} userID={userID}/>
   </>
