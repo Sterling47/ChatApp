@@ -5,6 +5,8 @@ import { useState, useEffect } from "react"
 import type {Room,User} from '@prisma/client'
 import CreateRoom from '@/components/CreateRoom';
 import Link from "next/link"
+import publicChat from '/public/public-chat-icon.png'
+import Image from "next/image"
 import { pusherClient } from '@/lib/pusher-client'
 
 interface RoomProps {
@@ -38,8 +40,14 @@ const Nav:React.FC<RoomProps> = ({initialRooms,user}) => {
           </div>
         )}
         <ul className='nav-menu-wrapper'>
-          <li> <img className="icon" src="private-chat-icon.png" alt="Public Icon" /></li>
-          <li> <img className="icon" src="public-chat-icon.png" alt="" /></li>
+          <li> <Image className="icon" src={'/private-chat-icon.png'} 
+          width={100}
+          height={100}
+          alt="" /></li>
+          <li> <Image className="icon" src={"/public-chat-icon.png"} 
+          width={100}
+          height={100}
+          alt="" /></li>
         </ul>
       </div>
       <div className="user-select-display"> 

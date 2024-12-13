@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { sendMessageAction } from '@/app/actions/actions'
-
+import Image from 'next/image'
 // (RoomID:number, userID:number | undefined)
 const SendMessage = ({RoomID,userID}:{RoomID:number,userID:number|undefined}) => {
   //subscribe user
@@ -14,7 +14,7 @@ const SendMessage = ({RoomID,userID}:{RoomID:number,userID:number|undefined}) =>
         }}
         >
           <input type="text" name='message'/>
-          <button className='send-message-bttn'><img className='send-arrow-img' src="send.png" alt="" /></button>
+          <button className='send-message-bttn'><Image className='send-arrow-img' src="/send.png" alt="" width={100} height={100} /></button>
         </form>
       </div>
   )
