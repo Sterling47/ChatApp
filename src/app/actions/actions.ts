@@ -35,21 +35,17 @@ export async function createRoomAction(formData: FormData) {
 
 }
 
-export async function sendMessageAction(formData: FormData, RoomID: number, userID: number | undefined) {
+export async function sendMessageAction(formData: FormData) {
   const message = formData.get('message') as string
-
+  const userID = parseInt(formData.get('userID') as string , 10 || 1);
+  const roomID = parseInt(formData.get('RoomID') as string, 10)
   const newRoomMessage = await prisma.message.create({
     data: {
       content: message,
-      userID: userID || 1,
-      roomID: RoomID
+      userID: userID,
+      roomID: roomID
     }
   })
 
-
-  
-  return (
-    Response.json('')
-  )
 }
 
