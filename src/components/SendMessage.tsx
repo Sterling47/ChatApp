@@ -8,12 +8,12 @@ const SendMessage = ({RoomID,userID}:{RoomID:number,userID: number | undefined})
   //subscribe user
   return (
     <div className="form-wrapper">
-        <form 
+        <form  className='send-mssg-form'
         action={sendMessageAction}
         >
           <input type='hidden' name='RoomID' value={RoomID.toString()}/>
           <input type='hidden' name='userID' value={userID?.toString() || '1'}/>
-          <input type="text" name='message'/>
+          <input className='mssg-input' type="text" name='message'/>
           <button className='send-message-bttn'><Image className='send-arrow-img' src="/send.png" alt="" width={100} height={100} /></button>
         </form>
       </div>
