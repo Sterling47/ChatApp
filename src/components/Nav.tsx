@@ -5,7 +5,6 @@ import { useState, useEffect } from "react"
 import type {Room,User} from '@prisma/client'
 import CreateRoom from '@/components/CreateRoom';
 import Link from "next/link"
-import Image from "next/image"
 import { pusherClient } from '@/lib/pusher-client'
 import { MdOutlinePublic } from "react-icons/md";
 import { RiGitRepositoryPrivateFill } from "react-icons/ri";
@@ -17,13 +16,14 @@ interface RoomProps {
 }
 const Nav:React.FC<RoomProps> = ({initialRooms,user}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [showPrivateRooms, setShowPrivateRooms] = useState(false)
   const [rooms, setRooms] = useState(initialRooms)
   const toggleModal = () => {
     setIsModalOpen(prev => !prev);
   }
   useEffect(() => {
-    const channel = pusherClient.subscribe('rooms')
-    channel.bind('new-room', (data: { name: string; id: number; password: string | null; isPrivate: boolean; creatorID: number }) => {
+    pusherClient.subscribe('rooms')
+    pusherClient.bind('rooms', (data: { name: string; id: number; password: string | null; isPrivate: boolean; creatorID: number }) => {
       setRooms(initialRooms => [...initialRooms,data])
     })
    },[])
@@ -43,19 +43,20 @@ const Nav:React.FC<RoomProps> = ({initialRooms,user}) => {
         )}
         <ul className='nav-menu-wrapper'>
           <li> 
-            <IconContext.Provider value={{color: '#ff7f11', size: '1.4em', className:"chat-icon"}}>
-              <RiGitRepositoryPrivateFill/>
+            <IconContext.Provider 
+            value={{color: '#ff7f11', size: '1.4em', className:"chat-icon"}}>
+              <RiGitRepositoryPrivateFill onClick={() => setShowPrivateRooms(true)}/>
             </IconContext.Provider>
           </li>
           <li>
             <IconContext.Provider value={{color: '#ff7f11', size: '1.4em', className:"chat-icon"}}>
-             <MdOutlinePublic/>
+             <MdOutlinePublic onClick={() => setShowPrivateRooms(false)}/>
             </IconContext.Provider>
           </li>
         </ul>
       </div>
       <div className="user-select-display"> 
-        {rooms.map(({id,name}) => {
+        {rooms.filter(room => showPrivateRooms === room.isPrivate).map(({id,name}) => {
         return (
           <div key={id}>
             <Link  className='room-link' href={`/Home/${id}`}>{name}</Link>

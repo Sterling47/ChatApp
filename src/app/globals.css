@@ -35,7 +35,7 @@ nav {
 .user-bar {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
   background-color: rgb(27, 27, 32);
   border-radius: 6px;
   margin: .125rem;
@@ -75,6 +75,10 @@ nav {
   display: flex;
   flex-direction: row;
   place-items: center;
+}
+
+.chat-icon:hover{
+  cursor: pointer;
 }
 
 #username,.chat-icon:first-child {

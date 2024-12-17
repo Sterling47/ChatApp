@@ -16,13 +16,13 @@ export async function createRoomAction(formData: FormData) {
     const newRoom = await prisma.room.create({
       data: {
         name: formData.get('room-name') as string,
-        isPrivate: formData.get('is-private') === 'on',
+        isPrivate: formData.get('private') === 'on',
         creatorID: existingUser?.id || 1,
       },
     });                                                       
     
     // Notify all subscribers about the new room
-    await pusher.trigger('rooms', 'room-created', {
+    await pusher.trigger(newRoom.name, 'rooms', {
       id: newRoom.id,
       name: newRoom.name,
       isPrivate: newRoom.isPrivate,
