@@ -22,12 +22,11 @@ export async function createRoomAction(formData: FormData) {
     });                                                       
     
     // Notify all subscribers about the new room
-    await pusher.trigger(newRoom.name, 'rooms', {
+    pusher.trigger('rooms-channel', 'rooms-created', {
       id: newRoom.id,
       name: newRoom.name,
       isPrivate: newRoom.isPrivate,
     });
-    revalidatePath('/Home') 
   } catch (error) {
     console.error('Error creating room:', error);
     throw new Error('Failed to create room');

@@ -10,6 +10,11 @@ import { MdOutlinePublic } from "react-icons/md";
 import { RiGitRepositoryPrivateFill } from "react-icons/ri";
 import { IconContext } from "react-icons";
 
+interface incomingRoom {
+  id: number
+  name: string
+  isPrivate: boolean
+}
 interface RoomProps {
   initialRooms: Room[]
   user: User
@@ -18,16 +23,21 @@ const Nav:React.FC<RoomProps> = ({initialRooms,user}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [showPrivateRooms, setShowPrivateRooms] = useState(false)
   const [rooms, setRooms] = useState(initialRooms)
+  const [incomingRooms, setIncomingRooms] = useState<incomingRoom[]>([])
   const toggleModal = () => {
     setIsModalOpen(prev => !prev);
   }
   useEffect(() => {
-    pusherClient.subscribe('rooms')
-    pusherClient.bind('rooms', (data: { name: string; id: number; password: string | null; isPrivate: boolean; creatorID: number }) => {
-      setRooms(initialRooms => [...initialRooms,data])
-    })
+    pusherClient.subscribe('rooms-channel')
+    const createRoomHandler = (data: incomingRoom) => {
+      setIncomingRooms(prev => [...prev,data])
+    }
+    pusherClient.bind('rooms-created', createRoomHandler) //bind to event name not channel
+    return () => {
+      pusherClient.unsubscribe('rooms-channel');
+      pusherClient.unbind('rooms-created', createRoomHandler);
+    }
    },[])
-   
   return (
     <nav>
       <div className="user-bar">
