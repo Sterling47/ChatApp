@@ -74,6 +74,11 @@ nav {
   list-style-type: none;
   display: flex;
   flex-direction: row;
+  place-items: center;
+}
+
+#username,.chat-icon:first-child {
+  margin-right: .3rem;
 }
 
 .icon {
