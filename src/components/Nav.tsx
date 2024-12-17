@@ -72,6 +72,12 @@ const Nav:React.FC<RoomProps> = ({initialRooms,user}) => {
             <Link  className='room-link' href={`/Home/${id}`}>{name}</Link>
           </div>)
         })}
+        {incomingRooms?.filter(room => showPrivateRooms === room.isPrivate).map(({id,name}) => {
+        return (
+          <div key={id}>
+            <Link  className='room-link' href={`/Home/${id}`}>{name}</Link>
+          </div>)
+        })}
       </div>
       <CreateRoom user={user}/>
     </nav>
