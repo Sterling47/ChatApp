@@ -3,7 +3,7 @@
 Chattr is a real-time chat application that allows users to join, create and contribute to public and private chatrooms.
 ## Key Features 
 - User Authentication: 
-- Real-Time Messaging: Messages are instantly shared across users using WebSockets powered by Socket.io.
+- Real-Time Messaging: Messages are instantly shared across users using WebSockets powered by Pusher.js.
 - Persistent Chat History: All messages are stored in a Postgresql DB, allowing users to see previous chats upon loading the app.
 - User-Friendly Interface: A simple, intuitive chat interface with instant updates and responsive design.
 
@@ -24,7 +24,8 @@ Chattr is a real-time chat application that allows users to join, create and con
 
 Non-User - Can see friends list/public chat rooms but cannot interact
 
-TechStack: WebSockets, Docker, Kubernetes, postgreSQL  Redis  ORM(Prisma)
+TechStack: WebSockets(Pusher.js), postgreSQL, ORM(Prisma), NextJS, Authentication(Kinde)
+- To add (Docker/Kubernetes, S3 Buckets(?))
 
 Kubernetes: https://nicwortel.nl/blog/2022/continuous-deployment-to-kubernetes-with-github-actions
 
@@ -35,8 +36,8 @@ Design Inspos: https://cdn.dribbble.com/userupload/3348806/file/original-666b1df
 It 1: [x] Initiate Kinde Auth <br/>
 [x] Research Kinde Auth Docs <br/>
 [x] Write up Auth Component in Next <br/>
-[ ] Initialize API calls to communicate to BE
-
+[x] Initialize API calls to communicate to BE
+[x] Seed user into prisma db 
 
 
 ##  Back End: 
@@ -44,24 +45,20 @@ It 1: Initiate PostGres DB (Users) <br/>
 [x] Write Users table with Prisma <br/>
 [x] Design schema for Table/PG <br/>
 [x] Migrate, seed table upon Kinde Auth
-
-[ ] Middleware: Initiate Web Socket (socket.io) 
+[x] Middleware: Initiate Web Socket (socket.io) 
+[x] Create public/private rooms
 
 ## Learning Goals: 
 - Authentication with roles
 - User/Non-user can use app features
-- Socket.io
+- Websockets
 - GitHub Actions for CI/CD, Docker/Kubernetes
 - NextJS
-- Testing
 
 
  ## Next Steps
-- Seed user into prisma db 
-- Update prisma schema (relational diagram)
-- GitHub Actions for CI/CD and testing BE
-- Create public/private room routes
-- Create components 
-	-Room
-	-Sidebar
-	-Input Field
+[ ] Adding tabbable rooms
+[ ] Inviting users to chat room
+[ ] UI/UX update
+
+
