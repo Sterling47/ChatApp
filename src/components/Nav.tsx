@@ -22,7 +22,7 @@ interface RoomProps {
 const Nav:React.FC<RoomProps> = ({initialRooms,user}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [showPrivateRooms, setShowPrivateRooms] = useState(false)
-  const [rooms, setRooms] = useState(initialRooms)
+  const [rooms] = useState(initialRooms)
   const [incomingRooms, setIncomingRooms] = useState<incomingRoom[]>([])
   const toggleModal = () => {
     setIsModalOpen(prev => !prev);
@@ -79,7 +79,7 @@ const Nav:React.FC<RoomProps> = ({initialRooms,user}) => {
           </div>)
         })}
       </div>
-      <CreateRoom user={user}/>
+      <CreateRoom/>
     </nav>
   )
 }
