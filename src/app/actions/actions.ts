@@ -16,18 +16,17 @@ export async function createRoomAction(formData: FormData) {
     const newRoom = await prisma.room.create({
       data: {
         name: formData.get('room-name') as string,
-        isPrivate: formData.get('is-private') === 'on',
+        isPrivate: formData.get('private') === 'on',
         creatorID: existingUser?.id || 1,
       },
     });                                                       
     
     // Notify all subscribers about the new room
-    await pusher.trigger('rooms', 'room-created', {
+    pusher.trigger('rooms-channel', 'rooms-created', {
       id: newRoom.id,
       name: newRoom.name,
       isPrivate: newRoom.isPrivate,
     });
-    revalidatePath('/Home') 
   } catch (error) {
     console.error('Error creating room:', error);
     throw new Error('Failed to create room');

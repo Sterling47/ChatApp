@@ -5,32 +5,44 @@ import { useState, useEffect } from "react"
 import type {Room,User} from '@prisma/client'
 import CreateRoom from '@/components/CreateRoom';
 import Link from "next/link"
-import publicChat from '/public/public-chat-icon.png'
-import Image from "next/image"
 import { pusherClient } from '@/lib/pusher-client'
+import { MdOutlinePublic } from "react-icons/md";
+import { RiGitRepositoryPrivateFill } from "react-icons/ri";
+import { IconContext } from "react-icons";
 
+interface incomingRoom {
+  id: number
+  name: string
+  isPrivate: boolean
+}
 interface RoomProps {
   initialRooms: Room[]
   user: User
 }
 const Nav:React.FC<RoomProps> = ({initialRooms,user}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [showPrivateRooms, setShowPrivateRooms] = useState(false)
   const [rooms, setRooms] = useState(initialRooms)
+  const [incomingRooms, setIncomingRooms] = useState<incomingRoom[]>([])
   const toggleModal = () => {
     setIsModalOpen(prev => !prev);
   }
   useEffect(() => {
-    const channel = pusherClient.subscribe('rooms')
-    channel.bind('new-room', (data: { name: string; id: number; password: string | null; isPrivate: boolean; creatorID: number }) => {
-      setRooms(initialRooms => [...initialRooms,data])
-    })
+    pusherClient.subscribe('rooms-channel')
+    const createRoomHandler = (data: incomingRoom) => {
+      setIncomingRooms(prev => [...prev,data])
+    }
+    pusherClient.bind('rooms-created', createRoomHandler) //bind to event name not channel
+    return () => {
+      pusherClient.unsubscribe('rooms-channel');
+      pusherClient.unbind('rooms-created', createRoomHandler);
+    }
    },[])
-   
   return (
     <nav>
       <div className="user-bar">
         <button className="user-bttn" onClick={toggleModal}>
-          <h4>{user.email}</h4>
+          <h4 id='username'>{user.email}</h4>
         </button>
         {isModalOpen && (
           <div className="user-modal">
@@ -40,18 +52,27 @@ const Nav:React.FC<RoomProps> = ({initialRooms,user}) => {
           </div>
         )}
         <ul className='nav-menu-wrapper'>
-          <li> <Image className="icon" src={'/private-chat-icon.png'} 
-          width={100}
-          height={100}
-          alt="" /></li>
-          <li> <Image className="icon" src={"/public-chat-icon.png"} 
-          width={100}
-          height={100}
-          alt="" /></li>
+          <li> 
+            <IconContext.Provider 
+            value={{color: '#ff7f11', size: '1.4em', className:"chat-icon"}}>
+              <RiGitRepositoryPrivateFill onClick={() => setShowPrivateRooms(true)}/>
+            </IconContext.Provider>
+          </li>
+          <li>
+            <IconContext.Provider value={{color: '#ff7f11', size: '1.4em', className:"chat-icon"}}>
+             <MdOutlinePublic onClick={() => setShowPrivateRooms(false)}/>
+            </IconContext.Provider>
+          </li>
         </ul>
       </div>
       <div className="user-select-display"> 
-        {rooms.map(({id,name}) => {
+        {rooms.filter(room => showPrivateRooms === room.isPrivate).map(({id,name}) => {
+        return (
+          <div key={id}>
+            <Link  className='room-link' href={`/Home/${id}`}>{name}</Link>
+          </div>)
+        })}
+        {incomingRooms?.filter(room => showPrivateRooms === room.isPrivate).map(({id,name}) => {
         return (
           <div key={id}>
             <Link  className='room-link' href={`/Home/${id}`}>{name}</Link>
