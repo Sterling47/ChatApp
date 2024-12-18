@@ -2,9 +2,8 @@
 import React, {useState} from 'react'
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
-import type {User} from '@prisma/client'
 import { createRoomAction } from '@/app/actions/actions';
-const CreateRoom = ({user}:{user:User}) => {
+const CreateRoom = () => {
   const [isModalOpen, setModalOpen] = useState(false);
 
   const toggleModal = () => {

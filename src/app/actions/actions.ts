@@ -3,8 +3,6 @@
 import { pusher } from '@/lib/pusher'
 import prisma from '@/lib/db';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
-import { revalidatePath } from 'next/cache';
-
 
 export async function createRoomAction(formData: FormData) {
   const {getUser} = getKindeServerSession();
@@ -39,7 +37,7 @@ export async function sendMessageAction(formData: FormData) {
     const message = formData.get('message') as string
     const userID = parseInt(formData.get('userID') as string, 10);
     const roomID = parseInt(formData.get('RoomID') as string, 10)
-    const newRoomMessage = await prisma.message.create({
+    await prisma.message.create({
       data: {
         content: message,
         userID: userID,
