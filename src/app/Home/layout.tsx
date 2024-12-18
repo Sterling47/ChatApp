@@ -11,36 +11,11 @@ export default async function Layout({
 }>) {
   const {getUser} = getKindeServerSession();
   const room = await prisma.room.findMany()
-
-  let error, userData = null;
-  try {
-    const user = await getUser();
-    const resp = await fetch('http://localhost:3000/api/seedUser',{
-      method: 'POST',
-      headers: {
-        'Content-Type':'application/json'
-      },
-      body: JSON.stringify({user})
-    });
-    if (!resp.ok){
-      throw new Error ('Failed to seed user')
-    }
-    if (!user) {
-      return {
-        notFound: true
-      }
-    }
-    userData = await resp.json();
-  }
-  catch (err) {
-    error = err instanceof Error ? err.message : 'Unexpected error occured'
-  }
+  
 
   return (
       <div className='user-dash'>
-        <Nav initialRooms={room}  user={userData}/>
-        {error && <p className='error-msg'>{error}</p>}
-       
+        <Nav initialRooms={room}  getUser={getUser}/>
         {children}
 
       </div>
