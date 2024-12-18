@@ -25,6 +25,11 @@ export default async function Layout({
     if (!resp.ok){
       throw new Error ('Failed to seed user')
     }
+    if (!user) {
+      return {
+        notFound: true
+      }
+    }
     userData = await resp.json();
   }
   catch (err) {
