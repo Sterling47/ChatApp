@@ -1,4 +1,3 @@
-import React from 'react'
 import type { KindeUser } from '@kinde-oss/kinde-auth-nextjs/types';
 import type {User} from '@prisma/client'
 

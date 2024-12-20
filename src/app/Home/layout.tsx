@@ -17,8 +17,6 @@ export default async function Layout({
       <div className='user-dash'>
         <Nav initialRooms={room}  getUser={getUser}/>
         {children}
-
       </div>
-
   )
 }
