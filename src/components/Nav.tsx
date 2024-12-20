@@ -9,6 +9,7 @@ import { pusherClient } from '@/lib/pusher-client'
 import { MdOutlinePublic } from "react-icons/md";
 import { RiGitRepositoryPrivateFill } from "react-icons/ri";
 import { IconContext } from "react-icons";
+import { SeedUser } from "./SeedUser"
 
 interface incomingRoom {
   id: number
@@ -17,17 +18,31 @@ interface incomingRoom {
 }
 interface RoomProps {
   initialRooms: Room[]
-  user: User
 }
-const Nav:React.FC<RoomProps> = ({initialRooms,user}) => {
+const Nav:React.FC<RoomProps> = ({initialRooms}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [showPrivateRooms, setShowPrivateRooms] = useState(false)
-  const [rooms, setRooms] = useState(initialRooms)
+  const [rooms] = useState(initialRooms)
   const [incomingRooms, setIncomingRooms] = useState<incomingRoom[]>([])
+  const [user, setUser] = useState<User | undefined>(undefined);
   const toggleModal = () => {
     setIsModalOpen(prev => !prev);
   }
+  
   useEffect(() => {
+    async function fetchUser() {
+      try {
+        const foundUser = await SeedUser()
+        if (foundUser) {
+          setUser(foundUser);
+        }
+      }
+      catch (error) {
+        console.log('Error seeding user:', error)
+      }
+    }
+    fetchUser();
+    
     pusherClient.subscribe('rooms-channel')
     const createRoomHandler = (data: incomingRoom) => {
       setIncomingRooms(prev => [...prev,data])
@@ -42,7 +57,7 @@ const Nav:React.FC<RoomProps> = ({initialRooms,user}) => {
     <nav>
       <div className="user-bar">
         <button className="user-bttn" onClick={toggleModal}>
-          <h4 id='username'>{user.email}</h4>
+          <h4 id='username'>{user?.email}</h4>
         </button>
         {isModalOpen && (
           <div className="user-modal">
@@ -79,7 +94,7 @@ const Nav:React.FC<RoomProps> = ({initialRooms,user}) => {
           </div>)
         })}
       </div>
-      <CreateRoom user={user}/>
+      <CreateRoom/>
     </nav>
   )
 }

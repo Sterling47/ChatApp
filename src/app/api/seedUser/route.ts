@@ -19,8 +19,8 @@ export async function POST(request:NextRequest) {
     })
     return NextResponse.json(newUser, { status: 201 })
   }
-  catch (error){
-    return NextResponse.json({error: 'Failed to seed user'},{ status: 500 })
+  catch (err){
+    return NextResponse.json({error: 'Failed to seed user', err},{ status: 500 })
   }
 }
 

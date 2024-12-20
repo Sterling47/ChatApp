@@ -4,7 +4,7 @@ import SendMessage from '@/components/SendMessage';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import { Messages } from '@/components/Messages';
 export default async function RoomPage({ params }: { params: Promise<{ RoomID: string }> }) {
-  let { RoomID } = await params
+  const { RoomID } = await params
   const { getUser } = getKindeServerSession();
   const user = await getUser();
   const numericRoomID = Number(RoomID);
