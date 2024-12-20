@@ -1,11 +1,12 @@
+'use server'
 import type { KindeUser } from '@kinde-oss/kinde-auth-nextjs/types';
 import type {User} from '@prisma/client'
+import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 
-interface SeedUser {
-  getUser: () => Promise<KindeUser | null>;
-}
-export const SeedUser = async ({getUser}:SeedUser): Promise<User | undefined> => {
+
+export const SeedUser = async () => {
   try {
+    const {getUser} = getKindeServerSession();
     const user = await getUser();
     const resp = await fetch('http://localhost:3000/api/seedUser',{
       method: 'POST',

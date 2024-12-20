@@ -19,9 +19,8 @@ interface incomingRoom {
 }
 interface RoomProps {
   initialRooms: Room[]
-  getUser: () => Promise<KindeUser | null>;
 }
-const Nav:React.FC<RoomProps> = ({initialRooms,getUser}) => {
+const Nav:React.FC<RoomProps> = ({initialRooms}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [showPrivateRooms, setShowPrivateRooms] = useState(false)
   const [rooms] = useState(initialRooms)
@@ -34,7 +33,7 @@ const Nav:React.FC<RoomProps> = ({initialRooms,getUser}) => {
   useEffect(() => {
     async function fetchUser() {
       try {
-        const foundUser = await SeedUser({ getUser })
+        const foundUser = await SeedUser()
         if (foundUser) {
           setUser(foundUser);
         }
@@ -54,7 +53,7 @@ const Nav:React.FC<RoomProps> = ({initialRooms,getUser}) => {
       pusherClient.unsubscribe('rooms-channel');
       pusherClient.unbind('rooms-created', createRoomHandler);
     }
-   },[getUser])
+   },[])
   return (
     <nav>
       <div className="user-bar">
