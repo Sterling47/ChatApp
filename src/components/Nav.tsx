@@ -10,7 +10,6 @@ import { MdOutlinePublic } from "react-icons/md";
 import { RiGitRepositoryPrivateFill } from "react-icons/ri";
 import { IconContext } from "react-icons";
 import { SeedUser } from "./SeedUser"
-import type { KindeUser } from '@kinde-oss/kinde-auth-nextjs/types';
 
 interface incomingRoom {
   id: number

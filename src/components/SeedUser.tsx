@@ -1,6 +1,4 @@
 'use server'
-import type { KindeUser } from '@kinde-oss/kinde-auth-nextjs/types';
-import type {User} from '@prisma/client'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 
 
