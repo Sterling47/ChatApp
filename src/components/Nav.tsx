@@ -10,6 +10,8 @@ import { MdOutlinePublic } from "react-icons/md";
 import { RiGitRepositoryPrivateFill } from "react-icons/ri";
 import { IconContext } from "react-icons";
 import { SeedUser } from "./SeedUser"
+import type { KindeUser } from '@kinde-oss/kinde-auth-nextjs/types';
+
 interface incomingRoom {
   id: number
   name: string
@@ -17,21 +19,32 @@ interface incomingRoom {
 }
 interface RoomProps {
   initialRooms: Room[]
-  getUser: Function
+  getUser: () => Promise<KindeUser | null>;
 }
 const Nav:React.FC<RoomProps> = ({initialRooms,getUser}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [showPrivateRooms, setShowPrivateRooms] = useState(false)
   const [rooms] = useState(initialRooms)
   const [incomingRooms, setIncomingRooms] = useState<incomingRoom[]>([])
-  const [user, setUser] = useState<User>()
+  const [user, setUser] = useState<User | undefined>(undefined);
   const toggleModal = () => {
     setIsModalOpen(prev => !prev);
   }
   
   useEffect(() => {
-    const foundUser = SeedUser({getUser})
-    setUser(foundUser)
+    async function fetchUser() {
+      try {
+        const foundUser = await SeedUser({ getUser })
+        if (foundUser) {
+          setUser(foundUser);
+        }
+      }
+      catch (error) {
+        console.log('Error seeding user:', error)
+      }
+    }
+    fetchUser();
+    
     pusherClient.subscribe('rooms-channel')
     const createRoomHandler = (data: incomingRoom) => {
       setIncomingRooms(prev => [...prev,data])
@@ -41,7 +54,7 @@ const Nav:React.FC<RoomProps> = ({initialRooms,getUser}) => {
       pusherClient.unsubscribe('rooms-channel');
       pusherClient.unbind('rooms-created', createRoomHandler);
     }
-   },[])
+   },[getUser])
   return (
     <nav>
       <div className="user-bar">

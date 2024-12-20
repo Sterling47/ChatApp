@@ -1,8 +1,11 @@
 import React from 'react'
+import type { KindeUser } from '@kinde-oss/kinde-auth-nextjs/types';
+import type {User} from '@prisma/client'
+
 interface SeedUser {
-  getUser: Function
+  getUser: () => Promise<KindeUser | null>;
 }
-export const SeedUser:React.FC<SeedUser> = async ({getUser}) => {
+export const SeedUser = async ({getUser}:SeedUser): Promise<User | undefined> => {
   try {
     const user = await getUser();
     const resp = await fetch('http://localhost:3000/api/seedUser',{
