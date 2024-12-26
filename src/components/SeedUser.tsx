@@ -6,7 +6,8 @@ export const SeedUser = async () => {
   try {
     const {getUser} = getKindeServerSession();
     const user = await getUser();
-    const resp = await fetch('http://localhost:3000/api/seedUser',{
+    const baseURL = process.env.KINDE_SITE_URL
+    const resp = await fetch(`${baseURL}/api/seedUser`,{
       method: 'POST',
       headers: {
         'Content-Type':'application/json'
