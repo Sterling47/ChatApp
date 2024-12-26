@@ -5,7 +5,7 @@ import { useState, useEffect } from "react"
 import type {Room,User} from '@prisma/client'
 import CreateRoom from '@/components/CreateRoom';
 import Link from "next/link"
-import { pusherClient } from '@/lib/pusher-client'
+import { pusherClient }  from '@/lib/pusher-client'
 import { MdOutlinePublic } from "react-icons/md";
 import { RiGitRepositoryPrivateFill } from "react-icons/ri";
 import { IconContext } from "react-icons";
