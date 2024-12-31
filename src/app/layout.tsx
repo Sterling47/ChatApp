@@ -11,7 +11,7 @@ export default async function RootLayout({
     <AuthProvider>
       <html lang="en" suppressHydrationWarning>
         <head>
-          <title>My Next.js App</title>
+          <title>Chatt-r</title>
           <meta name="description" content="This is a Next.js application" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
         </head>
