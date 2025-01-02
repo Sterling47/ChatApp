@@ -1,11 +1,16 @@
 # Chattr
 ## Summary
 Chattr is a real-time chat application that allows users to join, create and contribute to public and private chatrooms.
+## Preview
+<img width="370" alt="Chatt-r Landing Page" src="https://github.com/user-attachments/assets/06491325-a955-4e63-bb53-b22f70d25975" />
+
+
 ## Key Features 
 - User Authentication: 
 - Real-Time Messaging: Messages are instantly shared across users using WebSockets powered by Pusher.js.
 - Persistent Chat History: All messages are stored in a Postgresql DB, allowing users to see previous chats upon loading the app.
 - User-Friendly Interface: A simple, intuitive chat interface with instant updates and responsive design.
+
 
 ## MVP
 [x]User logs in <br/>
