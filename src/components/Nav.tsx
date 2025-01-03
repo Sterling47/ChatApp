@@ -1,5 +1,4 @@
 'use client'
-import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components"
 import { LogoutButton } from "./LogoutButton"
 import { useState, useEffect } from "react"
 import type {Room,User} from '@prisma/client'
@@ -61,9 +60,7 @@ const Nav:React.FC<RoomProps> = ({initialRooms}) => {
         </button>
         {isModalOpen && (
           <div className="user-modal">
-            <LogoutButton>
-              <LogoutLink className="lo-link">Logout</LogoutLink>
-            </LogoutButton>
+            <LogoutButton/>
           </div>
         )}
         <ul className='nav-menu-wrapper'>
