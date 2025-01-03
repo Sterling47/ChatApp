@@ -1,12 +1,10 @@
-type LogoutButtonProps = {
-  children: React.ReactNode;
-}
+import Link from "next/link"
 
-export const LogoutButton: React.FC<LogoutButtonProps> = ({children}) => {
+export const LogoutButton = () => {
   return (
-    <div className="logout-btn">
-      {children}
-    </div>
+    <Link className="logout-btn lo-link" href='/'>
+      Sign out
+    </Link>
   )
 }
 
