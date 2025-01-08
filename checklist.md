@@ -28,9 +28,9 @@
 
 ## login
 - [] Add backgrounds
-- [] Restyle login component
+- [x] Restyle login component
 - [] Add actionable messages
-- [] Fix logout redirect
+- [x] Fix logout redirect
 - [] initial start things (/Home)
   - [] Welcome message, 
   - [] Change username
@@ -64,3 +64,5 @@
 
 ## user profile
 
+## commands
+- npx prisma migrate dev (generate new migration if schema changes)
