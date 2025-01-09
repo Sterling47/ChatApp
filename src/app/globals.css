@@ -43,7 +43,7 @@ body {
 }
 
 /* Nav*/
-nav {
+/* nav {
   list-style-type: none;
   display: flex;
   flex-direction: column;
@@ -54,31 +54,30 @@ nav {
   border-radius: 6px;
   width: 17rem;
   max-width: fit-content;
-}
+} */
 
-.user-bar {
+/* .user-bar {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   background-color: rgb(27, 27, 32);
   border-radius: 6px;
   margin: .125rem;
-}
+} */
 
-.user-bar h4 {
+/* .user-bar h4 {
   cursor: pointer;
-}
+} */
 
-.user-bttn, .lo-link {
+/* .user-bttn, .lo-link {
   background-color: transparent;
   color: white;
   height: fit-content;
   width: fit-content;
   padding: .5rem;
+} */
 
-}
-
-.user-modal {
+/* .user-modal {
   display: flex;
   flex-direction: column;
   justify-content: end;
@@ -92,7 +91,7 @@ nav {
   border-radius: 6px;
   z-index: 10; 
   height: 30%;
-}
+} */
 
 .nav-menu-wrapper {
   list-style-type: none;
@@ -251,20 +250,20 @@ a.lo-link:hover {
   text-decoration: none;
 }
 
-/* Home Styles */
+/* Home Styles */ :-ms-keyboard-active kio
 .form-wrapper, nav, .view-box {
   background-color:var(--primary-color);
   margin: .125rem;
 }
-.user-dash {
+/* .user-dash {
   display: grid;
   height: 100vh;
   grid-template-columns: repeat(9, 1fr);
   grid-template-rows: repeat(12, 1fr);
   padding: .25rem;
-}
+} */
 
-.view-box {
+/* .view-box {
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -273,7 +272,7 @@ a.lo-link:hover {
   grid-row: 1 / 13 ;
   grid-column: 3 /10;
   border-radius: 6px;
-}
+} */
 
 .room-container {
   grid-row: 1 / 13;

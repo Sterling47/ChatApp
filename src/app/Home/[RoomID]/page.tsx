@@ -29,7 +29,7 @@ export default async function RoomPage({ params }: { params: Promise<{ RoomID: s
   }))
 
   return (
-    <div className='room-container'>
+    <div className='row-start-1 row-end-13 col-start-2 col-end-9'>
       <div className="room-header">
         <h2>{foundRoom?.name}</h2>
       </div>

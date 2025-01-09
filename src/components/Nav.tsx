@@ -53,13 +53,13 @@ const Nav:React.FC<RoomProps> = ({initialRooms}) => {
     }
    },[])
   return (
-    <nav>
-      <div className="user-bar">
-        <button className="user-bttn" onClick={toggleModal}>
-          <h4 id='username'>{user?.email}</h4>
+    <nav className="flex flex-col justify-start m-0.5 rounded-md w-70 max-w-fit list-none col-start-1 col-end-3 row-start-1 row-end-13">
+      <div className="flex flex-row justify-around m-0.5 rounded-md bg-primary">
+        <button className="bg-transparent text-white h-auto w-auto p-2" onClick={toggleModal}>
+          <h4 className="hover:cursor-pointer" id='username'>{user?.email}</h4>
         </button>
         {isModalOpen && (
-          <div className="user-modal">
+          <div className="flex flex-col justify-end absolute top-10 left-3 bg-primary">
             <LogoutButton/>
           </div>
         )}

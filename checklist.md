@@ -42,8 +42,8 @@
   - [] searchable list of users
   - [] add to friends list
   - [] onclick, be able to invite other user to room
-- [] friends list icon 
-  - [] 
+- [] Combine public/private rooms list
+  - [] Show public/private icon next to room name
 
      
 ## nav-modal

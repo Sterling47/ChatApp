@@ -14,7 +14,7 @@ export default async function Layout({
   
 
   return (
-      <div className='user-dash'>
+      <div className='grid h-screen grid-cols-9 grid-rows-12 p-0.25'>
         <Nav initialRooms={room} />
         {children}
       </div>
