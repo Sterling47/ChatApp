@@ -15,10 +15,14 @@ module.exports = {
     ],
   theme: {
   	extend: {
+			boxShadow: {
+				room: '0 4px 8px rgba(0, 0, 0, 0.2)'
+			},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
+  			sm: 'calc(var(--radius) - 4px)',
+				room: '2px solid rgba(47,47,42,0.726)'
   		},
   		colors: {
   			background: 'hsl(var(--background))',
@@ -31,6 +35,9 @@ module.exports = {
   				DEFAULT: 'hsl(var(--popover))',
   				foreground: 'hsl(var(--popover-foreground))'
   			},
+				btn: {
+					DEFAULT: 'conic-gradient(var(--gradient-angle) , rgb(17, 188, 51), rgb(5, 180, 118), rgb(8, 175, 167), rgb(5, 180, 118),  rgb(17, 188, 51))'
+				},
   			primary: {
   				DEFAULT: 'hsl(240, 8, 12)',
   				foreground: 'hsl(var(--primary-foreground))'
@@ -63,7 +70,8 @@ module.exports = {
   			}
   		},
   		animation: {
-  			grid: 'grid 15s linear infinite'
+  			grid: 'grid 15s linear infinite',
+				rotation: 'rotation 1s linear infinite'
   		},
   		keyframes: {
   			grid: {
@@ -73,7 +81,15 @@ module.exports = {
   				'100%': {
   					transform: 'translateY(0)'
   				}
-  			}
+  			},
+				rotation: {
+					'0%': {
+						transform: '--gradient-angle(0deg)'
+					},
+					'100%': {
+						transform: '--gradient-angle(360deg)'
+					}
+				}
   		}
   	}
   },

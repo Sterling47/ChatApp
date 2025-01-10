@@ -44,7 +44,7 @@
   - [] onclick, be able to invite other user to room
 - [] Combine public/private rooms list
   - [] Show public/private icon next to room name
-
+- [] Center Add Room Modal popup to center of viewbox
      
 ## nav-modal
   - [] Add settings tab
