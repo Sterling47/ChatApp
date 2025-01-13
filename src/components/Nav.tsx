@@ -1,5 +1,4 @@
 'use client'
-import { LogoutButton } from "./LogoutButton"
 import { useState, useEffect } from "react"
 import type {Room,User} from '@prisma/client'
 import CreateRoom from '@/components/CreateRoom';
