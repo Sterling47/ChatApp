@@ -53,41 +53,41 @@ const Nav:React.FC<RoomProps> = ({initialRooms}) => {
     }
    },[])
   return (
-    <nav>
-      <div className="user-bar">
-        <button className="user-bttn" onClick={toggleModal}>
-          <h4 id='username'>{user?.email}</h4>
+    <nav className="flex flex-col justify-start m-0.5 rounded-md list-none col-span-1 row-start-1 row-end-13">
+      <div className="flex flex-row justify-around m-0.5 rounded-md bg-primary">
+        <button className="bg-transparent text-white h-auto w-auto p-2 hover:cursor-pointer hover:text-[#ff7f11]" onClick={toggleModal}>
+          <h4 className="hover:cursor-pointer" id='username'>{user?.email}</h4>
         </button>
         {isModalOpen && (
-          <div className="user-modal">
+          <div className="flex flex-col justify-end absolute top-10 left-3 bg-primary">
             <LogoutButton/>
           </div>
         )}
-        <ul className='nav-menu-wrapper'>
+        <ul className='flex flex-row place-items-center list-none '>
           <li> 
             <IconContext.Provider 
-            value={{color: '#ff7f11', size: '1.4em', className:"chat-icon"}}>
+            value={{color: '#ff7f11', size: '1.4em', className:"icon"}}>
               <RiGitRepositoryPrivateFill onClick={() => setShowPrivateRooms(true)}/>
             </IconContext.Provider>
           </li>
           <li>
-            <IconContext.Provider value={{color: '#ff7f11', size: '1.4em', className:"chat-icon"}}>
+            <IconContext.Provider value={{color: '#ff7f11', size: '1.4em', className:"icon"}}>
              <MdOutlinePublic onClick={() => setShowPrivateRooms(false)}/>
             </IconContext.Provider>
           </li>
         </ul>
       </div>
-      <div className="user-select-display"> 
+      <div className="h-full bg-primary m-0.5 rounded-md"> 
         {rooms.filter(room => showPrivateRooms === room.isPrivate).map(({id,name}) => {
         return (
           <div key={id}>
-            <Link  className='room-link' href={`/Home/${id}`}>{name}</Link>
+            <Link  className='text-grey no-underline ml-8 text-sm hover:text-[#ff7f11]' href={`/Home/${id}`}>{name}</Link>
           </div>)
         })}
         {incomingRooms?.filter(room => showPrivateRooms === room.isPrivate).map(({id,name}) => {
         return (
           <div key={id}>
-            <Link  className='room-link' href={`/Home/${id}`}>{name}</Link>
+            <Link  className='text-grey no-underline ml-8 text-sm hover:text-[#ff7f11]' href={`/Home/${id}`}>{name}</Link>
           </div>)
         })}
       </div>

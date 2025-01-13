@@ -1,9 +1,16 @@
-/*
-  Warnings:
+-- CreateTable
+CREATE TABLE "User" (
+    "id" SERIAL NOT NULL,
+    "email" TEXT NOT NULL,
+    "username" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "lastLogin" TIMESTAMP(3),
+    "isOnline" BOOLEAN NOT NULL DEFAULT false,
 
-  - A unique constraint covering the columns `[id]` on the table `User` will be added. If there are existing duplicate values, this will fail.
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
 
-*/
 -- CreateTable
 CREATE TABLE "Room" (
     "id" SERIAL NOT NULL,
@@ -27,10 +34,29 @@ CREATE TABLE "Message" (
 );
 
 -- CreateTable
+CREATE TABLE "Friend" (
+    "id" SERIAL NOT NULL,
+    "friendID" INTEGER NOT NULL,
+
+    CONSTRAINT "Friend_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "_UserRooms" (
     "A" INTEGER NOT NULL,
-    "B" INTEGER NOT NULL
+    "B" INTEGER NOT NULL,
+
+    CONSTRAINT "_UserRooms_AB_pkey" PRIMARY KEY ("A","B")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_id_key" ON "User"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Room_id_key" ON "Room"("id");
@@ -42,13 +68,7 @@ CREATE UNIQUE INDEX "Room_name_key" ON "Room"("name");
 CREATE UNIQUE INDEX "Message_id_key" ON "Message"("id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_UserRooms_AB_unique" ON "_UserRooms"("A", "B");
-
--- CreateIndex
 CREATE INDEX "_UserRooms_B_index" ON "_UserRooms"("B");
-
--- CreateIndex
-CREATE UNIQUE INDEX "User_id_key" ON "User"("id");
 
 -- AddForeignKey
 ALTER TABLE "Room" ADD CONSTRAINT "Room_creatorID_fkey" FOREIGN KEY ("creatorID") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -58,6 +78,9 @@ ALTER TABLE "Message" ADD CONSTRAINT "Message_userID_fkey" FOREIGN KEY ("userID"
 
 -- AddForeignKey
 ALTER TABLE "Message" ADD CONSTRAINT "Message_roomID_fkey" FOREIGN KEY ("roomID") REFERENCES "Room"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Friend" ADD CONSTRAINT "Friend_friendID_fkey" FOREIGN KEY ("friendID") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_UserRooms" ADD CONSTRAINT "_UserRooms_A_fkey" FOREIGN KEY ("A") REFERENCES "Room"("id") ON DELETE CASCADE ON UPDATE CASCADE;

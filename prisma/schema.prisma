@@ -24,6 +24,7 @@ model User {
   messages     Message[] @relation("UserMessages")
   rooms        Room[]    @relation("UserRooms")
   createdRooms Room[]    @relation("RoomCreators")
+  friends Friend[] @relation("UserFriends")
 }
 
 model Room {
@@ -45,4 +46,10 @@ model Message {
   userID    Int
   room      Room     @relation(fields: [roomID], references: [id])
   roomID    Int
+}
+
+model Friend {
+  id Int @id @default(autoincrement())
+  friends  User @relation("UserFriends", fields: [friendID], references: [id])
+  friendID Int 
 }
