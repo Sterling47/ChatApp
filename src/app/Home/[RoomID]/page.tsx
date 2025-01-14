@@ -25,7 +25,8 @@ export default async function RoomPage({ params }: { params: Promise<{ RoomID: s
   })
   const serializedMessages = messages.map((message) => ({
     id: message.id,
-    text: message.content
+    text: message.content,
+    userID: message.userID
   }))
 
   return (
@@ -35,7 +36,7 @@ export default async function RoomPage({ params }: { params: Promise<{ RoomID: s
 
       </div>
       <div className="flex justify-end items-end h-[80%] w-full">
-        <Messages initialMessages={serializedMessages} RoomID={+RoomID} />
+        <Messages initialMessages={serializedMessages} RoomID={+RoomID} creatorID={userID}/>
       </div>
       <div className="h-[10%] w-full bg-primary">
         <SendMessage RoomID={+RoomID} userID={userID} />

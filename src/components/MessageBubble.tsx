@@ -8,7 +8,7 @@ export const MessageBubble = ({children,direction = 'outgoing'}:BubbleProps) => 
        before:absolute before:w-0 before:h-0
       before:border-l-[12px] before:border-l-transparent
       before:border-r-[12px] before:border-r-transparent
-      before:border-t-[12px] before:border-bg_bubble
+      before:border-t-[12px] before:border-t-bg_bubble
       before:bottom-[-12px]
       before:transform-none last:mb-0`
   const directionClass = {
@@ -16,7 +16,7 @@ export const MessageBubble = ({children,direction = 'outgoing'}:BubbleProps) => 
     incoming: 'mr-auto before:left-6'
   }
   return (
-    <div className={`${bubbleClass}${directionClass[direction]}`}>
+    <div className={`${bubbleClass} ${directionClass[direction]}`}>
       {children}
     </div>
   )
