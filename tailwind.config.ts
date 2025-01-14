@@ -16,13 +16,14 @@ module.exports = {
   theme: {
   	extend: {
 			boxShadow: {
-				room: '0 4px 8px rgba(0, 0, 0, 0.2)'
+				room: '0 4px 8px rgba(0, 0, 0, 0.2)',
+				bubble: '0 4px 6px rgba(0,0,0,0.1)'
 			},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)',
-				room: '2px solid rgba(47,47,42,0.726)'
+				room: '2px solid rgba(47,47,42,0.726)',
   		},
   		colors: {
   			background: 'hsl(var(--background))',
@@ -59,6 +60,8 @@ module.exports = {
   				foreground: 'hsl(var(--destructive-foreground))'
   			},
   			border: 'hsl(var(--border))',
+				bubble: '1px solid rgba(255, 255, 255, 0.1)',
+				bg_bubble: 'rgba(40, 40, 40, 0.95)',
   			input: 'hsl(var(--input))',
   			ring: 'hsl(var(--ring))',
   			chart: {

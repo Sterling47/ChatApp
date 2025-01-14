@@ -1,7 +1,7 @@
 'use client'
 import React, {useEffect, useState} from 'react'
 import { pusherClient } from '@/lib/pusher-client'
-
+import { MessageBubble } from './MessageBubble'
 interface MessageProps {
     RoomID: number,
     initialMessages: {
@@ -28,9 +28,9 @@ export const Messages: React.FC<MessageProps> = ({RoomID, initialMessages}) => {
     <div>
       {(initialMessages?.length === 0 && incomingMessages.length === 0) ? <p>No messages found..</p> : initialMessages.map(({ text, id }) => {
         return (
-        <div key={id}>
+        <MessageBubble direction='outgoing' key={id}>
             <p>{text}</p>
-        </div>)
+        </MessageBubble>)
       })}
       {incomingMessages.map((text, i) => {
         return (

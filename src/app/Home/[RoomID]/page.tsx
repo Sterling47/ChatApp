@@ -30,10 +30,11 @@ export default async function RoomPage({ params }: { params: Promise<{ RoomID: s
 
   return (
     <div className='row-start-1 row-end-13 col-start-2 col-end-10'>
-      <div className="h-[10%] w-full bg-primary rounded-sm ">
+      <div className="h-[10%] w-fullrounded-sm ">
         <h2>{foundRoom?.name}</h2>
+
       </div>
-      <div className="flex justify-end items-end h-[80%] w-full bg-black">
+      <div className="flex justify-end items-end h-[80%] w-full">
         <Messages initialMessages={serializedMessages} RoomID={+RoomID} />
       </div>
       <div className="h-[10%] w-full bg-primary">
