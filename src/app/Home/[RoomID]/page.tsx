@@ -35,9 +35,9 @@ export default async function RoomPage({ params }: { params: Promise<{ RoomID: s
         <h2>{foundRoom?.name}</h2>
 
       </div>
-      <div className="flex justify-end items-end h-[80%] w-full">
-        <Messages initialMessages={serializedMessages} RoomID={+RoomID} creatorID={userID}/>
-      </div>
+
+      <Messages initialMessages={serializedMessages} RoomID={+RoomID} creatorID={userID}/>
+
       <div className="h-[10%] w-full bg-primary">
         <SendMessage RoomID={+RoomID} userID={userID} />
       </div>

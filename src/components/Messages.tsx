@@ -33,19 +33,25 @@ export const Messages: React.FC<MessageProps> = ({RoomID, initialMessages,creato
     }, [RoomID])
 
   return (
-    <div>
+    <div className="flex flex-col h-[80%] w-full space-y-4">
       {(initialMessages?.length === 0 && incomingMessages.length === 0) ? <p>No messages found..</p> : initialMessages.map(({ text, id, userID}) => {
         return (
-        <MessageBubble direction={creatorID === userID? 'outgoing':'incoming' } key={id}>
-            <p>{text}</p>
-        </MessageBubble>)
+          <div key={id} className={`flex w-full ${creatorID === userID ? 'justify-end' : 'justify-start'}`}> 
+            <MessageBubble direction={creatorID === userID? 'outgoing':'incoming' } >
+                {text}
+            </MessageBubble>
+          </div>
+        )
       })}
       {incomingMessages.map(({content,userID,timeStamp},i) => {
         return (
-        <MessageBubble direction={creatorID === userID? 'outgoing':'incoming' } key={i}>
-            <p>{content}</p>
-            <i className='text-[.5rem]'>{timeStamp}</i>
-        </MessageBubble>)
+          <div key={i} className={`flex w-full ${creatorID === userID ? 'justify-end' : 'justify-start'}`}> 
+            <MessageBubble direction={creatorID === userID? 'outgoing':'incoming' }>
+                <p>{content}</p>
+                <i className='text-[.5rem]'>{timeStamp}</i>
+            </MessageBubble>
+          </div>
+        )
       })}
     </div>
   )
