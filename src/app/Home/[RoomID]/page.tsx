@@ -32,7 +32,7 @@ export default async function RoomPage({ params }: { params: Promise<{ RoomID: s
   return (
     <div className='row-start-1 row-end-13 col-start-2 col-end-10'>
       <div className="h-[10%] w-fullrounded-sm ">
-        <h2>{foundRoom?.name}</h2>
+        <h2 className='py-6 text-center text-2xl'>{foundRoom?.name}</h2>
 
       </div>
 

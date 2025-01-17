@@ -33,10 +33,10 @@ export const Messages: React.FC<MessageProps> = ({RoomID, initialMessages,creato
     }, [RoomID])
 
   return (
-    <div className="flex flex-col h-[80%] w-full space-y-4">
+    <div className="flex flex-col h-[80%] w-full space-y-4 overflow-y-auto" >
       {(initialMessages?.length === 0 && incomingMessages.length === 0) ? <p>No messages found..</p> : initialMessages.map(({ text, id, userID}) => {
         return (
-          <div key={id} className={`flex w-full ${creatorID === userID ? 'justify-end' : 'justify-start'}`}> 
+          <div key={id} className={`flex w-full max-h-[80%]  ${creatorID === userID ? 'justify-end' : 'justify-start'}`}> 
             <MessageBubble direction={creatorID === userID? 'outgoing':'incoming' } >
                 {text}
             </MessageBubble>
