@@ -3,11 +3,10 @@
 import React from 'react'
 import { sendMessageAction } from '@/app/actions/actions'
 import Image from 'next/image'
-// (RoomID:number, userID:number | undefined)
+
 const SendMessage = ({RoomID,userID}:{RoomID:number,userID: number | undefined}) => {
-  //subscribe user
   return (
-    <div className="flex justify-evenly items-center row-start-12 row-end-13 col-start-3 h-full w-full rounded-[16px]">
+    <div className="flex bg-white justify-evenly items-center row-start-12 row-end-13 col-start-3 h-full w-full rounded-[16px]">
         <form  className='flex justify-evenly items-center w-full h-full'
         action={sendMessageAction}
         >

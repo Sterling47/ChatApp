@@ -52,7 +52,7 @@ module.exports = {
   				foreground: 'hsl(var(--muted-foreground))'
   			},
   			accent: {
-  				DEFAULT: 'hsl(var(--accent))',
+  				DEFAULT: 'hsl(28, 100%, 53%)',
   				foreground: 'hsl(var(--accent-foreground))'
   			},
   			destructive: {

@@ -41,7 +41,7 @@ export async function sendMessageAction(formData: FormData) {
       data: {
         content: message,
         userID: userID,
-        roomID: roomID
+        roomID: roomID,
       }
     })
     pusher.trigger(`${roomID}`, 'incoming-message', messageContent)

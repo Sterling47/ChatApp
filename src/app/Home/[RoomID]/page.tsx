@@ -24,9 +24,10 @@ export default async function RoomPage({ params }: { params: Promise<{ RoomID: s
     }
   })
   const serializedMessages = messages.map((message) => ({
-    id: message.id,
-    text: message.content,
-    userID: message.userID
+    messageID: message.id,
+    content: message.content,
+    userID: message.userID,
+    timeStamp: message.timeStamp
   }))
 
   return (
