@@ -12,7 +12,7 @@ const SendMessage = ({RoomID,userID}:{RoomID:number,userID: number | undefined})
         >
           <input type='hidden' name='RoomID' value={RoomID.toString()}/>
           <input type='hidden' name='userID' value={userID?.toString() || '1'}/>
-          <input className='w-[90%] h-[70%] bg-white border-none  rounded-[12px] text-black text-[110%]' type="text" name='message'/>
+          <textarea className='w-[90%] h-[70%] p-4 bg-white resize-none focus:outline-none rounded-xl text-black text-lg' name='message' placeholder=''/>
           <button className='grid place-items-center bg-white w-[8%] h-[70%] rounded-[6%] m-[0.2rem] hover:bg-[#ff1b1c]'><Image className='h-[2rem] w-[2rem]' src="/send.png" alt="" width={100} height={100} /></button>
         </form>
       </div>

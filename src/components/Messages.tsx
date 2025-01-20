@@ -1,6 +1,6 @@
 'use client'
 import React, {useEffect, useState} from 'react'
-import { format, isSameDay } from 'date-fns'
+import { format } from 'date-fns'
 import { pusherClient } from '@/lib/pusher-client'
 import { MessageBubble } from './MessageBubble'
 import { DateDivider } from './DateDivider'
@@ -54,7 +54,7 @@ export const Messages: React.FC<MessageProps> = ({RoomID, initialMessages,creato
       }
       groups[dateKey].push(message)
     })
-    console.log(allMessages)
+
     return Object.entries(groups).sort(([a],[b]) => new Date(b).getTime() - new Date(a).getTime())
   }
   const groupedMessages = processMessages();
