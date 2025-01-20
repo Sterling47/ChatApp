@@ -12,7 +12,7 @@ const SendMessage = ({RoomID,userID}:{RoomID:number,userID: number | undefined})
         >
           <input type='hidden' name='RoomID' value={RoomID.toString()}/>
           <input type='hidden' name='userID' value={userID?.toString() || '1'}/>
-          <textarea className='w-[90%] h-[70%] p-4 bg-white resize-none focus:outline-none rounded-xl text-black text-lg' name='message'/>
+          <textarea className='w-[90%] h-[70%] px-4 py-2 bg-white resize-none focus:outline-none rounded-xl text-black text-lg' name='message' placeholder='Send a chat'/>
           <button className='grid place-items-center bg-white w-[8%] h-[70%] rounded-xl m-[0.2rem] hover:bg-blue-300'>
             <IconContext.Provider value={{color:'#175DFF', className: 'w-10 h-10 hover:cursor-pointer '}}>
               <LuSendHorizontal/>

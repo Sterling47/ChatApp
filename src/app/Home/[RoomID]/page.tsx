@@ -39,7 +39,7 @@ export default async function RoomPage({ params }: { params: Promise<{ RoomID: s
 
       <Messages initialMessages={serializedMessages} RoomID={+RoomID} creatorID={userID}/>
 
-      <div className="h-[10%] w-full bg-primary">
+      <div className="flex justify-center items-center h-[8%] w-full bg-primary">
         <SendMessage RoomID={+RoomID} userID={userID} />
       </div>
     </div>

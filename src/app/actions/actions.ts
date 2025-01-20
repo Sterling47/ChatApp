@@ -12,15 +12,15 @@ export async function createRoomAction(formData: FormData) {
       where: {email: user.email}
     }) : null
 
-    if (!existingUser?.id) {
-      console.log('Room creation failed. User not found')
-      return;
-    }
+    // if (!existingUser?.id) {
+    //   console.log('Room creation failed. User not found')
+    //   return;
+    // }
     const roomName = formData.get('room-name') as string;
-    if (!roomName) {
-      console.log('Room creation failed: Missing room name');
-      return;
-    }
+    // if (!roomName) {
+    //   console.log('Room creation failed: Missing room name');
+    //   return;
+    // }
     const newRoom = await prisma.room.create({
       data: {
         name: roomName,
