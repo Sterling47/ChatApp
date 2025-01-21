@@ -25,18 +25,21 @@ export default async function RoomPage({ params }: { params: Promise<{ RoomID: s
   })
   const serializedMessages = messages.map((message) => ({
     id: message.id,
-    text: message.content
+    content: message.content,
+    userID: message.userID,
+    timeStamp: message.timeStamp
   }))
 
   return (
     <div className='row-start-1 row-end-13 col-start-2 col-end-10'>
-      <div className="h-[10%] w-full bg-primary rounded-sm ">
-        <h2>{foundRoom?.name}</h2>
+      <div className="h-[10%] w-fullrounded-sm ">
+        <h2 className='py-6 text-center text-2xl'>{foundRoom?.name}</h2>
+
       </div>
-      <div className="flex justify-end items-end h-[80%] w-full bg-black">
-        <Messages initialMessages={serializedMessages} RoomID={+RoomID} />
-      </div>
-      <div className="h-[10%] w-full bg-primary">
+
+      <Messages initialMessages={serializedMessages} RoomID={+RoomID} creatorID={userID}/>
+
+      <div className="flex justify-center items-center h-[8%] w-full bg-primary">
         <SendMessage RoomID={+RoomID} userID={userID} />
       </div>
     </div>

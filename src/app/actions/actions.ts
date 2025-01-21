@@ -13,9 +13,19 @@ export async function createRoomAction(formData: FormData) {
     const existingUser = user.email? await prisma.user.findUnique({
       where: {email: user.email}
     }) : null
+
+    // if (!existingUser?.id) {
+    //   console.log('Room creation failed. User not found')
+    //   return;
+    // }
+    const roomName = formData.get('room-name') as string;
+    // if (!roomName) {
+    //   console.log('Room creation failed: Missing room name');
+    //   return;
+    // }
     const newRoom = await prisma.room.create({
       data: {
-        name: formData.get('room-name') as string,
+        name: roomName,
         isPrivate: formData.get('private') === 'on',
         creatorID: existingUser?.id || 1,
       },
@@ -28,7 +38,7 @@ export async function createRoomAction(formData: FormData) {
     });
   } catch (error) {
     console.error('Error creating room:', error);
-    throw new Error('Failed to create room');
+    return;
   }
 
 }
@@ -38,18 +48,26 @@ export async function sendMessageAction(formData: FormData) {
     const message = formData.get('message') as string
     const userID = parseInt(formData.get('userID') as string, 10);
     const roomID = parseInt(formData.get('RoomID') as string, 10)
-    await prisma.message.create({
+    if (!message || !userID || !roomID) {
+      console.log('Missing fields', {
+        message: message || 'missing',
+        userID: userID || 'missing',
+        roomID: roomID || 'missing'
+      })
+      return;
+    }
+    const messageContent = await prisma.message.create({
       data: {
         content: message,
         userID: userID,
-        roomID: roomID
+        roomID: roomID,
       }
     })
-    pusher.trigger(`${roomID}`, 'incoming-message', message)
+    pusher.trigger(`${roomID}`, 'incoming-message', messageContent)
   }
   catch (err) {
     console.error('Error creating room:', err);
-    throw new Error ('Failed to create new message')
+    return;
   }
 }
 
