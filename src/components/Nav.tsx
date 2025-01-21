@@ -17,31 +17,19 @@ interface incomingRoom {
 }
 interface RoomProps {
   initialRooms: Room[]
+  currentUser: User
 }
-const Nav:React.FC<RoomProps> = ({initialRooms}) => {
+const Nav:React.FC<RoomProps> = ({initialRooms, currentUser}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [showPrivateRooms, setShowPrivateRooms] = useState(false)
   const [rooms] = useState(initialRooms)
   const [incomingRooms, setIncomingRooms] = useState<incomingRoom[]>([])
-  const [user, setUser] = useState<User | undefined>(undefined);
+  const [user, setUser] = useState<User | undefined>(currentUser);
   const toggleModal = () => {
     setIsModalOpen(prev => !prev);
   }
   
-  useEffect(() => {
-    async function fetchUser() {
-      try {
-        const foundUser = await SeedUser()
-        if (foundUser) {
-          setUser(foundUser);
-        }
-      }
-      catch (error) {
-        console.log('Error seeding user:', error)
-      }
-    }
-    fetchUser();
-    
+   useEffect(() => {
     pusherClient.subscribe('rooms-channel')
     const createRoomHandler = (data: incomingRoom) => {
       setIncomingRooms(prev => [...prev,data])
@@ -56,7 +44,7 @@ const Nav:React.FC<RoomProps> = ({initialRooms}) => {
     <nav className="flex flex-col justify-start m-0.5 rounded-md list-none col-span-1 row-start-1 row-end-13">
       <div className="flex flex-row justify-around m-0.5 rounded-md bg-primary">
         <button className="bg-transparent text-white h-auto w-auto p-2 hover:cursor-pointer hover:text-[#ff7f11]" onClick={toggleModal}>
-          <h4 className="hover:cursor-pointer" id='username'>{user?.email}</h4>
+          <h4 className="hover:cursor-pointer" id='username'>{user?.username}</h4>
         </button>
         {isModalOpen && (
           <div className="flex flex-col justify-end absolute top-10 left-3 bg-primary">
