@@ -9,18 +9,13 @@ import { RiGitRepositoryPrivateFill } from "react-icons/ri";
 import { IconContext } from "react-icons";
 import { SeedUser } from "./SeedUser"
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
-interface incomingRoom {
-  id: number
-  name: string
-  isPrivate: boolean
-}
+
 interface RoomProps {
   initialRooms: Room[]
 }
 const Nav:React.FC<RoomProps> = ({initialRooms}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [rooms] = useState(initialRooms)
-  const [incomingRooms, setIncomingRooms] = useState<incomingRoom[]>([])
+  const [rooms, setRooms] = useState<Room[]>(initialRooms)
   const [user, setUser] = useState<User | undefined>(undefined);
   const toggleModal = () => {
     setIsModalOpen(prev => !prev);
@@ -41,8 +36,8 @@ const Nav:React.FC<RoomProps> = ({initialRooms}) => {
     fetchUser();
     
     pusherClient.subscribe('rooms-channel')
-    const createRoomHandler = (data: incomingRoom) => {
-      setIncomingRooms(prev => [...prev,data])
+    const createRoomHandler = (data: Room) => {
+      setRooms(prev => [...prev,{...data,isIncoming:true}])
     }
     pusherClient.bind('rooms-created', createRoomHandler) //bind to event name not channel
     return () => {
@@ -50,6 +45,21 @@ const Nav:React.FC<RoomProps> = ({initialRooms}) => {
       pusherClient.unbind('rooms-created', createRoomHandler);
     }
    },[])
+
+  const renderRoomLink = (room: Room) => (
+    <div className='flex' key={room.id}>
+    <IconContext.Provider value={{className:"text-[#ff7f11] w-6 h-6"}}>
+      {room.isPrivate ? <RiGitRepositoryPrivateFill /> : <MdOutlinePublic />}
+    </IconContext.Provider>
+    <Link 
+      className='text-grey no-underline ml-8 text-sm hover:text-[#ff7f11]' 
+      href={`/Home/${room.id}`}
+    >
+      {room.name}
+    </Link>
+  </div>
+  ) 
+
   return (
     <nav className="flex flex-col justify-start m-0.5 rounded-md list-none col-span-1 row-start-1 row-end-13">
       <div className="flex flex-row justify-around m-0.5 rounded-md bg-primary">
@@ -63,28 +73,7 @@ const Nav:React.FC<RoomProps> = ({initialRooms}) => {
         )}
       </div>
       <div className="flex flex-col gap-1 h-full bg-primary m-0.5 rounded-md"> 
-        {rooms.map(({id,name,isPrivate}) => {
-        return (
-          <div className='flex outline-none ' key={id}>
-             {isPrivate? <IconContext.Provider value={{className:"text-[#ff7f11] w-6 h-6"}}>
-             <RiGitRepositoryPrivateFill />
-            </IconContext.Provider> : <IconContext.Provider value={{className:"text-[#ff7f11] w-6 h-6"}}>
-             <MdOutlinePublic /> 
-            </IconContext.Provider>}
-            <Link  className='text-grey no-underline ml-8 text-sm hover:text-[#ff7f11]' href={`/Home/${id}`}>{name}</Link>
-          </div>)
-        })}
-        {incomingRooms?.map(({id,name,isPrivate}) => {
-        return (
-          <div className='flex' key={id}>
-            {isPrivate? <IconContext.Provider value={{className:"text-[#ff7f11] w-6 h-6"}}>
-              <RiGitRepositoryPrivateFill />  
-            </IconContext.Provider> : <IconContext.Provider value={{className:"text-[#ff7f11] w-6 h-6"}}>
-              <MdOutlinePublic />
-            </IconContext.Provider>}
-            <Link  className='text-grey no-underline ml-8 text-sm hover:text-[#ff7f11]' href={`/Home/${id}`}>{name}</Link>
-          </div>)
-        })}
+        {rooms.map(renderRoomLink)}
       </div>
       <CreateRoom/>
     </nav>
