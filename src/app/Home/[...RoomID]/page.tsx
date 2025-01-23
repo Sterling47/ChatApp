@@ -1,15 +1,14 @@
-import React from 'react'
 import prisma from '@/lib/db'
-import SendMessage from '@/components/SendMessage';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
-import { Messages } from '@/components/Messages';
-import { RoomComponent } from '@/components/RoomComponent';
+import MultiRoomChat from '@/components/MultiRoomChat';
 export default async function RoomPage({ params }: { params: { RoomID: string[]} }) {
+
   const roomIDs = params.RoomID.map(Number)
-  
   const { getUser } = getKindeServerSession();
   const user = await getUser();
-
+  if (!user) {
+    throw new Error ('User not found')
+  }
   const allRooms = await Promise.all(
     roomIDs.map(async (roomID) => {
       const messages = await prisma.message.findMany({
@@ -33,7 +32,7 @@ export default async function RoomPage({ params }: { params: { RoomID: string[]}
       }) : null
       const userID = existingUser!.id
       return {
-        roomID,
+        RoomID: foundRoom!.id,
         roomName: foundRoom?.name,
         messages: serializedMessages,
         userID: userID
@@ -42,16 +41,6 @@ export default async function RoomPage({ params }: { params: { RoomID: string[]}
   );
 
   return (
-    <>
-      {allRooms.map((room) => (
-        <RoomComponent
-        key={room.roomID}
-        RoomID={room.roomID}
-        initialMessages={room.messages}
-        roomName={room.roomName}
-        userID={room.userID}
-        />
-      ))}
-    </>
+    <MultiRoomChat rooms={allRooms}/>
   )
 }
