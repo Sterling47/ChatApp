@@ -29,7 +29,6 @@ export const Messages: React.FC<MessageProps> = ({RoomID, initialMessages,creato
   useEffect(()=> {
     pusherClient.subscribe(`${RoomID}`)
     const messageHandler = (text: incomingMessageProps) => {
-      console.log(text)
       setincomingMessages((prev) => [...prev, text])
     }
     pusherClient.bind('incoming-message', messageHandler)

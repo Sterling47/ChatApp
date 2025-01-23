@@ -62,13 +62,13 @@ const Nav:React.FC<RoomProps> = ({initialRooms}) => {
           </div>
         )}
       </div>
-      <div className="h-full bg-primary m-0.5 rounded-md"> 
+      <div className="flex flex-col gap-1 h-full bg-primary m-0.5 rounded-md"> 
         {rooms.map(({id,name,isPrivate}) => {
         return (
-          <div className='flex' key={id}>
-             {isPrivate? <IconContext.Provider value={{color: '#ff7f11', size: '1.4em', className:"icon"}}>
+          <div className='flex outline-none ' key={id}>
+             {isPrivate? <IconContext.Provider value={{className:"text-[#ff7f11] w-6 h-6"}}>
              <RiGitRepositoryPrivateFill />
-            </IconContext.Provider> : <IconContext.Provider value={{color: '#ff7f11', size: '1.4em', className:"icon"}}>
+            </IconContext.Provider> : <IconContext.Provider value={{className:"text-[#ff7f11] w-6 h-6"}}>
              <MdOutlinePublic /> 
             </IconContext.Provider>}
             <Link  className='text-grey no-underline ml-8 text-sm hover:text-[#ff7f11]' href={`/Home/${id}`}>{name}</Link>
@@ -77,9 +77,9 @@ const Nav:React.FC<RoomProps> = ({initialRooms}) => {
         {incomingRooms?.map(({id,name,isPrivate}) => {
         return (
           <div className='flex' key={id}>
-            {isPrivate? <IconContext.Provider value={{color: '#ff7f11', size: '1.4em', className:"icon"}}>
+            {isPrivate? <IconContext.Provider value={{className:"text-[#ff7f11] w-6 h-6"}}>
               <RiGitRepositoryPrivateFill />  
-            </IconContext.Provider> : <IconContext.Provider value={{color: '#ff7f11', size: '1.4em', className:"icon"}}>
+            </IconContext.Provider> : <IconContext.Provider value={{className:"text-[#ff7f11] w-6 h-6"}}>
               <MdOutlinePublic />
             </IconContext.Provider>}
             <Link  className='text-grey no-underline ml-8 text-sm hover:text-[#ff7f11]' href={`/Home/${id}`}>{name}</Link>
