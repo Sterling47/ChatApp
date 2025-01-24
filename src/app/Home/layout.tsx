@@ -13,19 +13,8 @@ export default async function Layout({
 
  
   const room = await prisma.room.findMany();
- 
   const user = await SeedUser();
-  console.log(user)
-  // if (user && user.email && user.isFirstLogin) {
-  //   const dbUser = await prisma.user.findUnique({
-  //     where: { email: user.email },
-  //   });
-    
-  //   isFirstLogin = dbUser!.isFirstLogin
-  // }
-  
  
-
   return (
       <div className='grid h-screen grid-cols-9 grid-rows-12 p-0.25'>
         <Nav initialRooms={room} currentUser={user}/>
@@ -35,7 +24,6 @@ export default async function Layout({
           children
         )}
 
-        {/* {user.isFirstLogin && <FirstTimeSetup />} */}
       </div>
   )
 }
