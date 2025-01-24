@@ -29,13 +29,13 @@ export default async function Layout({
   return (
       <div className='grid h-screen grid-cols-9 grid-rows-12 p-0.25'>
         <Nav initialRooms={room} currentUser={user}/>
-        {/* {isFirstLogin ? (
+        {user.isFirstLogin ? (
           <FirstTimeSetup />
         ) : (
           children
-        )} */}
+        )}
 
-        {user.isFirstLogin && <FirstTimeSetup />}
+        {/* {user.isFirstLogin && <FirstTimeSetup />} */}
       </div>
   )
 }
