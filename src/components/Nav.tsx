@@ -2,18 +2,11 @@
 import { useState, useEffect } from "react"
 import type {Room,User} from '@prisma/client'
 import CreateRoom from '@/components/CreateRoom';
-import Link from "next/link"
-import { pusherClient }  from '@/lib/pusher-client'
-import { MdOutlinePublic } from "react-icons/md";
-import { RiGitRepositoryPrivateFill } from "react-icons/ri";
-import { IconContext } from "react-icons";
+import { pusherClient } from "@/lib/pusher-client";
 import { SeedUser } from "./SeedUser"
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
-interface incomingRoom {
-  id: number
-  name: string
-  isPrivate: boolean
-}
+import RoomList from "./RoomList";
+
 interface RoomProps {
   initialRooms: Room[]
   currentUser: User
@@ -38,6 +31,7 @@ const Nav:React.FC<RoomProps> = ({initialRooms, currentUser}) => {
       pusherClient.unbind('rooms-created', createRoomHandler);
     }
    },[])
+
   return (
     <nav className="flex flex-col justify-start m-0.5 rounded-md list-none col-span-1 row-start-1 row-end-13">
       <div className="flex flex-row justify-around m-0.5 rounded-md bg-primary">
@@ -50,30 +44,7 @@ const Nav:React.FC<RoomProps> = ({initialRooms, currentUser}) => {
           </div>
         )}
       </div>
-      <div className="h-full bg-primary m-0.5 rounded-md"> 
-        {rooms.map(({id,name,isPrivate}) => {
-        return (
-          <div className='flex' key={id}>
-             {isPrivate? <IconContext.Provider value={{color: '#ff7f11', size: '1.4em', className:"icon"}}>
-             <RiGitRepositoryPrivateFill />
-            </IconContext.Provider> : <IconContext.Provider value={{color: '#ff7f11', size: '1.4em', className:"icon"}}>
-             <MdOutlinePublic /> 
-            </IconContext.Provider>}
-            <Link  className='text-grey no-underline ml-8 text-sm hover:text-[#ff7f11]' href={`/Home/${id}`}>{name}</Link>
-          </div>)
-        })}
-        {incomingRooms?.map(({id,name,isPrivate}) => {
-        return (
-          <div className='flex' key={id}>
-            {isPrivate? <IconContext.Provider value={{color: '#ff7f11', size: '1.4em', className:"icon"}}>
-              <RiGitRepositoryPrivateFill />  
-            </IconContext.Provider> : <IconContext.Provider value={{color: '#ff7f11', size: '1.4em', className:"icon"}}>
-              <MdOutlinePublic />
-            </IconContext.Provider>}
-            <Link  className='text-grey no-underline ml-8 text-sm hover:text-[#ff7f11]' href={`/Home/${id}`}>{name}</Link>
-          </div>)
-        })}
-      </div>
+      <RoomList initialRooms={initialRooms}/>
       <CreateRoom/>
     </nav>
   )

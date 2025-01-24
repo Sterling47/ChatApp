@@ -4,7 +4,7 @@ import { format } from 'date-fns'
 import { pusherClient } from '@/lib/pusher-client'
 import { MessageBubble } from './MessageBubble'
 import { DateDivider } from './DateDivider'
-
+import { useMessageStore } from '@/stores/messageStore'
 interface MessageProps {
     RoomID: number,
     initialMessages: {
@@ -24,27 +24,28 @@ interface incomingMessageProps {
 }
 
 export const Messages: React.FC<MessageProps> = ({RoomID, initialMessages,creatorID}) => {
-  const [incomingMessages, setincomingMessages] = useState<incomingMessageProps[]>([])
-
+  const { messages, addMessage } = useMessageStore();
+  const roomMessages = messages[RoomID] || [];
+  const allMessages = [
+    ...new Map([...initialMessages, ...roomMessages].map(msg => [msg.id, msg])).values()
+  ]
   useEffect(()=> {
     pusherClient.subscribe(`${RoomID}`)
     const messageHandler = (text: incomingMessageProps) => {
-      console.log(text)
-      setincomingMessages((prev) => [...prev, text])
+      addMessage(RoomID, text)
     }
     pusherClient.bind('incoming-message', messageHandler)
     return () => {
       pusherClient.unbind('incoming-message', messageHandler)
       pusherClient.unsubscribe(`${RoomID}`)
       }
-    }, [RoomID])
+    }, [RoomID, addMessage])
 
   const processMessages = () => {
-    if (initialMessages?.length === 0 && incomingMessages.length === 0) {
+    if (allMessages.length === 0) {
       return null;
     }
 
-    const allMessages = [...initialMessages, ...incomingMessages];
     const groups: Record<string, typeof allMessages> = {};
     allMessages.forEach(message => {
       const date = new Date(message.timeStamp);
@@ -66,7 +67,7 @@ export const Messages: React.FC<MessageProps> = ({RoomID, initialMessages,creato
 
 return (
     <div className="flex flex-col-reverse h-[80%] w-full overflow-y-auto">
-      <div className="flex flex-col-reverse space-y-reverse space-y-4">
+      <div className="flex flex-col-reverse space-y-reverse space-y-4 h-full">
         {groupedMessages.map(([date, messages]) => (
           <div key={date} className="flex flex-col">
             <DateDivider date={date} />
