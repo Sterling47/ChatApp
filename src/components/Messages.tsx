@@ -26,7 +26,9 @@ interface incomingMessageProps {
 export const Messages: React.FC<MessageProps> = ({RoomID, initialMessages,creatorID}) => {
   const { messages, addMessage } = useMessageStore();
   const roomMessages = messages[RoomID] || [];
-  const allMessages = [...initialMessages, ...roomMessages];
+  const allMessages = [
+    ...new Map([...initialMessages, ...roomMessages].map(msg => [msg.id, msg])).values()
+  ]
   useEffect(()=> {
     pusherClient.subscribe(`${RoomID}`)
     const messageHandler = (text: incomingMessageProps) => {
