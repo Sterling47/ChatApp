@@ -3,6 +3,8 @@
 import { pusher } from '@/lib/pusher'
 import prisma from '@/lib/db';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import { initialize } from 'next/dist/server/lib/render-server';
+import { revalidatePath } from 'next/cache';
 
 export async function createRoomAction(formData: FormData) {
   const {getUser} = getKindeServerSession();
@@ -69,3 +71,49 @@ export async function sendMessageAction(formData: FormData) {
   }
 }
 
+export async function initialUserSetup(formData: FormData) {
+  const { getUser } = getKindeServerSession();
+
+  try {
+    const user = await getUser();
+    if (!user || !user.email) {
+      throw new Error('User not authenticated');
+    }
+
+    const username = formData.get('username') as string;
+
+    if (!username) {
+      throw new Error('Username is required');
+    }
+
+    let dbUser = await prisma.user.findUnique({
+      where: { email: user.email },
+    });
+    console.log(dbUser)
+    if (dbUser) {
+      const updatedUser = await prisma.user.upsert({
+        where: {
+          email: user.email,
+        },
+
+        update: {
+          username,
+          isFirstLogin: false
+        },
+
+        create: {
+          email: user.email,
+          username,
+          isFirstLogin: true, 
+          password: '',
+        },
+      });
+      console.log('updateD', updatedUser)
+    }
+      
+  } catch (error) {
+    console.error('Error in initialUserSetup:', error);
+    throw new Error('Failed to complete user setup');
+  }
+  revalidatePath('/Home')
+}

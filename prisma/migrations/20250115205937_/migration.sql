@@ -3,7 +3,8 @@ CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
     "username" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
+    "password" TEXT,
+    "isFirstLogin" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "lastLogin" TIMESTAMP(3),
     "isOnline" BOOLEAN NOT NULL DEFAULT false,
@@ -44,9 +45,7 @@ CREATE TABLE "Friend" (
 -- CreateTable
 CREATE TABLE "_UserRooms" (
     "A" INTEGER NOT NULL,
-    "B" INTEGER NOT NULL,
-
-    CONSTRAINT "_UserRooms_AB_pkey" PRIMARY KEY ("A","B")
+    "B" INTEGER NOT NULL
 );
 
 -- CreateIndex
@@ -66,6 +65,9 @@ CREATE UNIQUE INDEX "Room_name_key" ON "Room"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Message_id_key" ON "Message"("id");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "_UserRooms_AB_unique" ON "_UserRooms"("A", "B");
 
 -- CreateIndex
 CREATE INDEX "_UserRooms_B_index" ON "_UserRooms"("B");
