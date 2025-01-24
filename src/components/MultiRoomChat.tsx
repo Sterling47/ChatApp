@@ -17,9 +17,8 @@ export default function MultiRoomChat({ rooms }:{rooms:allRooms[]}) {
   const [activeRoomId, setActiveRoomId] = useState(rooms[0].RoomID);
 
   return (
-    <div className='row-start-1 row-end-13 col-start-2 col-end-10'>
-      {/* Room Tabs */}
-      <div className="flex border-b">
+    <div className='row-start-1 row-end-13 col-start-2 col-end-10 h-full flex flex-col'>
+      <div className="flex border-b overflow-x-auto">
         {rooms.map((room) => (
           <button
             key={room.RoomID}
@@ -35,18 +34,20 @@ export default function MultiRoomChat({ rooms }:{rooms:allRooms[]}) {
         ))}
       </div>
 
-      {/* Active Room Content */}
+      <div className='flex-1 overflow-hidden'>
+
       {rooms.map((room) => (
         activeRoomId === room.RoomID && (
           <RoomComponent
-            key={room.RoomID}
-            RoomID={room.RoomID}
-            initialMessages={room.messages}
-            roomName={room.roomName}
-            userID={room.userID}
+          key={room.RoomID}
+          RoomID={room.RoomID}
+          initialMessages={room.messages}
+          roomName={room.roomName}
+          userID={room.userID}
           />
         )
       ))}
+      </div>
     </div>
   );
 }
