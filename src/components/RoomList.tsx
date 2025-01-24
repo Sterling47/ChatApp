@@ -40,12 +40,12 @@ const RoomList:React.FC<RoomProps> = ({initialRooms}) => {
    }
 
   const renderRoomLink = (room: Room) => (
-    <div className='flex' key={room.id}>
-      <IconContext.Provider value={{className:"text-[#ff7f11] w-6 h-6"}}>
+    <div className='flex items-center overflow-y-auto' key={room.id}>
+      <IconContext.Provider value={{className:"text-[#ff7f11] w-6 h-6 flex-shrink-0"}}>
         {room.isPrivate ? <RiGitRepositoryPrivateFill /> : <MdOutlinePublic />}
       </IconContext.Provider>
       <button 
-        className='text-grey no-underline ml-8 text-sm hover:text-[#ff7f11]' 
+        className='text-grey no-underline ml-2 text-sm hover:text-[#ff7f11] overflow-x-hidden truncate' 
         onClick={() => joinRoom(room.id)}
       >
       {room.name}
@@ -54,7 +54,7 @@ const RoomList:React.FC<RoomProps> = ({initialRooms}) => {
   ) 
 
   return (
-    <div className="flex flex-col gap-1 h-full bg-primary m-0.5 rounded-md"> 
+    <div className="flex flex-col gap-1 h-full bg-primary m-0.5 rounded-md p-2"> 
       {rooms.map(renderRoomLink)}
     </div>
   )
