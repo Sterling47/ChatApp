@@ -5,6 +5,7 @@ import CreateRoom from '@/components/CreateRoom';
 import { SeedUser } from "./SeedUser"
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import RoomList from "./RoomList";
+import Link from "next/link";
 
 interface RoomProps {
   initialRooms: Room[]
@@ -41,6 +42,8 @@ const Nav:React.FC<RoomProps> = ({initialRooms,currentUser}) => {
         {isModalOpen && (
           <div className="absolute top-10 left-2 bg-primary p-2 z-10">
             <LogoutLink postLogoutRedirectURL={'/'}>Logout</LogoutLink>
+            <Link href="/Home/SearchUser"
+  className="p-2 hover:bg-gray-100 rounded-lg transition-colors" >Search User</Link>
           </div>
         )}
       </div>
