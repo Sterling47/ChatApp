@@ -3,8 +3,6 @@
 import { pusher } from '@/lib/pusher'
 import prisma from '@/lib/db';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
-import { initialize } from 'next/dist/server/lib/render-server';
-import { revalidatePath } from 'next/cache';
 
 export async function createRoomAction(formData: FormData) {
   const {getUser} = getKindeServerSession();
@@ -89,7 +87,7 @@ export async function initialUserSetup(formData: FormData) {
     let dbUser = await prisma.user.findUnique({
       where: { email: user.email },
     });
-    console.log(dbUser)
+    
     if (dbUser) {
       const updatedUser = await prisma.user.upsert({
         where: {
@@ -111,9 +109,8 @@ export async function initialUserSetup(formData: FormData) {
       console.log('updateD', updatedUser)
     }
       
-  } catch (error) {
-    console.error('Error in initialUserSetup:', error);
-    throw new Error('Failed to complete user setup');
+  } catch (err) {
+    return;
   }
-  revalidatePath('/Home')
+
 }
