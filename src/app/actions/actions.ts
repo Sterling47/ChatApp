@@ -3,6 +3,7 @@
 import { pusher } from '@/lib/pusher'
 import prisma from '@/lib/db';
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import { revalidatePath } from 'next/cache';
 
 export async function createRoomAction(formData: FormData) {
   const {getUser} = getKindeServerSession();
@@ -106,11 +107,10 @@ export async function initialUserSetup(formData: FormData) {
           password: '',
         },
       });
-      console.log('updateD', updatedUser)
     }
       
   } catch (err) {
     return;
   }
-
+  revalidatePath('/Home')
 }
