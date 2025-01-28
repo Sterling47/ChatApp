@@ -1,11 +1,9 @@
 'use client'
-import { useState, useEffect } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
 import  {RoomComponent } from '@/components/RoomComponent';
 import UserSearch from './UserSearch';
+import { useActiveRoom } from '@/app/contexts/ActiveRoomContext';
 
 interface RoomTab {
-  type: 'room';
   RoomID: number;
   roomName: string;
   messages: {
@@ -17,82 +15,45 @@ interface RoomTab {
   userID: number;
 }
 
-interface SearchTab {
-  type: 'search';
-}
 
-type Tab = RoomTab | SearchTab;
-
-export default function MultiRoomChat({ rooms }: { rooms: any[] }) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const [activeTab, setActiveTab] = useState<Tab>(() => {
-    return pathname.includes('/SearchUser') 
-      ? { type: 'search' }
-      : { type: 'room', ...rooms[0] }
-  });
-
-  useEffect(() => {
-    if (pathname.includes('/SearchUser')) {
-      setActiveTab({ type: 'search' });
-    }
-  }, [pathname]);
-
-  const handleTabChange = (tab: Tab) => {
-    setActiveTab(tab);
+const MultiRoomChat = ({ rooms }: { rooms: RoomTab[] }) => {
+  const { activeRoomId, setActiveRoomId } = useActiveRoom();
   
-    if (tab.type === 'search') {
-      router.push('/Home/SearchUser');
-    } else {
-      const roomIds = pathname
-        .split('/')
-        .filter(segment => segment && !isNaN(Number(segment)))
-        .map(Number)
-        .filter(id => id !== tab.RoomID);
-  
-      // Append the new room ID and join them
-      const updatedRoomIds = [...roomIds, tab.RoomID];
-      router.push(`/Home/${updatedRoomIds.join('/')}`);
-    }
-  };
-  
-
   return (
-    <div className='row-start-1 row-end-13 col-start-2 col-end-10 h-full flex flex-col'>
-      <div className="flex border-b overflow-x-auto">
+    <div className="row-start-1 row-end-13 col-start-2 col-end-10 h-full flex flex-col">
+      <div className="flex bg-[#1e1e1e] text-white overflow-x-auto">
+        <button
+          key="search"
+          className={`px-6 py-3 text-sm font-medium transition-colors duration-200 ease-in-out
+            ${activeRoomId === 'search' 
+              ? 'bg-[#292929] text-white' 
+              : 'text-gray-400 hover:text-white hover:bg-[#292929]'
+            }`}
+          onClick={() => setActiveRoomId('search')}
+        >
+          Search
+        </button>
         {rooms.map((room) => (
           <button
             key={room.RoomID}
-            onClick={() => handleTabChange({ type: 'room', ...room })}
-            className={`px-4 py-2 min-w-[120px] ${
-              activeTab.type === 'room' && (activeTab as RoomTab).RoomID === room.RoomID 
-                ? 'border-b-2 border-[#ff7f11] font-medium' 
-                : 'text-gray-500 hover:bg-gray-50'
-            }`}
+            className={`px-6 py-3 text-sm font-medium transition-colors duration-200 ease-in-out
+              ${activeRoomId === room.RoomID 
+                ? 'bg-[#292929] text-white' 
+                : 'text-gray-400 hover:text-white hover:bg-[#292929]'
+              }`}
+            onClick={() => setActiveRoomId(room.RoomID)}
           >
             {room.roomName}
           </button>
         ))}
-        
-        {pathname.includes('/SearchUser') && (
-          <button
-            onClick={() => handleTabChange({ type: 'search' })}
-            className={`px-4 py-2 min-w-[120px] ${
-              activeTab.type === 'search' 
-                ? 'border-b-2 border-[#ff7f11] font-medium' 
-                : 'text-gray-500 hover:bg-gray-50'
-            }`}
-          >
-            User Search
-          </button>
-        )}
       </div>
-      <div className="flex-1 overflow-hidden">
-        {activeTab.type === 'search' ? (
+      
+      <div className="flex-1 overflow-hidden bg-[#292929]">
+        {activeRoomId === 'search' ? (
           <UserSearch />
         ) : (
           rooms.map((room) => (
-            (activeTab as RoomTab).RoomID === room.RoomID && (
+            activeRoomId === room.RoomID && (
               <RoomComponent
                 key={room.RoomID}
                 RoomID={room.RoomID}
@@ -106,4 +67,6 @@ export default function MultiRoomChat({ rooms }: { rooms: any[] }) {
       </div>
     </div>
   );
-}
+};
+
+export default MultiRoomChat;

@@ -6,18 +6,19 @@ import { pusherClient }  from '@/lib/pusher-client'
 import { MdOutlinePublic } from "react-icons/md";
 import { RiGitRepositoryPrivateFill } from "react-icons/ri";
 import { IconContext } from "react-icons";
-import { useRouter } from "next/navigation";
+import { useActiveRoom } from "@/app/contexts/ActiveRoomContext";
 
 interface RoomProps {
   initialRooms: Room[]
 }
 const RoomList:React.FC<RoomProps> = ({initialRooms}) => {
   const [rooms, setRooms] = useState<Room[]>(initialRooms)
-  const router = useRouter();
+  const { setActiveRoomId } = useActiveRoom();
+
   useEffect(() => {
     pusherClient.subscribe('rooms-channel')
     const createRoomHandler = (data: Room) => {
-      setRooms(prev => [...prev,{...data, isIncoming:true}])
+      setRooms(prev => [...prev,{...data, isIncoming:true }])
     }
     pusherClient.bind('rooms-created', createRoomHandler)
     return () => {
@@ -25,19 +26,7 @@ const RoomList:React.FC<RoomProps> = ({initialRooms}) => {
       pusherClient.unbind('rooms-created', createRoomHandler);
     }
    },[])
-   const joinRoom = (roomID: number) => {
-    const currentPath = window.location.pathname;
-    const existingRoomIDs = currentPath
-    .split('/')
-    .filter((segment) => segment !== '' && !isNaN(Number(segment)))
-    .map(Number)
 
-    if (!existingRoomIDs.includes(roomID)) {
-      existingRoomIDs.push(roomID);
-    }
-    const newURL = `/Home/${existingRoomIDs.join('/')}`
-    router.push(newURL)
-   }
 
   const renderRoomLink = (room: Room) => (
     <div className='flex items-center overflow-y-auto' key={room.id}>
@@ -46,7 +35,7 @@ const RoomList:React.FC<RoomProps> = ({initialRooms}) => {
       </IconContext.Provider>
       <button 
         className='text-grey no-underline ml-2 text-sm hover:text-[#ff7f11] overflow-x-hidden truncate' 
-        onClick={() => joinRoom(room.id)}
+        onClick={() => setActiveRoomId(room.id)}
       >
       {room.name}
       </button>
