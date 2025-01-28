@@ -4,8 +4,6 @@ import MultiRoomChat from '@/components/MultiRoomChat';
 
 export default async function RoomPage({ params }: { params: { RoomID: string[] } }) {
   const roomIDs = params.RoomID.map(Number);
-  console.log('Room IDs:', roomIDs); // Debugging statement
-
   const { getUser } = getKindeServerSession();
   const user = await getUser();
 
@@ -15,11 +13,6 @@ export default async function RoomPage({ params }: { params: { RoomID: string[] 
 
   const allRooms = await Promise.all(
     roomIDs.map(async (roomID) => {
-      if (roomID === 0) {
-        console.error('Invalid Room ID:', roomID); // Debugging statement
-        return null;
-      }
-
       const messages = await prisma.message.findMany({
         where: {
           roomID: roomID,
@@ -63,8 +56,5 @@ export default async function RoomPage({ params }: { params: { RoomID: string[] 
       };
     })
   );
-
-  const validRooms = allRooms.filter(room => room !== null);
-
-  return <MultiRoomChat rooms={validRooms} />;
+  return <MultiRoomChat rooms={allRooms} />;
 }
