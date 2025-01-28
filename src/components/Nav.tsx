@@ -6,6 +6,7 @@ import { SeedUser } from "./SeedUser"
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import RoomList from "./RoomList";
 import Link from "next/link";
+import { useActiveRoom } from "@/app/contexts/ActiveRoomContext";
 
 interface RoomProps {
   initialRooms: Room[]
@@ -14,7 +15,7 @@ interface RoomProps {
 const Nav:React.FC<RoomProps> = ({initialRooms,currentUser}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [user, setUser] = useState<User | undefined>(currentUser);
-
+  const { setActiveRoomId } = useActiveRoom();
   const toggleModal = () => {
     setIsModalOpen(prev => !prev);
   }
@@ -32,7 +33,10 @@ const Nav:React.FC<RoomProps> = ({initialRooms,currentUser}) => {
     }
     fetchUser();
    },[])
-
+   const toggleSearch = () => {
+    setActiveRoomId('search');
+    toggleModal();
+   }
   return (
     <nav className="flex flex-col justify-start m-0.5 rounded-md list-none col-span-1 row-start-1 row-end-13 overflow-hidden">
       <div className="flex flex-row justify-around m-0.5 rounded-md bg-primary">
@@ -43,7 +47,7 @@ const Nav:React.FC<RoomProps> = ({initialRooms,currentUser}) => {
           <div className="absolute top-10 left-2 bg-primary p-2 z-10">
             <LogoutLink postLogoutRedirectURL={'/'}>Logout</LogoutLink>
             <Link href="/Home/SearchUser"
-  className="p-2 hover:bg-gray-100 rounded-lg transition-colors" >Search User</Link>
+  className="p-2 hover:bg-gray-100 rounded-lg transition-colors" onClick={toggleSearch}>Search User</Link>
           </div>
         )}
       </div>
