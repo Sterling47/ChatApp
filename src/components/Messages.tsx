@@ -1,5 +1,5 @@
 'use client'
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import { format } from 'date-fns'
 import { pusherClient } from '@/lib/pusher-client'
 import { MessageBubble } from './MessageBubble'

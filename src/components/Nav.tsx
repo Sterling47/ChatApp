@@ -44,10 +44,12 @@ const Nav:React.FC<RoomProps> = ({initialRooms,currentUser}) => {
           <h4 className="hover:cursor-pointer" id='username'>{user?.username}</h4>
         </button>
         {isModalOpen && (
-          <div className="absolute top-10 left-2 bg-primary p-2 z-10">
-            <LogoutLink postLogoutRedirectURL={'/'}>Logout</LogoutLink>
+          <div className="flex flex-col absolute top-10 left-2 bg-primary p-2 z-10">
+            <LogoutLink 
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors hover:text-black"
+            postLogoutRedirectURL={'/'}>Logout</LogoutLink>
             <Link href="/Home/SearchUser"
-  className="p-2 hover:bg-gray-100 rounded-lg transition-colors" onClick={toggleSearch}>Search User</Link>
+  className="p-2 hover:bg-gray-100 rounded-lg transition-colors hover:text-black" onClick={toggleSearch}>Search User</Link>
           </div>
         )}
       </div>

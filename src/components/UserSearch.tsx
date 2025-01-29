@@ -14,13 +14,14 @@ export default function UserSearch() {
   const [searchResults, setSearchResults] = useState<UserResult[]>([]);
 
   const handleSearch = async (term: string) => {
-    if (term.length === user.username) {
-      setSearchResults([]);
-      return;
-    }
+    // if (term.length === user.username) {
+    //   setSearchResults([]);
+    //   return;
+    // }
     
     try {
-      const response = await fetch(`/api/search-users?query=${term}`);
+      const baseURL = process.env.KINDE_SITE_URL
+      const response = await fetch(`${baseURL}/api/search-users?query=${term}`);
       const data = await response.json();
       setSearchResults(data.users);
     } catch (error) {

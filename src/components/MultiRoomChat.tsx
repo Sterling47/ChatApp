@@ -31,7 +31,7 @@ const MultiRoomChat = ({ rooms }: { rooms: RoomTab[] }) => {
             }`}
           onClick={() => setActiveRoomId('search')}
         >
-          Search
+          Search User
         </button>
         {rooms.map((room) => (
           <button
@@ -48,7 +48,7 @@ const MultiRoomChat = ({ rooms }: { rooms: RoomTab[] }) => {
         ))}
       </div>
       
-      <div className="flex-1 overflow-hidden bg-[#292929]">
+      <div className="flex-1 overflow-hidden ">
         {activeRoomId === 'search' ? (
           <UserSearch />
         ) : (
