@@ -14,25 +14,12 @@ interface RoomProps {
 }
 const Nav:React.FC<RoomProps> = ({initialRooms,currentUser}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [user, setUser] = useState<User | undefined>(currentUser);
+  const [user] = useState<User | undefined>(currentUser);
   const { setActiveRoomId } = useActiveRoom();
   const toggleModal = () => {
     setIsModalOpen(prev => !prev);
   }
-  useEffect(() => {
-    async function fetchUser() {
-      try {
-        const foundUser = await SeedUser()
-        if (foundUser) {
-          setUser(foundUser);
-        }
-      }
-      catch (error) {
-        console.log('Error seeding user:', error)
-      }
-    }
-    fetchUser();
-   },[])
+
    const toggleSearch = () => {
     setActiveRoomId('search');
     toggleModal();

@@ -66,8 +66,8 @@ export const Messages: React.FC<MessageProps> = ({RoomID, initialMessages,creato
 
 
 return (
-    <div className="flex flex-col-reverse h-[80%] w-full overflow-y-auto">
-      <div className="flex flex-col-reverse space-y-reverse space-y-4 h-full">
+    <div className="flex flex-col-reverse h-[90%] w-full overflow-y-auto">
+      <div className="flex flex-col-reverse space-y-reverse space-y-4 h-full ">
         {groupedMessages.map(([date, messages]) => (
           <div key={date} className="flex flex-col">
             <DateDivider date={date} />
