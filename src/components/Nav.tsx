@@ -52,8 +52,6 @@ const Nav: React.FC<RoomProps> = ({ initialRooms, currentUser }) => {
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors hover:text-black" onClick={toggleSearch}>Search User</Link>
             <Link href="/Home/FriendsList"
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors hover:text-black" onClick={toggleSearch}>Friends</Link>
-<Link href="/Home/Settings"
-  className="p-2 hover:bg-gray-100 rounded-lg transition-colors hover:text-black" onClick={toggleSearch}>Settings</Link>
           </div>
         )}
       </div>
