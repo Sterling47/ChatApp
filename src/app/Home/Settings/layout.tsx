@@ -3,59 +3,56 @@
 import Link from "next/link";
 import { IoSettingsSharp } from "react-icons/io5";
 import { usePathname } from 'next/navigation'
-export default function Layout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const allPaths = usePathname()
-  const isActive = (pathname: string) => allPaths.split('/')[3] === pathname;
+const SettingsLayout = ({ children }: { children: React.ReactNode }) => {
+  const pathname = usePathname();
+  const isActive = (path: string) => pathname.includes(path);
 
   return (
-
-    <div className="row-start-1 row-end-13 col-start-2 col-end-10 h-full flex flex-col bg-[#1e1e1e] p-1">
-      <div className="flex justify-center items-center w-60">
-        <div className="flex flex-col text-white rounded-lg p-2 ">
-          <div className="flex items-center">
-            <IoSettingsSharp className="w-6 h-6 mr-2" />
-            <span className="text-lg ">Settings</span>
-          </div>
-          <section className="flex flex-col gap-4 w-40 pt-10 pl-6">
-            <Link
-              href={'/Home/Settings/Profile'}
-              className={`text-lg p-2 rounded-lg hover:bg-gray-700 hover:rounded-lg transition-colors duration-200
-                ${isActive('Profile') ? 'bg-gray-700' : ''}
-                `}
+    <div className="col-start-2 col-span-8 row-start-1 row-span-12 bg-[#1A1A1A] flex flex-col">
+      <header className="flex items-center gap-2 p-4 text-white">
+        <IoSettingsSharp className="w-6 h-6" />
+        <h1 className="text-xl">Settings</h1>
+      </header>
+      <div className="flex flex-1 overflow-hidden">
+        <nav className="w-64 p-4 flex-shrink-0">
+          <div className="space-y-1">
+            <Link 
+              href="/Home/Settings/Profile"
+              className={`block px-4 py-3 text-white rounded-lg transition-colors
+                ${isActive('Profile') 
+                  ? 'bg-[#2B2D31]' 
+                  : 'hover:bg-[#2B2D31]'}`}
             >
               Profile
             </Link>
-
-
-            <Link
-              href={'/Home/Settings/Rooms'}
-              className={`text-lg p-2 rounded-lg hover:bg-gray-700 hover:rounded-lg transition-colors duration-200
-                ${isActive('Rooms') ? 'bg-gray-700' : ''}
-                `}
+            <Link 
+              href="/Home/Settings/Rooms"
+              className={`block px-4 py-3 text-white rounded-lg transition-colors
+                ${isActive('Rooms') 
+                  ? 'bg-[#2B2D31]' 
+                  : 'hover:bg-[#2B2D31]'}`}
             >
               Rooms
             </Link>
-            <Link
-              href={'/Home/Settings/Misc'}
-              className={`text-lg p-2 rounded-lg hover:bg-gray-700 hover:rounded-lg transition-colors duration-200
-                ${isActive('Misc') ? 'bg-gray-700' : ''}
-                `}
+            <Link 
+              href="/Home/Settings/Account"
+              className={`block px-4 py-3 text-white rounded-lg transition-colors
+                ${isActive('Account') 
+                  ? 'bg-[#2B2D31]' 
+                  : 'hover:bg-[#2B2D31]'}`}
             >
-              Misc
+              Account
             </Link>
-          </section>
-        </div>
-        <div className="w-full h-full p-2 border-red-100 border-spacing-8 rounded-lg">
-          {children}
-        </div>
+          </div>
+        </nav>
+        <main className="flex-1 p-4 overflow-auto">
+          <div className="flex justify-center">
+            {children}
+          </div>
+        </main>
       </div>
     </div>
+  );
+};
 
-
-
-  )
-}
+export default SettingsLayout
