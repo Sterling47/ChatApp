@@ -66,7 +66,6 @@ const MultiRoomChat = ({ rooms }: { rooms: RoomTab[] }) => {
           )}
         </div>
 
-        {/* Room Tabs */}
         {rooms.map((room, index) => (
           <div
             key={room.RoomID}
@@ -110,8 +109,8 @@ const MultiRoomChat = ({ rooms }: { rooms: RoomTab[] }) => {
 
       <div
         className={`flex-1 overflow-hidden -mt-[1px] relative z-0
-          bg-[#292929] border border-white rounded-none
-          transition-colors duration-200`}
+          bg-[#292929] border border-white border-x-0 border-b-0 rounded-none
+          transition-colors duration-200 p-4`}
       >
         {activeRoomId === 'search' ? (
           <UserSearch />

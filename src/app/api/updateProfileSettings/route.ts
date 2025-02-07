@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     if (Object.keys(updateData).length === 0) {
       return NextResponse.json({ success: false, error: 'No changes to update' });
     }
-    console.log(updateData)
+
     const updatedUser = await prisma.user.update({
       where: { email: userEmail },
       data: updateData,

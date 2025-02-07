@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useUser } from '../../../contexts/UserContext';
+import { revalidatePath } from 'next/cache';
 
 const ProfileSettings = () => {
   const user = useUser();
@@ -16,6 +17,7 @@ const ProfileSettings = () => {
     }
     try {
       const baseURL = process.env.KINDE_SITE_URL
+      console.log(baseURL)
       const resp = await fetch(`http://localhost:3000/api/updateProfileSettings`,{
         method: 'POST',
         headers: {
@@ -31,6 +33,7 @@ const ProfileSettings = () => {
     catch (err) {
      console.log(err)
     }
+    revalidatePath('/Home/Settings/Profile')
   }
   return (
     <form 
