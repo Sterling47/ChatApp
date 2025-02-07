@@ -4,6 +4,7 @@ import prisma from '@/lib/db';
 import FirstTimeSetup from '@/components/FirstTimeSetup';
 import { SeedUser } from '@/components/SeedUser';
 import { ActiveRoomProvider } from '../contexts/ActiveRoomContext';
+import { UserProvider } from '../contexts/UserContext';
 
 export default async function Layout({
   children,
@@ -11,21 +12,17 @@ export default async function Layout({
   children: React.ReactNode;
 }>) {
 
- 
   const room = await prisma.room.findMany();
   const user = await SeedUser();
- 
+
   return (
     <ActiveRoomProvider>
-      <div className='grid h-screen grid-cols-9 grid-rows-12 p-0.25'>
-        <Nav initialRooms={room} currentUser={user}/>
-        {user.isFirstLogin ? (
-          <FirstTimeSetup />
-        ) : (
-          children
-        )}
-
-      </div>
+      <UserProvider user={user}>
+        <div className='grid h-screen grid-cols-9 grid-rows-12 p-0.25'>
+          <Nav initialRooms={room}/>
+          {user.isFirstLogin ? <FirstTimeSetup /> : children}
+        </div>
+      </UserProvider>
     </ActiveRoomProvider>
   )
 }

@@ -17,15 +17,10 @@ interface RoomComponentProps {
 export const RoomComponent:React.FC<RoomComponentProps> = ({RoomID,roomName,initialMessages,userID}) => {
   return (
     <>
-      <div>
-        <h2 className='py-6 text-center text-2xl'>{roomName}</h2>
-        </div>
         <Messages initialMessages={initialMessages} RoomID={RoomID} creatorID={userID}/>
-        <div className="flex justify-center items-center h-[8%] w-full bg-primary">
+        <div className="flex justify-center items-center h-[8%] w-full ">
           <SendMessage RoomID={RoomID} userID={userID} />
         </div>
     </>
-
-   
   )
 }

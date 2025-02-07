@@ -5,6 +5,8 @@ import { useRouter} from 'next/navigation';
 type ActiveRoomContextType = {
   activeRoomId: number | 'search' | null;
   setActiveRoomId: (roomId: number | 'search') => void;
+  openRooms: number[]
+  setOpenRooms: (roomIds: number[]) => void;
 };
 
 const ActiveRoomContext = createContext<ActiveRoomContextType | null>(null);
@@ -32,7 +34,7 @@ export const ActiveRoomProvider = ({ children }: { children: React.ReactNode }) 
   };
 
   return (
-    <ActiveRoomContext.Provider value={{ activeRoomId, setActiveRoomId }}>
+    <ActiveRoomContext.Provider value={{ activeRoomId, setActiveRoomId, openRooms, setOpenRooms }}>
       {children}
     </ActiveRoomContext.Provider>
   );
