@@ -25,7 +25,9 @@ model User {
   messages     Message[] @relation("UserMessages")
   rooms        Room[]    @relation("UserRooms")
   createdRooms Room[]    @relation("RoomCreators")
-  friends Friend[] @relation("UserFriends")
+  friends      Friend[]  @relation("UserFriends")
+
+  Friend Friend[] @relation("FriendOfUsers")
 }
 
 model Room {
@@ -50,7 +52,9 @@ model Message {
 }
 
 model Friend {
-  id Int @id @default(autoincrement())
-  friends  User @relation("UserFriends", fields: [friendID], references: [id])
-  friendID Int 
+  id       Int  @id @default(autoincrement())
+  user     User @relation("UserFriends", fields: [userID], references: [id])
+  userID   Int
+  friend   User @relation("FriendOfUsers", fields: [friendID], references: [id])
+  friendID Int
 }
