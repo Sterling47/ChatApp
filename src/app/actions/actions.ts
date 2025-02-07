@@ -114,3 +114,63 @@ export async function initialUserSetup(formData: FormData) {
   }
   revalidatePath('/Home')
 }
+
+
+export async function addFriend(formData: FormData): Promise<void> {
+  const { getUser } = getKindeServerSession();
+
+  try {
+    const user = await getUser();
+    if (!user || !user.email) {
+      throw new Error("User not authenticated");
+    }
+
+    const currentUser = await prisma.user.findUnique({
+      where: { email: user.email },
+    });
+
+    if (!currentUser) {
+      throw new Error("Current user not found");
+    }
+
+    const friendId = Number(formData.get("friendId"));
+
+    if (!friendId || friendId === currentUser.id) {
+      throw new Error("Invalid friend ID");
+    }
+
+    const friendUser = await prisma.user.findUnique({
+      where: { id: friendId },
+    });
+
+    if (!friendUser) {
+      throw new Error("Friend user not found");
+    }
+
+    const existingFriendship = await prisma.friend.findFirst({
+      where: {
+        OR: [
+          { userID: currentUser.id, friendID: friendId },
+          { userID: friendId, friendID: currentUser.id },
+        ],
+      },
+    });
+
+    if (existingFriendship) {
+      throw new Error("Already friends");
+    }
+
+ 
+    await prisma.friend.createMany({
+      data: [
+        { userID: currentUser.id, friendID: friendId },
+        { userID: friendId, friendID: currentUser.id },
+      ],
+    });
+
+    revalidatePath("/Home/FriendsList"); 
+  } catch (error) {
+    console.error("Error adding friend:", error);
+    throw error;
+  }
+}
