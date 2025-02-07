@@ -1,19 +1,7 @@
 'use client';
-
-
 import { initialUserSetup } from '@/app/actions/actions';
-import { useRouter } from 'next/navigation';
-
-const initialState = {
-  message: null,
-};
 
 const FirstTimeSetup = () => {
-  const router = useRouter();
-
-  const onSuccess = () => {
-    router.refresh();
-  };
 
   return (
     <div className="flex justify-center items-center w-full h-full absolute backdrop-blur-sm">

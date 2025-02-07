@@ -16,16 +16,18 @@ datasource db {
 model User {
   id           Int       @id @unique @default(autoincrement())
   email        String    @unique
-  username     String    @unique
+  username     String
   password     String?
   isFirstLogin Boolean   @default(true)
   createdAt    DateTime  @default(now())
   lastLogin    DateTime?
   isOnline     Boolean   @default(false)
   messages     Message[] @relation("UserMessages")
-  rooms        Room[]    @relation("UserRooms")
+  rooms        UserRooms[] 
   createdRooms Room[]    @relation("RoomCreators")
-  friends Friend[] @relation("UserFriends")
+  friends      Friend[]  @relation("UserFriends")
+
+  Friend Friend[] @relation("FriendOfUsers")
 }
 
 model Room {
@@ -35,8 +37,8 @@ model Room {
   isPrivate Boolean   @default(false)
   creator   User      @relation("RoomCreators", fields: [creatorID], references: [id])
   creatorID Int
-  chatters  User[]    @relation("UserRooms")
-  messages  Message[]
+  chatters  UserRooms[]
+  messages  Message[] 
 }
 
 model Message {
@@ -50,7 +52,19 @@ model Message {
 }
 
 model Friend {
-  id Int @id @default(autoincrement())
-  friends  User @relation("UserFriends", fields: [friendID], references: [id])
-  friendID Int 
+  id       Int  @id @default(autoincrement())
+  user     User @relation("UserFriends", fields: [userID], references: [id])
+  userID   Int
+  friend   User @relation("FriendOfUsers", fields: [friendID], references: [id])
+  friendID Int
+}
+
+model UserRooms {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userID], references: [id], onDelete: Cascade)
+  userID Int
+  room   Room @relation(fields: [roomID], references: [id], onDelete: Cascade)
+  roomID Int
+
+  @@unique([userID, roomID])
 }

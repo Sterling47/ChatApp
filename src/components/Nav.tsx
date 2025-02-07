@@ -1,37 +1,27 @@
 'use client'
-import { useState, useEffect } from "react"
-import type {Room,User} from '@prisma/client'
+import { useState } from "react"
+import type { Room } from '@prisma/client'
 import CreateRoom from '@/components/CreateRoom';
-import { SeedUser } from "./SeedUser"
 import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import RoomList from "./RoomList";
-
+import Link from "next/link";
+import { useActiveRoom } from "@/app/contexts/ActiveRoomContext";
+import { useUser } from "@/app/contexts/UserContext";
 interface RoomProps {
   initialRooms: Room[]
-  currentUser: User
 }
-const Nav:React.FC<RoomProps> = ({initialRooms,currentUser}) => {
+const Nav: React.FC<RoomProps> = ({ initialRooms}) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [user, setUser] = useState<User | undefined>(currentUser);
-
+  const user = useUser();
+  const { setActiveRoomId } = useActiveRoom();
   const toggleModal = () => {
     setIsModalOpen(prev => !prev);
   }
-  useEffect(() => {
-    async function fetchUser() {
-      try {
-        const foundUser = await SeedUser()
-        if (foundUser) {
-          setUser(foundUser);
-        }
-      }
-      catch (error) {
-        console.log('Error seeding user:', error)
-      }
-    }
-    fetchUser();
-   },[])
 
+  const toggleSearch = () => {
+    setActiveRoomId('search');
+    toggleModal();
+  }
   return (
     <nav className="flex flex-col justify-start m-0.5 rounded-md list-none col-span-1 row-start-1 row-end-13 overflow-hidden">
       <div className="flex flex-row justify-around m-0.5 rounded-md bg-primary">
@@ -39,19 +29,28 @@ const Nav:React.FC<RoomProps> = ({initialRooms,currentUser}) => {
           <h4 className="hover:cursor-pointer" id='username'>{user?.username}</h4>
         </button>
         {isModalOpen && (
-          <div className="absolute top-10 left-2 bg-primary p-2 z-10">
-            <LogoutLink postLogoutRedirectURL={'/'}>Logout</LogoutLink>
+          <div className="flex flex-col absolute top-10 left-2 bg-primary p-2 z-10">
+            <Link href="/Home/FriendsList"
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors hover:text-black" onClick={toggleSearch}>Friends</Link>
+            <Link href="/Home/SearchUser"
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors hover:text-black" onClick={toggleSearch}>
+              <span className="text-sm">Search User</span>
+            </Link>
+            <Link href="/Home/Settings/Profile"
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors hover:text-black">
+              <span className="text-sm">Settings</span>
+            </Link>
+            <LogoutLink
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors hover:text-black"
+              postLogoutRedirectURL={'/'}>Logout</LogoutLink>
           </div>
         )}
       </div>
-      <RoomList initialRooms={initialRooms}/>
-      <CreateRoom/>
+      <RoomList initialRooms={initialRooms}  />
+      <CreateRoom  />
+
     </nav>
   )
 }
 
 export default Nav
-
-
-
- 
