@@ -1,13 +1,8 @@
-import { NextPage } from "next";
 import prisma from "@/lib/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import MultiRoomChat from "@/components/MultiRoomChat";
 
-interface RoomPageProps {
-  params: { RoomID: string | string[] };
-}
-
-const RoomPage: NextPage<RoomPageProps> = async ({ params }) => {
+export default async function RoomPage({ params }: { params: { RoomID: string | string[] } }) {
   const roomIDs = Array.isArray(params.RoomID) ? params.RoomID.map(Number) : [Number(params.RoomID)];
 
   if (roomIDs.some(isNaN)) {
@@ -55,6 +50,4 @@ const RoomPage: NextPage<RoomPageProps> = async ({ params }) => {
   );
 
   return <MultiRoomChat rooms={allRooms} />;
-};
-
-export default RoomPage;
+}
