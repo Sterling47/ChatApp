@@ -90,7 +90,7 @@ export async function initialUserSetup(formData: FormData) {
     });
     
     if (dbUser) {
-      const updatedUser = await prisma.user.upsert({
+      await prisma.user.upsert({
         where: {
           email: user.email,
         },
