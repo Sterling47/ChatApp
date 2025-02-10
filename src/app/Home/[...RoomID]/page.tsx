@@ -2,12 +2,13 @@ import prisma from "@/lib/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import MultiRoomChat from "@/components/MultiRoomChat";
 
-export default async function RoomPage({ params }: { params: { RoomID?: string | string[] } }) {
-  if (!params.RoomID) {
-    throw new Error("No RoomID provided");
-  }
-  
-  const roomIDs = Array.isArray(params.RoomID) ? params.RoomID.map(Number) : [Number(params.RoomID)];
+interface PageProps {
+  params: Promise<{ RoomID: string[] }>; 
+}
+
+export default async function RoomPage({ params }: PageProps) {
+  const { RoomID } = await params; 
+  const roomIDs = RoomID.map(Number);
 
   if (roomIDs.some(isNaN)) {
     throw new Error("Invalid room ID");
