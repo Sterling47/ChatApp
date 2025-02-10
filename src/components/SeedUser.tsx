@@ -21,5 +21,6 @@ export const SeedUser = async () => {
   }
   catch (err) {
    console.log(err)
+   return null
   }
 }
