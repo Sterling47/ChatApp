@@ -10,6 +10,7 @@ interface verifyJWTprops {
   token: string
   secret: string
 }
+
 export async function generateJWT ({payload, secret, options}: JWTprops):Promise<string> {
   const key = new TextEncoder().encode(secret);
   return new jose.SignJWT(payload)
