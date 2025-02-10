@@ -5,7 +5,7 @@ import { addFriend } from "@/app/actions/actions";
 
 
 interface UserResult {
-  isFriend: any;
+  isFriend: boolean;
   id: number;
   username: string;
   email: string;
