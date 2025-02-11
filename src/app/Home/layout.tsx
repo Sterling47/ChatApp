@@ -15,6 +15,11 @@ export default async function Layout({
   const room = await prisma.room.findMany();
   const user = await SeedUser();
 
+
+  if (!user) {
+    return <div>No Users...</div>;
+  }
+
   return (
     <ActiveRoomProvider>
       <UserProvider user={user}>
