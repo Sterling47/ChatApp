@@ -6,7 +6,7 @@ import { randomUUID } from 'crypto';
 export const createSession = async (res: NextApiResponse, userId: string, secret: string) => {
   const sessionId = randomUUID();
   const token = await generateJWT({
-    payload: { userId },
+    payload: { userId, sessionId},
     secret: secret,
     options: { expiresIn: '1h' }
   });
