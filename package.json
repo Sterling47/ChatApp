@@ -15,7 +15,8 @@
     "@kinde-oss/kinde-auth-nextjs": "^2.4.6",
     "@mui/icons-material": "^6.1.9",
     "@mui/material": "^6.1.9",
-    "@prisma/client": "^6.1.0",
+    "@prisma/client": "^6.3.1",
+    "@prisma/extension-accelerate": "^1.2.1",
     "@radix-ui/react-slot": "^1.1.2",
     "argon2": "^0.41.1",
     "class-variance-authority": "^0.7.1",
@@ -45,7 +46,7 @@
     "eslint": "^8",
     "eslint-config-next": "15.0.2",
     "postcss": "^8.4.49",
-    "prisma": "^6.1.0",
+    "prisma": "^6.3.1",
     "tailwindcss": "^3.4.17",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3"
