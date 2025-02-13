@@ -1,11 +1,8 @@
-
 import './globals.css'
-import { LoginLink } from '@kinde-oss/kinde-auth-nextjs/components';
-import { LoginButton } from '@/components/LoginButton';
 import { BackgroundBeams } from '@/components/ui/background-beams';
 import { FlipWords } from '@/components/ui/flip-words';
-
-
+import RegisterModal from '@/components/RegisterModal';
+import { LoginButton } from '@/components/LoginButton';
 
 export default async function App() {
   const words = ['Create!', 'Learn!', 'Teach!', 'Translate!']
@@ -16,7 +13,7 @@ export default async function App() {
         <h1 className='ml-12 text-[6rem]'>Welcome to Chatt-r</h1>
         <div className='m-[3rem] text-[2rem]'>Your place to <FlipWords words={words}/></div>
         <LoginButton>
-          <LoginLink className='z-auto hover:cursor-pointer'>Sign In</LoginLink>
+          <RegisterModal/>
         </LoginButton>
       <BackgroundBeams />
     </div>

@@ -4,7 +4,7 @@ type LoginButtonProps = {
 
 export const LoginButton: React.FC<LoginButtonProps> = ({children}) => {
   return (
-    <div className="login-btn ">
+    <div className="login-btn">
       {children}
     </div>
   )
