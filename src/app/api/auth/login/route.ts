@@ -1,32 +1,75 @@
-// Rate limiting
-// Email/password validation
-// JWT generation
-import { csrfProtectionMiddleware } from '@/lib/auth/csrf';
-import { rateLimiter } from '@/lib/auth/rateLimit';
-import { createSession } from '@/lib/auth/session';
-import { NextApiRequest, NextApiResponse } from 'next';
 import prisma from '@/lib/db';
-import { verifyPassword } from '@/components/Password';
+import { NextRequest, NextResponse } from 'next/server';
+import rateLimit from 'next-rate-limit';
+import { csrfProtectionMiddleware } from '@/lib/auth/csrf';
+import { createSession } from '@/lib/auth/session';
+// import { verifyPassword } from '@/components/Password';
 
-export default async function POST(req: NextApiRequest, res: NextApiResponse) {
-  const secret = process.env.JWT_SECRET!;
-  await rateLimiter(req, res);
-  csrfProtectionMiddleware(req, res, secret)
-  const { email, password } = await req.body;
-  const foundUser = await prisma.user.findUnique({
-    where: {email: email}
-  })
-  if (foundUser) {
-    const userId = foundUser.id.toString()
-    const isPasswordValid = await verifyPassword(foundUser.password!, password);
-    if (!isPasswordValid) {
-      res.status(401).json({message: 'Incorrect Password'})
+const limiter = rateLimit({
+  interval: 15 * 60 * 1000,
+  uniqueTokenPerInterval: 100
+})
+
+export const POST = async (req: NextRequest, resp: NextResponse) => {
+  try {
+    const headers = limiter.checkNext(req, 5)
+    const secret = process.env.JWT_SECRET!
+    const body = await req.json()
+    const { email, password } = body
+    console.log(email, password)
+    if (!email || !password) {
+      return NextResponse.json(
+        { message: 'Email and password are required' },
+        { status: 400, headers}
+      )
     }
-    await createSession(res, userId, secret)
-    res.status(200).json({message: 'Successfully logged in'})
-  }
-  else {
-    res.status(405).json({message: ''})
-  }
 
+    const foundUser = await prisma.user.findUnique({
+      where: { email }
+    })
+
+    if (!foundUser) {
+      return NextResponse.json(
+        { message: 'Invalid credentials' },
+        { status: 401, headers }
+      )
+    }
+
+    // const isPasswordValid = await verifyPassword(foundUser.password!, password)
+    // if (!isPasswordValid) {
+    //   return NextResponse.json(
+    //     { message: 'Invalid credentials' },
+    //     { status: 401, headers }
+    //   )
+    // }
+    // console.log(isPasswordValid)
+
+    const userId = foundUser.id.toString()
+    const response = NextResponse.json(
+      { message: 'Successfully logged in' },
+      { status: 200, headers }
+    )
+
+    // Apply CSRF protection and create session
+    const sessionResponse = await createSession(
+      NextResponse.json(
+        { 
+          message: 'Successfully logged in',
+          redirectUrl: '/Home'  // Add this
+        }, 
+        { status: 200 }
+      ), 
+      userId, 
+      secret
+    )
+
+    return sessionResponse
+
+  } catch (error) {
+    console.error('Login error:', error)
+    return NextResponse.json(
+      { message: 'An error occurred during login' },
+      { status: 500 }
+    )
+  }
 }

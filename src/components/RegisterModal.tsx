@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react";
-import RegisterForm from "./RegisterForm";
+import RegisterForm from "./AuthForm";
 import { Button } from "@/components/ui/button";
 
 const RegisterModal = () => {
