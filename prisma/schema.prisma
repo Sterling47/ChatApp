@@ -14,31 +14,31 @@ datasource db {
 }
 
 model User {
-  id           Int       @id @unique @default(autoincrement())
-  email        String    @unique
+  id           Int         @id @unique @default(autoincrement())
+  email        String      @unique
   username     String
   password     String?
-  isFirstLogin Boolean   @default(true)
-  createdAt    DateTime  @default(now())
+  isFirstLogin Boolean     @default(true)
+  createdAt    DateTime    @default(now())
   lastLogin    DateTime?
-  isOnline     Boolean   @default(false)
-  messages     Message[] @relation("UserMessages")
-  rooms        UserRooms[] 
-  createdRooms Room[]    @relation("RoomCreators")
-  friends      Friend[]  @relation("UserFriends")
-
-  Friend Friend[] @relation("FriendOfUsers")
+  isOnline     Boolean     @default(false)
+  messages     Message[]   @relation("UserMessages")
+  rooms        UserRooms[]
+  createdRooms Room[]      @relation("RoomCreators")
+  friends      Friend[]    @relation("UserFriends")
+  isGuest      Boolean     @default(false)
+  Friend       Friend[]    @relation("FriendOfUsers")
 }
 
 model Room {
-  id        Int       @id @unique @default(autoincrement())
-  name      String    @unique
+  id        Int         @id @unique @default(autoincrement())
+  name      String      @unique
   password  String?
-  isPrivate Boolean   @default(false)
-  creator   User      @relation("RoomCreators", fields: [creatorID], references: [id])
+  isPrivate Boolean     @default(false)
+  creator   User        @relation("RoomCreators", fields: [creatorID], references: [id])
   creatorID Int
   chatters  UserRooms[]
-  messages  Message[] 
+  messages  Message[]
 }
 
 model Message {
