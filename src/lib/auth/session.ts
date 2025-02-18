@@ -1,6 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { generateJWT, verifyJWT } from "./jwt";
 import { randomUUID } from 'crypto';
+import { JWTPayload } from 'jose';
 
 export const createSession = async (
   response: NextResponse, 
@@ -31,7 +32,6 @@ export const createSession = async (
     maxAge: 3600,
     path: '/'
   });
-
   return response;
 };
 
@@ -59,18 +59,18 @@ export const endSession = (response: NextResponse): NextResponse => {
   return response;
 };
 
-export const getSession = async (request: NextRequest, secret: string) => {
-  const token = request.cookies.get('auth')?.value;
-
+export const getSession = async (token: string | undefined, secret: string): Promise<JWTPayload | null> => {
   if (!token) {
     return null;
   }
 
   try {
-    return await verifyJWT({
+    const verified = await verifyJWT({
       token: token,
       secret: secret
     });
+    console.log(verified, 'line72')
+    return verified;
   } catch (error) {
     return null;
   }
