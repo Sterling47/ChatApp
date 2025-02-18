@@ -1,8 +1,8 @@
-import { NextResponse, NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import { generateJWT, verifyJWT } from "./jwt";
 import { randomUUID } from 'crypto';
 import { JWTPayload } from 'jose';
-
+import { generateCSRFToken } from "./csrf";
 export const createSession = async (
   response: NextResponse, 
   userId: string, 
@@ -14,6 +14,8 @@ export const createSession = async (
     secret: secret,
     options: { expiresIn: '1h' }
   });
+  const csrfToken = generateCSRFToken(sessionId, secret);
+  response.headers.set('x-csrf-token', csrfToken)
   response.cookies.set({
     name: 'auth',
     value: token,
@@ -69,7 +71,6 @@ export const getSession = async (token: string | undefined, secret: string): Pro
       token: token,
       secret: secret
     });
-    console.log(verified, 'line72')
     return verified;
   } catch (error) {
     return null;

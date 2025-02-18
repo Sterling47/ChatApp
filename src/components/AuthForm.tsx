@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { X } from "lucide-react";
+import { setCSRFToken } from '@/lib/utils';
 
 interface AuthFormProps {
   toggleModal: () => void;
@@ -41,14 +42,16 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
         },
         body: JSON.stringify(credentials),
       });
+      const csrfToken = resp.headers.get('x-csrf-token');
+      if (csrfToken) {
+        setCSRFToken(csrfToken);
+      }
       const result = await resp.json();
+
       if (!resp.ok) {
         throw new Error(result.error || 'Login failed');
       }
-
       router.push(result.redirectUrl || '/Home');
-      
-      console.log('Login successful:', result);
       return result;
     } catch (error) {
       console.error('Login error:', error);
@@ -70,7 +73,6 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
       if (!resp.ok) {
         throw new Error(result.error || 'Registration failed');
       }
-      console.log('Registration successful:', result);
       return result;
     } catch (error) {
       console.error('Registration error:', error);
@@ -80,7 +82,7 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
 
   const validateForm = (credentials: AuthCredentials): ValidationErrors => {
     const errors: ValidationErrors = {};
-    
+
     // Email validation
     if (!credentials.email) {
       errors.email = "Email is required";
@@ -151,8 +153,8 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
         <X className="text-black w-6 h-6" />
       </button>
       <Card className="overflow-hidden">
-        <div 
-          className="flex transition-transform duration-300" 
+        <div
+          className="flex transition-transform duration-300"
           style={{ transform: `translateX(${isSignUp ? '-100%' : '0%'})` }}
         >
           {/* Sign In Form */}
@@ -193,11 +195,11 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
                 )}
                 <div className="space-y-2">
                   <Label htmlFor="login-email">Email</Label>
-                  <Input 
-                    name="email" 
-                    id="login-email" 
-                    type="email" 
-                    placeholder="m@example.com" 
+                  <Input
+                    name="email"
+                    id="login-email"
+                    type="email"
+                    placeholder="m@example.com"
                     className={errors.email ? "border-red-500" : ""}
                     aria-invalid={errors.email ? "true" : "false"}
                   />
@@ -225,8 +227,8 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
                     {showPassword ? "Hide" : "Show"}
                   </button>
                 </div>
-                <Button 
-                  type="submit" 
+                <Button
+                  type="submit"
                   className="w-full bg-gray-800 text-white hover:bg-gray-900 transition"
                   disabled={isSubmitting}
                 >
@@ -267,12 +269,12 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="signup-email">Email</Label>
-                  <Input 
-                    name="email" 
-                    id="signup-email" 
-                    type="email" 
-                    placeholder="m@example.com" 
-                    required 
+                  <Input
+                    name="email"
+                    id="signup-email"
+                    type="email"
+                    placeholder="m@example.com"
+                    required
                   />
                 </div>
                 <div className="space-y-2 relative">

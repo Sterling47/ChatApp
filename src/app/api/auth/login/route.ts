@@ -1,7 +1,6 @@
 import prisma from '@/lib/db';
 import { NextRequest, NextResponse } from 'next/server';
 import rateLimit from 'next-rate-limit';
-import { csrfProtectionMiddleware } from '@/lib/auth/csrf';
 import { createSession } from '@/lib/auth/session';
 // import { verifyPassword } from '@/components/Password';
 
@@ -12,11 +11,10 @@ const limiter = rateLimit({
 
 export const POST = async (req: NextRequest, resp: NextResponse) => {
   try {
-    const headers = limiter.checkNext(req, 5)
+    const headers = limiter.checkNext(req, 25)
     const secret = process.env.JWT_SECRET!
     const body = await req.json()
     const { email, password } = body
-    console.log(email, password)
     if (!email || !password) {
       return NextResponse.json(
         { message: 'Email and password are required' },
@@ -50,19 +48,18 @@ export const POST = async (req: NextRequest, resp: NextResponse) => {
       { status: 200, headers }
     )
 
-    // Apply CSRF protection and create session
     const sessionResponse = await createSession(
       NextResponse.json(
         { 
           message: 'Successfully logged in',
-          redirectUrl: '/Home'  // Add this
+          redirectUrl: '/Home'
         }, 
         { status: 200 }
       ), 
       userId, 
       secret
     )
-
+    
     return sessionResponse
 
   } catch (error) {

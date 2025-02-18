@@ -2,26 +2,26 @@
 
 import { pusher } from '@/lib/pusher'
 import prisma from '@/lib/db';
-import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import { getUser } from '@/components/getCurrentUser';
 import { revalidatePath } from 'next/cache';
 
 export async function createRoomAction(formData: FormData) {
-  const {getUser} = getKindeServerSession();
+
   try {
     const user = await getUser();
-    const existingUser = user.email? await prisma.user.findUnique({
+    console.log(user)
+    const existingUser = user?.email? await prisma.user.findUnique({
       where: {email: user.email}
     }) : null
-
-    // if (!existingUser?.id) {
-    //   console.log('Room creation failed. User not found')
-    //   return;
-    // }
+    if (!existingUser?.id) {
+      console.log('Room creation failed. User not found')
+      return;
+    }
     const roomName = formData.get('room-name') as string;
-    // if (!roomName) {
-    //   console.log('Room creation failed: Missing room name');
-    //   return;
-    // }
+    if (!roomName) {
+      console.log('Room creation failed: Missing room name');
+      return;
+    }
     const newRoom = await prisma.room.create({
       data: {
         name: roomName,
@@ -71,8 +71,6 @@ export async function sendMessageAction(formData: FormData) {
 }
 
 export async function initialUserSetup(formData: FormData) {
-  const { getUser } = getKindeServerSession();
-
   try {
     const user = await getUser();
     if (!user || !user.email) {
@@ -117,8 +115,6 @@ export async function initialUserSetup(formData: FormData) {
 
 
 export async function addFriend(formData: FormData): Promise<void> {
-  const { getUser } = getKindeServerSession();
-
   try {
     const user = await getUser();
     if (!user || !user.email) {
@@ -160,7 +156,6 @@ export async function addFriend(formData: FormData): Promise<void> {
       throw new Error("Already friends");
     }
 
- 
     await prisma.friend.createMany({
       data: [
         { userID: currentUser.id, friendID: friendId },

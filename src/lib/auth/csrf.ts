@@ -1,25 +1,43 @@
 import { createHmac } from "crypto";
-import { NextApiRequest, NextApiResponse } from "next";
-
-export const generateCSRFToken = (secret: string, sessionId:string) => {
+import { NextRequest, NextResponse } from "next/server";
+type CSRFValidationResult = {
+  isValid: boolean;
+  error?: string;
+};
+export const generateCSRFToken = (secret: string, sessionId:string): string => {
   const hmac = createHmac('sha256', secret)
   hmac.update(sessionId);
   return hmac.digest('hex')
 }
 
-const validateCSRFToken = (token:string|string[], secret:string, sessionId:string) => {
-  const expectedToken = createHmac('sha256', secret).update(sessionId).digest('hex');
-  return token === expectedToken;
+export const validateCSRFToken = (token: string | null, secret: string, sessionId: string): CSRFValidationResult => {
+  if (!token) {
+    return { isValid: false, error: 'Missing CSRF token' };
+  }
+
+  const expectedToken = generateCSRFToken(secret, sessionId);
+  return {
+    isValid: token === expectedToken,
+    error: token !== expectedToken ? 'Invalid CSRF token' : undefined,
+  };
 };
 
-export const csrfProtectionMiddleware = (req:NextApiRequest, res:NextApiResponse, secret:string) => {
-  if (req.method === 'POST') {
-    const csrfToken = req.headers['x-csrf-token'];
-    const sessionId = req.cookies.sessionId;
-    if (!csrfToken || !sessionId ||!validateCSRFToken(csrfToken, secret, sessionId)) {
-      return res.status(403).json({ message: 'Invalid CSRF token' });
+export const csrfProtectionMiddleware = async (
+  request: NextRequest,
+  response: NextResponse,
+  secret: string
+): Promise<boolean> => {
+    const sessionId = request.cookies.get('sessionId')?.value;
+    const csrfToken = request.headers.get('x-csrf-token');
+    if (!sessionId) {
+      throw new Error('No session found');
     }
-  }
+
+    const validation = validateCSRFToken(csrfToken, secret, sessionId);
+    
+    if (!validation.isValid) {
+      throw new Error(validation.error || 'CSRF validation failed');
+    }
+  
   return true;
 };
-

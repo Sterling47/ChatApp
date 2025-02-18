@@ -2,7 +2,7 @@
 import { useState } from "react"
 import type { Room } from '@prisma/client'
 import CreateRoom from '@/components/CreateRoom';
-import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
+// import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import RoomList from "./RoomList";
 import Link from "next/link";
 import { useActiveRoom } from "@/app/contexts/ActiveRoomContext";
@@ -40,9 +40,9 @@ const Nav: React.FC<RoomProps> = ({ initialRooms}) => {
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors hover:text-black">
               <span className="text-sm">Settings</span>
             </Link>
-            <LogoutLink
+            {/* <LogoutLink
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors hover:text-black"
-              postLogoutRedirectURL={'/'}>Logout</LogoutLink>
+              postLogoutRedirectURL={'/'}>Logout</LogoutLink> */}
           </div>
         )}
       </div>
