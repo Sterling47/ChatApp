@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { generateJWT, verifyJWT } from "./jwt";
 import { randomUUID } from 'crypto';
-import { generateCSRFToken } from "./csrf";
+import { generateCSRFToken, setCSRFToken } from "./csrf";
 import * as jose from 'jose'
 export const createSession = async (
   response: NextResponse, 
@@ -20,6 +20,7 @@ export const createSession = async (
     options: { expiresIn: '1h' }
   });
   const csrfToken = generateCSRFToken(sessionId, secret);
+  setCSRFToken(csrfToken)
   response.headers.set('x-csrf-token', csrfToken)
   response.cookies.set({
     name: 'auth',

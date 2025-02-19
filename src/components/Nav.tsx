@@ -2,15 +2,16 @@
 import { useState } from "react"
 import type { Room } from '@prisma/client'
 import CreateRoom from '@/components/CreateRoom';
-// import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import RoomList from "./RoomList";
 import Link from "next/link";
 import { useActiveRoom } from "@/app/contexts/ActiveRoomContext";
 import { useUser } from "@/app/contexts/UserContext";
+import { Logout } from "./Logout";
+import { Button } from "./ui/button";
 interface RoomProps {
   initialRooms: Room[]
 }
-const Nav: React.FC<RoomProps> = ({ initialRooms}) => {
+const Nav: React.FC<RoomProps> = ({ initialRooms }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const user = useUser();
   const { setActiveRoomId } = useActiveRoom();
@@ -40,14 +41,14 @@ const Nav: React.FC<RoomProps> = ({ initialRooms}) => {
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors hover:text-black">
               <span className="text-sm">Settings</span>
             </Link>
-            {/* <LogoutLink
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors hover:text-black"
-              postLogoutRedirectURL={'/'}>Logout</LogoutLink> */}
+            <Button onClick={Logout}
+              className="p-2 hover:bg-gray-100 rounded-lg transition-colors hover:text-black">
+            <span className="text-sm">Logout</span></Button>
           </div>
         )}
       </div>
-      <RoomList initialRooms={initialRooms}  />
-      <CreateRoom  />
+      <RoomList initialRooms={initialRooms} />
+      <CreateRoom />
 
     </nav>
   )

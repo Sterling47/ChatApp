@@ -2,14 +2,13 @@
 
 import { pusher } from '@/lib/pusher'
 import prisma from '@/lib/db';
-import { getUser } from '@/components/getCurrentUser';
+import { getUser } from '@/components/getUser';
 import { revalidatePath } from 'next/cache';
 
 export async function createRoomAction(formData: FormData) {
 
   try {
     const user = await getUser();
-    console.log(user)
     const existingUser = user?.email? await prisma.user.findUnique({
       where: {email: user.email}
     }) : null

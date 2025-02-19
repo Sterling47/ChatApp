@@ -30,3 +30,4 @@ export const verifyJWT = async ({token, secret}: verifyJWTprops) => {
     throw new Error ('Invalid or expired token');
   }
 }
+
