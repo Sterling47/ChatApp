@@ -1,16 +1,21 @@
 import { NextResponse } from "next/server";
 import { generateJWT, verifyJWT } from "./jwt";
 import { randomUUID } from 'crypto';
-import { JWTPayload } from 'jose';
 import { generateCSRFToken } from "./csrf";
+import * as jose from 'jose'
 export const createSession = async (
   response: NextResponse, 
   userId: string, 
-  secret: string
+  secret: string,
+  isGuest: boolean = false
 ): Promise<NextResponse> => {
   const sessionId = randomUUID();
   const token = await generateJWT({
-    payload: { userId, sessionId },
+    payload: {
+      sub: userId.toString(),
+      jti: sessionId,         
+      guest: isGuest,         
+    },
     secret: secret,
     options: { expiresIn: '1h' }
   });
@@ -61,7 +66,7 @@ export const endSession = (response: NextResponse): NextResponse => {
   return response;
 };
 
-export const getSession = async (token: string | undefined, secret: string): Promise<JWTPayload | null> => {
+export const getSession = async (token: string | undefined, secret: string): Promise<jose.JWTPayload | null> => {
   if (!token) {
     return null;
   }
@@ -71,6 +76,7 @@ export const getSession = async (token: string | undefined, secret: string): Pro
       token: token,
       secret: secret
     });
+    console.log(verified)
     return verified;
   } catch (error) {
     return null;

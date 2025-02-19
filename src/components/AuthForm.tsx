@@ -7,13 +7,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { X } from "lucide-react";
-import { setCSRFToken } from '@/lib/utils';
+import { setCSRFToken } from '@/lib/auth/csrf';
+import GuestLogin from './GuestLogin';
 
 interface AuthFormProps {
   toggleModal: () => void;
 }
 
-// Type for the auth credentials
 interface AuthCredentials {
   email: string;
   password: string;
@@ -80,17 +80,16 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
     }
   };
 
+
   const validateForm = (credentials: AuthCredentials): ValidationErrors => {
     const errors: ValidationErrors = {};
 
-    // Email validation
     if (!credentials.email) {
       errors.email = "Email is required";
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(credentials.email)) {
       errors.email = "Invalid email address";
     }
 
-    // Password validation
     if (!credentials.password) {
       errors.password = "Password is required";
     } else if (isSignUp && credentials.password.length < 8) {
@@ -111,7 +110,6 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
       password: formData.get('password') as string,
     };
 
-    // Validate form
     const validationErrors = validateForm(credentials);
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -121,13 +119,11 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
 
     try {
       if (isSignUp) {
-        await registerUser(credentials);
-        // Optionally auto-login after registration
-        // await loginUser(credentials);
+        await registerUser(credentials); //display registration success message
+        await loginUser(credentials); //display login success message
       } else {
         await loginUser(credentials);
       }
-      // Handle successful auth (e.g., redirect, update UI state)
     } catch (error) {
       setErrors({
         general: error instanceof Error ? error.message : "An unexpected error occurred"
@@ -248,13 +244,7 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
                     Forgot password?
                   </Button>
                 </div>
-                <Button
-                  variant="secondary"
-                  className="w-full text-white bg-orange-500 hover:bg-orange-600 transition"
-                  onClick={() => console.log("Guest sign in clicked")}
-                >
-                  Sign in as Guest
-                </Button>
+                <GuestLogin/>
               </div>
             </CardContent>
           </div>

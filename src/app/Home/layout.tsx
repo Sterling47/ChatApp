@@ -34,7 +34,7 @@ export default async function Layout({
         <UserProvider user={user}>
           <div className="grid h-screen grid-cols-9 grid-rows-12 p-0.25">
             <Nav initialRooms={room} />
-            {user.isFirstLogin ? <FirstTimeSetup /> : children}
+            {user.isFirstLogin && user.isGuest === false? <FirstTimeSetup /> : children}
           </div>
         </UserProvider>
       </ActiveRoomProvider>

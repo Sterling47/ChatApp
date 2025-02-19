@@ -7,8 +7,8 @@ export const seedUser = async (token: string | undefined, secret: string):Promis
 
   try {
     const userSession = await getSession(token, secret);
-    
-    if (!userSession?.userId) {
+    const userId = userSession?.sub
+    if (!userId) {
       throw new Error('No valid user session found');
     }
     const baseURL = process.env.KINDE_SITE_URL
@@ -17,7 +17,7 @@ export const seedUser = async (token: string | undefined, secret: string):Promis
       headers: {
         'Content-Type':'application/json'
       },
-      body: JSON.stringify({userId: userSession.userId})
+      body: JSON.stringify({userId: userId})
     });
     if (!resp.ok){
       throw new Error ('Failed to seed user')

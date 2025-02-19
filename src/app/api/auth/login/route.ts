@@ -44,18 +44,18 @@ export const POST = async (req: NextRequest, resp: NextResponse) => {
 
     const userId = foundUser.id.toString()
     const response = NextResponse.json(
-      { message: 'Successfully logged in' },
-      { status: 200, headers }
-    )
+      {
+        message: 'Successfully logged in',
+        redirectUrl: '/Home'
+      },
+      { 
+        status: 200,
+        headers 
+      }
+    );
 
     const sessionResponse = await createSession(
-      NextResponse.json(
-        { 
-          message: 'Successfully logged in',
-          redirectUrl: '/Home'
-        }, 
-        { status: 200 }
-      ), 
+      response, 
       userId, 
       secret
     )

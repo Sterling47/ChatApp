@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react";
-import RegisterForm from "./AuthForm";
+import AuthForm from "./AuthForm";
 import { Button } from "@/components/ui/button";
 
 const RegisterModal = () => {
@@ -20,7 +20,7 @@ const RegisterModal = () => {
           ></div>
           <div className="fixed inset-0 flex items-center justify-center">
             <div className="bg-white p-6 rounded-lg">
-              <RegisterForm toggleModal={toggleModal}/>
+              <AuthForm toggleModal={toggleModal}/>
             </div>
           </div>
         </div>

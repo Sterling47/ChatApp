@@ -41,3 +41,11 @@ export const csrfProtectionMiddleware = async (
   
   return true;
 };
+
+let csrfToken: string | null = null;
+
+export const getCSRFToken = (): string | null => csrfToken;
+
+export const setCSRFToken = (token: string) => {
+  csrfToken = token;
+};
