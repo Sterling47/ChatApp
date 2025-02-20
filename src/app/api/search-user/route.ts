@@ -1,12 +1,9 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/db';
-import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import { getUser } from '@/components/getUser';
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const query = searchParams.get('query');
-
-  const { getUser } = await getKindeServerSession(); // Assume you have a function to get the current user
-
   try {
     const user = await getUser();
         if (!user || !user.email) {

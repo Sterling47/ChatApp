@@ -26,7 +26,7 @@ function GuestLogin({ handleGuest }: GuestLoginProps) {
       if (csrfToken) {
         setCSRFToken(csrfToken);
       }
-      handleGuest("Welcome, Guest! You’re in the chat.")
+      handleGuest("Welcome, Guest!")
       setTimeout(() => {
         router.push(result.redirectUrl || '/Home');
       }, 1000);
@@ -43,7 +43,7 @@ function GuestLogin({ handleGuest }: GuestLoginProps) {
       onClick={loginGuest}
     >
       Sign in as Guest
-    </Button>
+    </Button> //show validation message, change button text to msg
   )
 }
 

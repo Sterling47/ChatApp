@@ -10,7 +10,7 @@ const limiter = rateLimit({
 })
 export const POST = async (req: NextRequest, res: NextResponse) => {
   try {
-    const headers = limiter.checkNext(req, 5)
+    const headers = limiter.checkNext(req, 25)
     const secret = process.env.JWT_SECRET
     if (!secret) {
       throw new Error('Secret missing')
