@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import { generateJWT, verifyJWT } from "./jwt";
 import { randomUUID } from 'crypto';
-import { generateCSRFToken, setCSRFToken } from "./csrf";
+import { generateCSRFToken } from "./csrf";
 import * as jose from 'jose'
+import { setCSRFToken } from "../utils";
+
 export const createSession = async (
   response: NextResponse, 
   userId: string, 

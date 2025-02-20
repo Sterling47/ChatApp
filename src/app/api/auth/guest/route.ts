@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createSession } from '@/lib/auth/session';
 import { nanoid } from 'nanoid';
 import rateLimit from 'next-rate-limit';
+import { generateCSRFToken } from '@/lib/auth/csrf';
 const limiter = rateLimit({
   interval: 15 * 60 * 1000,
   uniqueTokenPerInterval: 100
@@ -42,12 +43,13 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
         headers 
       }
     );
-    const sessionResponse = await createSession(
-      response,
-      userId,
-      secret,
-      true
-    )
+    const sessionResponse = await createSession(response,userId,secret,true)
+    const sessionId = sessionResponse.cookies.get('sessionId')?.value;
+    if (!sessionId) {
+      throw new Error('Failed to create session');
+    }
+    const csrfToken = generateCSRFToken(secret, sessionId);
+    sessionResponse.headers.set('x-csrf-token', csrfToken);
     return sessionResponse
   }
   catch (error) {

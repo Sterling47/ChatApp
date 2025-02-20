@@ -12,17 +12,16 @@ export async function getUser(): Promise<User | null> {
     if (!authToken || !secret) {
       return null;
     }
-
     const verified = await verifyJWT({
       token: authToken,
       secret
     });
 
-    if (!verified?.userId) {
+    if (!verified?.sub) {
       return null;
     }
     const existingUser = await prisma.user.findUnique({
-      where: { id: +verified.userId }
+      where: { id: +verified.sub }
     });
     return existingUser;
   } catch (error) {

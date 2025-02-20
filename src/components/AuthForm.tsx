@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { X } from "lucide-react";
-import { setCSRFToken } from '@/lib/auth/csrf';
+import { setCSRFToken } from "@/lib/utils";
 import GuestLogin from './GuestLoginButton';
 
 interface AuthFormProps {
@@ -129,7 +129,7 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
       }
       setTimeout(() => {
         router.push(result.redirectUrl || '/Home');
-      }, 300);
+      }, 1000);
     } catch (error) {
       setErrors({
         general: error instanceof Error ? error.message : "An unexpected error occurred"

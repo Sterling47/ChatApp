@@ -2,6 +2,7 @@ import prisma from '@/lib/db';
 import { NextRequest, NextResponse } from 'next/server';
 import rateLimit from 'next-rate-limit';
 import { createSession } from '@/lib/auth/session';
+import { generateCSRFToken } from '@/lib/auth/csrf';
 // import { verifyPassword } from '@/components/Password';
 
 const limiter = rateLimit({
@@ -56,12 +57,14 @@ export const POST = async (req: NextRequest, resp: NextResponse) => {
       }
     );
 
-    const sessionResponse = await createSession(
-      response, 
-      userId, 
-      secret
-    )
-    
+    const sessionResponse = await createSession(response, userId, secret);
+    const sessionId = sessionResponse.cookies.get('sessionId')?.value;
+
+    if (!sessionId) {
+      throw new Error('Failed to create session');
+    }
+    const csrfToken = generateCSRFToken(secret, sessionId);
+    sessionResponse.headers.set('x-csrf-token', csrfToken);
     return sessionResponse
 
   } catch (error) {

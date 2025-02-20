@@ -1,4 +1,4 @@
-import { validateCSRFToken } from "@/lib/auth/csrf";
+import { csrfProtectionMiddleware, validateCSRFToken } from "@/lib/auth/csrf";
 import { endSession } from "@/lib/auth/session";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -12,20 +12,6 @@ export async function POST(req: NextRequest, resp: NextResponse) {
         { status: 401 }
       )
     }
-    const csrfToken = req.headers.get('x-csrf-token')
-    if (!csrfToken) {
-      return NextResponse.json(
-        { message: 'Missing CSRF token' },
-        { status: 403 }
-      )
-    }
-    const isValidCSRF = validateCSRFToken(sessionId, csrfToken, secret)
-    if (!isValidCSRF) {
-      return NextResponse.json(
-        { message: 'Invalid CSRF token' },
-        { status: 403 }
-      )
-    }
     const response = NextResponse.json(
       {
         message: 'Successfully logged out',
@@ -35,6 +21,7 @@ export async function POST(req: NextRequest, resp: NextResponse) {
         status: 200
       }
     );
+    await csrfProtectionMiddleware(req, resp, secret);
     const sessionResponse = endSession(response)
     return sessionResponse
   }

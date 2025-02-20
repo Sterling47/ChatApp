@@ -1,12 +1,11 @@
 import prisma from '@/lib/db';
-import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
 import MultiRoomChat from '@/components/MultiRoomChat';
+import { getUser } from '@/components/getUser';
 
 export default async function RoomPage({ params }: { params: { RoomID: string[] } }) {
   const roomIDs = params.RoomID.map(Number);
-  const { getUser } = getKindeServerSession();
   const user = await getUser();
-
+  console.log(user)
   if (!user) {
     throw new Error('User not found');
   }

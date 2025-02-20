@@ -1,10 +1,11 @@
 'use client'
 import { useRouter } from 'next/navigation'
 import { Button } from './ui/button';
+import { setCSRFToken } from '@/lib/utils';
 interface GuestLoginProps {
   handleGuest: (message: string) => void;
 }
-function GuestLogin({handleGuest}:GuestLoginProps) {
+function GuestLogin({ handleGuest }: GuestLoginProps) {
   const router = useRouter();
   const loginGuest = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -19,7 +20,11 @@ function GuestLogin({handleGuest}:GuestLoginProps) {
       });
       const result = await resp.json()
       if (!resp.ok) {
-        throw new Error ('Could not login as guest')
+        throw new Error('Could not login as guest')
+      }
+      const csrfToken = resp.headers.get('x-csrf-token');
+      if (csrfToken) {
+        setCSRFToken(csrfToken);
       }
       handleGuest("Welcome, Guest! You’re in the chat.")
       setTimeout(() => {
