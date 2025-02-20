@@ -9,12 +9,6 @@
   margin: 0;
 }
 
-@property --gradient-angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
-}
-
 :root {
   --primary-color: rgba(33,42,55, 0.2)
 }
@@ -40,41 +34,6 @@ body {
   100% {
     background-position: 0 50%;
   }
-}
- 
-
-
-
-.login-btn {
-  background: conic-gradient(from var(--gradient-angle) , rgb(17, 188, 51), rgb(5, 180, 118), rgb(8, 175, 167), rgb(5, 180, 118),  rgb(17, 188, 51));
-  animation: rotation 1s linear infinite;
-  border-radius: 0.375rem;
-  text-decoration: none;
-  margin: 0 3rem;
-  position: relative;
-  isolation: isolate;
-  z-index: 2;
-}
-
-
-.login-btn::before,
-.login-btn::after {
-  content: '';
-  position: absolute;
-  border-radius: inherit;
-  background-color: rgba(147, 152, 147);
-  color: white;
-}
-
-.login-btn::before {
- z-index: -3;
- inset: 0.23rem;
-}
-
-
-@keyframes rotation {
-  0% { --gradient-angle: 0deg; }
-  100% {--gradient-angle: 360deg; } 
 }
 
 

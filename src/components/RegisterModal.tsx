@@ -11,7 +11,9 @@ const RegisterModal = () => {
 
   return (
     <>
-      <Button className='z-20 hover:cursor-pointer bg-transparent hover:bg-transparent'onClick={toggleModal}>Sign In</Button>
+      <Button className='login-btn mx-[3rem] z-20 hover:cursor-pointer bg-transparent hover:bg-transparent'onClick={toggleModal}>
+        <span>Sign In</span>
+      </Button>
       {isModalOpen && (
         <div className="fixed inset-0 z-50">
           <div
