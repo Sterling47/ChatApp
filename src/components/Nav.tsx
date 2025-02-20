@@ -6,8 +6,7 @@ import RoomList from "./RoomList";
 import Link from "next/link";
 import { useActiveRoom } from "@/app/contexts/ActiveRoomContext";
 import { useUser } from "@/app/contexts/UserContext";
-import { Logout } from "./Logout";
-import { Button } from "./ui/button";
+import { LogoutButton } from "./LogoutButton";
 interface RoomProps {
   initialRooms: Room[]
 }
@@ -23,6 +22,7 @@ const Nav: React.FC<RoomProps> = ({ initialRooms }) => {
     setActiveRoomId('search');
     toggleModal();
   }
+
   return (
     <nav className="flex flex-col justify-start m-0.5 rounded-md list-none col-span-1 row-start-1 row-end-13 overflow-hidden">
       <div className="flex flex-row justify-around m-0.5 rounded-md bg-primary">
@@ -41,9 +41,7 @@ const Nav: React.FC<RoomProps> = ({ initialRooms }) => {
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors hover:text-black">
               <span className="text-sm">Settings</span>
             </Link>
-            <Button onClick={Logout}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors hover:text-black">
-            <span className="text-sm">Logout</span></Button>
+            <LogoutButton/>
           </div>
         )}
       </div>

@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { X } from "lucide-react";
 import { setCSRFToken } from '@/lib/auth/csrf';
-import GuestLogin from './GuestLogin';
+import GuestLogin from './GuestLoginButton';
 
 interface AuthFormProps {
   toggleModal: () => void;
@@ -30,8 +30,10 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [success, setSuccess] = useState<string | null>(null);
+  const [guestMessage, setGuestMessage] = useState<string | null>(null);
   const router = useRouter();
-
+  const handleGuest = (message:string) => setGuestMessage(message)
   const loginUser = async (credentials: AuthCredentials) => {
     try {
       const baseURL = process.env.NEXT_PUBLIC_SITE_URL;
@@ -47,11 +49,10 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
         setCSRFToken(csrfToken);
       }
       const result = await resp.json();
-
       if (!resp.ok) {
-        throw new Error(result.error || 'Login failed');
+        throw new Error(result.message || 'Login failed');
       }
-      router.push(result.redirectUrl || '/Home');
+      setSuccess("Login successful! Redirecting...")
       return result;
     } catch (error) {
       console.error('Login error:', error);
@@ -73,6 +74,7 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
       if (!resp.ok) {
         throw new Error(result.error || 'Registration failed');
       }
+      setSuccess("Registration successful! Logging you in...");
       return result;
     } catch (error) {
       console.error('Registration error:', error);
@@ -103,7 +105,7 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
     event.preventDefault();
     setErrors({});
     setIsSubmitting(true);
-
+    setSuccess(null);
     const formData = new FormData(event.currentTarget);
     const credentials: AuthCredentials = {
       email: formData.get('email') as string,
@@ -118,12 +120,16 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
     }
 
     try {
+      let result;
       if (isSignUp) {
-        await registerUser(credentials); //display registration success message
-        await loginUser(credentials); //display login success message
+        await registerUser(credentials);
+        result = await loginUser(credentials);
       } else {
-        await loginUser(credentials);
+        result = await loginUser(credentials);
       }
+      setTimeout(() => {
+        router.push(result.redirectUrl || '/Home');
+      }, 300);
     } catch (error) {
       setErrors({
         general: error instanceof Error ? error.message : "An unexpected error occurred"
@@ -184,9 +190,19 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
                 </div>
               </div>
               <form onSubmit={handleSubmit} className="space-y-4">
+                {success && (
+                  <Alert className="bg-green-100 border-green-400 text-green-700">
+                    <AlertDescription>{success}</AlertDescription>
+                  </Alert>
+                )}
                 {errors.general && (
                   <Alert variant="destructive">
                     <AlertDescription>{errors.general}</AlertDescription>
+                  </Alert>
+                )}
+                {guestMessage && (
+                  <Alert className="bg-orange-100 border-orange-400 text-orange-700">
+                    <AlertDescription>{guestMessage}</AlertDescription>
                   </Alert>
                 )}
                 <div className="space-y-2">
@@ -225,7 +241,7 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
                 </div>
                 <Button
                   type="submit"
-                  className="w-full bg-gray-800 text-white hover:bg-gray-900 transition"
+                  className="login-btn w-full bg-gray-800 text-white hover:bg-gray-900 transition"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? "Processing..." : "Sign In"}
@@ -244,7 +260,7 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
                     Forgot password?
                   </Button>
                 </div>
-                <GuestLogin/>
+                <GuestLogin handleGuest={handleGuest}/>
               </div>
             </CardContent>
           </div>

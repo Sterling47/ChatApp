@@ -1,8 +1,10 @@
 'use client'
 import { useRouter } from 'next/navigation'
 import { Button } from './ui/button';
-
-function GuestLogin() {
+interface GuestLoginProps {
+  handleGuest: (message: string) => void;
+}
+function GuestLogin({handleGuest}:GuestLoginProps) {
   const router = useRouter();
   const loginGuest = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -15,8 +17,14 @@ function GuestLogin() {
         },
         body: JSON.stringify({ timestamp: new Date().toISOString() }),
       });
-      console.log(resp)
-      router.push('/Home');
+      const result = await resp.json()
+      if (!resp.ok) {
+        throw new Error ('Could not login as guest')
+      }
+      handleGuest("Welcome, Guest! You’re in the chat.")
+      setTimeout(() => {
+        router.push(result.redirectUrl || '/Home');
+      }, 1000);
     } catch (error) {
       console.error('Guest Login failed', error);
       throw error;

@@ -23,7 +23,9 @@ export const POST = async (req: NextRequest, resp: NextResponse) => {
     }
 
     const foundUser = await prisma.user.findUnique({
-      where: { email }
+      where: { email: email,
+        password: password
+      }
     })
 
     if (!foundUser) {
