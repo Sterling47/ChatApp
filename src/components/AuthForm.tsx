@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { X } from "lucide-react";
 import { setCSRFToken } from "@/lib/utils";
-import GuestLogin from './GuestLoginButton';
+
 
 interface AuthFormProps {
   toggleModal: () => void;
@@ -31,19 +31,31 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
-  const [guestMessage, setGuestMessage] = useState<string | null>(null);
+  const [guestLogin, setGuestLogin] = useState(false);
+  const [guestMessage, setGuestMessage] = useState<string | null>(null)
   const router = useRouter();
-  const handleGuest = (message:string) => setGuestMessage(message)
-  const loginUser = async (credentials: AuthCredentials) => {
+  const loginUser = async (credentials?: AuthCredentials, isGuest: boolean = false) => {
+    const baseURL = process.env.NEXT_PUBLIC_SITE_URL;
     try {
-      const baseURL = process.env.NEXT_PUBLIC_SITE_URL;
-      const resp = await fetch(`${baseURL}/api/auth/login`, {
+      const requestOptions: RequestInit = {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(credentials),
-      });
+        }
+      };
+      if (isGuest) {
+        requestOptions.headers = {
+          ...requestOptions.headers,
+          'x-login-type': 'guest'
+        }
+      }
+      else {
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error('Email and password are required')
+        }
+        requestOptions.body = JSON.stringify(credentials)
+      }
+      const resp = await fetch(`${baseURL}/api/auth/login`, requestOptions);
       const csrfToken = resp.headers.get('x-csrf-token');
       if (csrfToken) {
         setCSRFToken(csrfToken);
@@ -52,7 +64,9 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
       if (!resp.ok) {
         throw new Error(result.message || 'Login failed');
       }
-      setSuccess("Login successful! Redirecting...")
+      if(!isGuest) {
+        setSuccess("Login successful! Redirecting...");
+      }
       return result;
     } catch (error) {
       console.error('Login error:', error);
@@ -101,35 +115,43 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
     return errors;
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>, isGuestLogin = false) => {
     event.preventDefault();
     setErrors({});
     setIsSubmitting(true);
     setSuccess(null);
-    const formData = new FormData(event.currentTarget);
-    const credentials: AuthCredentials = {
-      email: formData.get('email') as string,
-      password: formData.get('password') as string,
-    };
-
-    const validationErrors = validateForm(credentials);
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      setIsSubmitting(false);
-      return;
-    }
-
     try {
       let result;
-      if (isSignUp) {
-        await registerUser(credentials);
-        result = await loginUser(credentials);
-      } else {
-        result = await loginUser(credentials);
+      if (isGuestLogin) {
+        setGuestLogin(true);
+        setGuestMessage("Note: Guests can only access public rooms and have limited features.");
+        result = await loginUser(undefined, true);
       }
+      else {
+        const formData = new FormData(event.currentTarget);
+        const credentials: AuthCredentials = {
+          email: formData.get('email') as string,
+          password: formData.get('password') as string,
+        };
+
+        const validationErrors = validateForm(credentials);
+        if (Object.keys(validationErrors).length > 0) {
+          setErrors(validationErrors);
+          setIsSubmitting(false);
+          return;
+        }
+
+        if (isSignUp) {
+          await registerUser(credentials);
+          result = await loginUser(credentials);
+        } else {
+          result = await loginUser(credentials);
+        }
+        setSuccess("Login successful! Redirecting...");
+      };
       setTimeout(() => {
         router.push(result.redirectUrl || '/Home');
-      }, 1000);
+      }, 1500);
     } catch (error) {
       setErrors({
         general: error instanceof Error ? error.message : "An unexpected error occurred"
@@ -260,7 +282,21 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
                     Forgot password?
                   </Button>
                 </div>
-                <GuestLogin handleGuest={handleGuest}/>
+                {guestLogin ? (
+                  <div className="mt-4 p-3 bg-gradient-to-r from-amber-50 to-yellow-100 rounded-lg border border-yellow-200 shadow-md transition-all duration-300 transform hover:scale-105">
+                    <h3 className="text-amber-700 font-medium text-lg text-center">Welcome Guest!</h3>
+                    <p className="text-amber-600 text-sm text-center">We're preparing your experience...</p>
+                  </div>
+                ) : (
+                  <Button
+                    variant="secondary"
+                    onClick={(e) => handleSubmit(e as unknown as FormEvent<HTMLFormElement>, true)}
+                    className="w-full bg-amber-100 text-amber-700 hover:bg-amber-200 transition-colors duration-200"
+                    disabled={isSubmitting}
+                  >
+                    Continue as Guest
+                  </Button>
+                )}
               </div>
             </CardContent>
           </div>
