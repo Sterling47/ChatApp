@@ -1,65 +1,90 @@
-// POST /auth/register
-// Email/password validation
-// Password hashing
-// Email verification flow
-
 import { hash } from 'argon2';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextRequest, NextResponse } from 'next/server';
+import prisma from '@/lib/db';
+import rateLimit from 'next-rate-limit';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PASSWORD_MIN_LENGTH = 8;
-const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/;
 
-interface RegisterRequestBody {
-  email: string;
-  password: string;
-}
+const limiter = rateLimit({
+  interval: 15 * 60 * 1000,
+  uniqueTokenPerInterval: 100
+});
 
 export async function POST(
-  req: NextApiRequest,
-  res: NextApiResponse
+  req: NextRequest
 ) {
   try {
-    const { email, password } = req.body as RegisterRequestBody;
+    const headers = limiter.checkNext(req, 25);
+    const body = await req.json();
+    const { email, password, username } = body;
 
     if (!email || !EMAIL_REGEX.test(email)) {
-      return res.status(400).json({ error: 'Invalid email address' });
+      return NextResponse.json(
+        { message: 'Invalid email address' },
+        { status: 400, headers }
+      );
     }
 
     if (!password || password.length < PASSWORD_MIN_LENGTH) {
-      return res.status(400).json({
-        error: `Password must be at least ${PASSWORD_MIN_LENGTH} characters long`
-      });
+      return NextResponse.json(
+        { message: `Password must be at least ${PASSWORD_MIN_LENGTH} characters long` },
+        { status: 400, headers }
+      );
     }
 
-    if (!PASSWORD_REGEX.test(password)) {
-      return res.status(400).json({
-        error: 'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character'
-      });
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        email: email
+      }
+    });
+
+    if (existingUser) {
+      return NextResponse.json(
+        { message: 'Email already registered' },
+        { status: 409, headers }
+      );
     }
 
     const hashedPassword = await hash(password, {
-      type: 2, 
-      memoryCost: 2 ** 16, 
+      type: 2,
+      memoryCost: 2 ** 16,
       timeCost: 3,
       parallelism: 4
     });
-    
-    // Here you would typically:
-    // 1. Check if email already exists in database
-    // 2. Store the user in your database
-    // 3. Create a session or JWT
-    // 4. Return success response with token
 
-    // Example response (modify based on your needs)
-    return res.status(201).json({
-      message: 'User registered successfully',
-      // user: { id: newUser.id, email: newUser.email }
-      // token: generatedToken
+    const newUser = await prisma.user.create({
+      data: {
+        email,
+        username: username || email,
+        password: hashedPassword,
+        isGuest: false
+      }
     });
+
+    if (!newUser) {
+      return NextResponse.json(
+        { message: 'Failed to create user' },
+        { status: 500, headers }
+      );
+    }
+
+    return NextResponse.json(
+      {
+        message: 'Registration successful',
+        email: email
+      },
+      {
+        status: 201,
+        headers
+      }
+    );
 
   } catch (error) {
     console.error('Registration error:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    return NextResponse.json(
+      { message: 'An error occurred during registration' },
+      { status: 500 }
+    );
   }
 }

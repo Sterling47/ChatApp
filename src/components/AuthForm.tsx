@@ -8,14 +8,13 @@ import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { X } from "lucide-react";
 import GoogleSignIn from './GoogleSignIn';
-import { setCSRFToken } from '@/lib/auth/csrf';
-
 
 interface AuthFormProps {
   toggleModal: () => void;
 }
 
 interface AuthCredentials {
+  username?: string;
   email: string;
   password: string;
 }
@@ -24,6 +23,7 @@ interface ValidationErrors {
   email?: string;
   password?: string;
   general?: string;
+  username?: string;
 }
 
 const AuthForm = ({ toggleModal }: AuthFormProps) => {
@@ -62,8 +62,6 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
       if (!resp.ok) {
         throw new Error(result.message || 'Login failed');
       }
-      // const csrfToken = result.headers.get('x-csrf-token')
-      // setCSRFToken(csrfToken)
       if (!isGuest) {
         setSuccess("Login successful! Redirecting...");
       }
@@ -108,7 +106,7 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
 
     if (!credentials.password) {
       errors.password = "Password is required";
-    } else if (isSignUp && credentials.password.length < 8) {
+    } else if (credentials.password.length < 8) {
       errors.password = "Password must be at least 8 characters";
     }
 
@@ -129,20 +127,25 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
       }
       else {
         const formData = new FormData(event.currentTarget);
-        const credentials: AuthCredentials = {
-          email: formData.get('email') as string,
-          password: formData.get('password') as string,
-        };
-
+        const credentials: AuthCredentials = isSignUp
+          ? {
+            username: formData.get('signup-username') as string,
+            email: formData.get('signup-email') as string,
+            password: formData.get('signup-password') as string,
+          }
+          : {
+            email: formData.get('email') as string,
+            password: formData.get('password') as string,
+          };
         const validationErrors = validateForm(credentials);
         if (Object.keys(validationErrors).length > 0) {
           setErrors(validationErrors);
           setIsSubmitting(false);
           return;
         }
-
         if (isSignUp) {
           await registerUser(credentials);
+          setSuccess("Registration successful! Logging you in...");
           result = await loginUser(credentials);
         } else {
           result = await loginUser(credentials);
@@ -165,6 +168,8 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
   const toggleSignUp = (event: React.MouseEvent) => {
     event.preventDefault();
     setIsSignUp(!isSignUp);
+    setErrors({});
+    setSuccess(null);
   };
 
   return (
@@ -188,7 +193,7 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
               <CardDescription>Choose your preferred sign in method</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <GoogleSignIn showSuccess={showSuccess}/>
+              <GoogleSignIn showSuccess={showSuccess} />
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <span className="w-full border-t" />
@@ -262,7 +267,7 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
                   <Button
                     variant="link"
                     className="px-0 text-sm"
-                    onClick={() => setIsSignUp(true)}
+                    onClick={toggleSignUp}
                   >
                     Create account
                   </Button>
@@ -296,25 +301,56 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
               <CardDescription>Create your account</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
+              {success && (
+                <Alert className="bg-green-100 border-green-400 text-green-700">
+                  <AlertDescription>{success}</AlertDescription>
+                </Alert>
+              )}
+              {errors.general && (
+                <Alert variant="destructive">
+                  <AlertDescription>{errors.general}</AlertDescription>
+                </Alert>
+              )}
               <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="signup-username">Username</Label>
+                  <Input
+                    name="signup-username"
+                    id="signup-username"
+                    type="text"
+                    placeholder="chatt-r_123"
+                    className={errors.username ? "border-red-500" : ""}
+                    aria-invalid={errors.username ? "true" : "false"}
+                  />
+                  {errors.username && (
+                    <p className="text-sm text-red-500 mt-1">{errors.username}</p>
+                  )}
+                </div>
                 <div className="space-y-2">
                   <Label htmlFor="signup-email">Email</Label>
                   <Input
-                    name="email"
+                    name="signup-email"
                     id="signup-email"
                     type="email"
                     placeholder="m@example.com"
+                    className={errors.email ? "border-red-500" : ""}
+                    aria-invalid={errors.email ? "true" : "false"}
                     required
                   />
                 </div>
                 <div className="space-y-2 relative">
                   <Label htmlFor="signup-password">Password</Label>
                   <Input
-                    name="password"
+                    name="signup-password"
                     id="signup-password"
                     type={showPassword ? "text" : "password"}
+                    className={errors.password ? "border-red-500" : ""}
+                    aria-invalid={errors.password ? "true" : "false"}
                     required
                   />
+                  {errors.password && (
+                    <p className="text-sm text-red-500 mt-1">{errors.password}</p>
+                  )}
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
@@ -327,8 +363,9 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
                   <Button
                     type="submit"
                     className="w-[48%] bg-orange-500 hover:bg-orange-600 transition"
+                    disabled={isSubmitting}
                   >
-                    Sign Up
+                    {isSubmitting ? "Processing..." : "Sign Up"}
                   </Button>
                   <Button
                     className="w-[48%]"

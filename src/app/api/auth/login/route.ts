@@ -4,7 +4,7 @@ import rateLimit from 'next-rate-limit';
 import { createSession } from '@/lib/auth/session';
 import { generateCSRFToken } from '@/lib/auth/csrf';
 import { nanoid } from 'nanoid';
-// import { verifyPassword } from '@/components/Password';
+import { verifyPassword } from '@/components/Password';
 
 const limiter = rateLimit({
   interval: 15 * 60 * 1000,
@@ -51,25 +51,23 @@ export const POST = async (req: NextRequest, resp: NextResponse) => {
 
       const foundUser = await prisma.user.findUnique({
         where: {
-          email: email,
-          password: password
+          email: email
         }
       });
 
-      if (!foundUser) {
+      if (!foundUser || !foundUser.password) {
         return NextResponse.json(
           { message: 'Invalid credentials' },
           { status: 401, headers }
         );
       }
-      // const isPasswordValid = await verifyPassword(foundUser.password!, password)
-      // if (!isPasswordValid) {
-      //   return NextResponse.json(
-      //     { message: 'Invalid credentials' },
-      //     { status: 401, headers }
-      //   )
-      // }
-      // console.log(isPasswordValid)
+      const isPasswordValid = await verifyPassword(foundUser.password!, password)
+      if (!isPasswordValid) {
+        return NextResponse.json(
+          { message: 'Invalid credentials' },
+          { status: 401, headers }
+        )
+      }
       userId = foundUser.id.toString();
     }
 
