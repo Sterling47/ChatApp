@@ -1,4 +1,4 @@
-import { getCSRFToken, setCSRFToken } from "@/lib/utils";
+import { getCSRFToken } from "@/lib/auth/csrf";
 import { Button } from "./ui/button";
 import {useRouter} from "next/navigation";
 export const LogoutButton = () => {
@@ -6,9 +6,9 @@ export const LogoutButton = () => {
   const userLogout = async () => {
     try {
       const baseURL = process.env.NEXT_PUBLIC_SITE_URL;
-      const csrfToken = getCSRFToken()
+      const csrfToken = getCSRFToken();
       if (!csrfToken) {
-        throw new Error('Could not find csrfToken')
+        throw new Error ('Missing CSRF token')
       }
       const resp = await fetch(`${baseURL}/api/auth/logout`, {
         method: 'POST',
@@ -21,7 +21,6 @@ export const LogoutButton = () => {
       if (!resp.ok) {
         throw new Error ('Could not log out')
       }
-      setCSRFToken('')
       setTimeout(() => {
         router.push(result.redirectUrl || '/');
       }, 300);

@@ -73,8 +73,6 @@ export const POST = async (req: NextRequest, resp: NextResponse) => {
       userId = foundUser.id.toString();
     }
 
-
-
     const response = NextResponse.json(
       {
         message: isGuest ? 'Logged in as guest':'Successfully logged in',
@@ -94,6 +92,12 @@ export const POST = async (req: NextRequest, resp: NextResponse) => {
     }
     const csrfToken = generateCSRFToken(secret, sessionId);
     sessionResponse.headers.set('x-csrf-token', csrfToken);
+    sessionResponse.cookies.set('csrfToken', csrfToken, {
+      httpOnly: false,
+      path: '/',
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict'
+    });
     return sessionResponse
 
   } catch (error) {

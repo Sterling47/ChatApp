@@ -29,7 +29,6 @@ export const csrfProtectionMiddleware = async (
 ): Promise<boolean> => {
     const sessionId = request.cookies.get('sessionId')?.value;
     const csrfToken = request.headers.get('x-csrf-token');
-    console.log(csrfToken, 'line32')
     if (!sessionId) {
       throw new Error('No session found');
     }
@@ -43,3 +42,11 @@ export const csrfProtectionMiddleware = async (
   return true;
 };
 
+export function setCSRFToken(token: string) {
+  document.cookie = `csrfToken=${token}; path=/`;
+}
+
+export function getCSRFToken(): string | undefined {
+  const match = document.cookie.match(/(^|;)\s*csrfToken=([^;]+)/);
+  return match ? match[2] : undefined;
+}

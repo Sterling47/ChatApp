@@ -1,4 +1,4 @@
-import { csrfProtectionMiddleware, validateCSRFToken } from "@/lib/auth/csrf";
+import { csrfProtectionMiddleware } from "@/lib/auth/csrf";
 import { endSession } from "@/lib/auth/session";
 import { NextRequest, NextResponse } from "next/server";
 
