@@ -1,18 +1,23 @@
 'use server'
-import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
+import { getSession } from "@/lib/auth/session";
+import type { User } from "@prisma/client";
 
 
-export const SeedUser = async () => {
+export const seedUser = async (token: string | undefined, secret: string):Promise<User|null> => {
+
   try {
-    const {getUser} = getKindeServerSession();
-    const user = await getUser();
+    const userSession = await getSession(token, secret);
+    const userId = userSession?.sub
+    if (!userId) {
+      throw new Error('No valid user session found');
+    }
     const baseURL = process.env.KINDE_SITE_URL
     const resp = await fetch(`${baseURL}/api/seedUser`,{
       method: 'POST',
       headers: {
         'Content-Type':'application/json'
       },
-      body: JSON.stringify({user})
+      body: JSON.stringify({userId: userId})
     });
     if (!resp.ok){
       throw new Error ('Failed to seed user')

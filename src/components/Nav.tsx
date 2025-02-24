@@ -2,15 +2,15 @@
 import { useState } from "react"
 import type { Room } from '@prisma/client'
 import CreateRoom from '@/components/CreateRoom';
-import { LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import RoomList from "./RoomList";
 import Link from "next/link";
 import { useActiveRoom } from "@/app/contexts/ActiveRoomContext";
 import { useUser } from "@/app/contexts/UserContext";
+import { LogoutButton } from "./LogoutButton";
 interface RoomProps {
   initialRooms: Room[]
 }
-const Nav: React.FC<RoomProps> = ({ initialRooms}) => {
+const Nav: React.FC<RoomProps> = ({ initialRooms }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const user = useUser();
   const { setActiveRoomId } = useActiveRoom();
@@ -22,6 +22,7 @@ const Nav: React.FC<RoomProps> = ({ initialRooms}) => {
     setActiveRoomId('search');
     toggleModal();
   }
+
   return (
     <nav className="flex flex-col justify-start m-0.5 rounded-md list-none col-span-1 row-start-1 row-end-13 overflow-hidden">
       <div className="flex flex-row justify-around m-0.5 rounded-md bg-primary">
@@ -40,14 +41,12 @@ const Nav: React.FC<RoomProps> = ({ initialRooms}) => {
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors hover:text-black">
               <span className="text-sm">Settings</span>
             </Link>
-            <LogoutLink
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors hover:text-black"
-              postLogoutRedirectURL={'/'}>Logout</LogoutLink>
+            <LogoutButton/>
           </div>
         )}
       </div>
-      <RoomList initialRooms={initialRooms}  />
-      <CreateRoom  />
+      <RoomList initialRooms={initialRooms} />
+      <CreateRoom />
 
     </nav>
   )

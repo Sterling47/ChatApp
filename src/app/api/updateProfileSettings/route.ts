@@ -1,12 +1,14 @@
 import prisma from '@/lib/db';
 import { hashPassword } from '@/components/Password';
 import { NextRequest, NextResponse } from 'next/server';
+import { csrfProtectionMiddleware } from '@/lib/auth/csrf';
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest, resp: NextResponse) {
   try {
+    const secret = process.env.JWT_KEY!
+    await csrfProtectionMiddleware(req, resp, secret);
     const body = await req.json()
     const { newEmail, newUsername, newPassword, userEmail} = body.updateBody;
-    console.log(newUsername)
     const updateData: {
       email?: string;
       username?: string;

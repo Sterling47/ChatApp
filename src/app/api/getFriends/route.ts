@@ -1,10 +1,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/db';
-import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
-
+import { getUser } from '@/components/getUser';
 export async function GET() {
-    const { getUser } = getKindeServerSession();
-    
     try {
         const user = await getUser();
         if (!user || !user.email) {

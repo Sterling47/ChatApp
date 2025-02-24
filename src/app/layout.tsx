@@ -1,14 +1,9 @@
-import { AuthProvider } from './AuthProvider';
-
-
-
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <AuthProvider>
       <html lang="en" suppressHydrationWarning>
         <head>
           <title>Chatt-r</title>
@@ -21,6 +16,5 @@ export default async function RootLayout({
           </main>
         </body>
       </html>
-    </AuthProvider>
   );
 }
