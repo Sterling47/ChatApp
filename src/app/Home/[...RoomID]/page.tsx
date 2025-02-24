@@ -1,15 +1,8 @@
 import prisma from '@/lib/db';
 import MultiRoomChat from '@/components/MultiRoomChat';
 import { getUser } from '@/components/getUser';
-import { FC } from 'react';
 
-interface PageProps {
-  params: { 
-    RoomID: string[] 
-  } 
-}
-
-const RoomPage: FC<PageProps> = async ({ params }) => {
+export default async function RoomPage ({ params }:{params: {RoomID: string[] | string}}) {
   try {
     const roomIDs = Array.isArray(params.RoomID) 
       ? params.RoomID.map(Number) 
@@ -58,5 +51,3 @@ const RoomPage: FC<PageProps> = async ({ params }) => {
     throw new Error ('error loading page')
   }
 }
-
-export default RoomPage
