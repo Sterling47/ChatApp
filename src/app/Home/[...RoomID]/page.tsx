@@ -51,7 +51,7 @@ const RoomPage: FC<PageProps> = async ({ params }) => {
     return <MultiRoomChat rooms={allRooms} />;
   }
   catch (error) {
-    console.error('error loading room page')
+    console.error('error loading room page', error)
     throw new Error ('error loading page')
   }
 }
