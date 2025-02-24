@@ -17,7 +17,6 @@ interface RoomTab {
   userID: number;
 }
 
-
 const MultiRoomChat = ({ rooms }: { rooms: RoomTab[] }) => {
   const { activeRoomId, setActiveRoomId, openRooms, setOpenRooms } = useActiveRoom();
   const router = useRouter();
