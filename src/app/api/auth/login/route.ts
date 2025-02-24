@@ -11,7 +11,7 @@ const limiter = rateLimit({
   uniqueTokenPerInterval: 100
 })
 
-export const POST = async (req: NextRequest, resp: NextResponse) => {
+export const POST = async (req: NextRequest) => {
   try {
     const headers = limiter.checkNext(req, 25)
     const secret = process.env.JWT_SECRET!
