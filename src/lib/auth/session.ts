@@ -85,6 +85,7 @@ export const getSession = async (token: string | undefined, secret: string): Pro
     console.log(verified)
     return verified;
   } catch (error) {
+    console.error('error in session', error)
     return null;
   }
 };

@@ -3,7 +3,6 @@ import MultiRoomChat from '@/components/MultiRoomChat';
 import { getUser } from '@/components/getUser';
 
 export default async function RoomPage({ params }: { params: { RoomID: string[] } }) {
-  const { RoomID } = await params; 
   const roomIDs = params.RoomID.map(Number);
   const user = await getUser();
   console.log(user)

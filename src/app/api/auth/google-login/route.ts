@@ -25,11 +25,10 @@ async function verifyGoogleToken(token: string) {
   }
 }
 
-export const POST = async (req: NextRequest, resp: NextResponse) => {
+export const POST = async (req: NextRequest) => {
   try {
     const headers = limiter.checkNext(req, 5);
     const secret = process.env.JWT_SECRET!;
-    let userId: string;
     const body = await req.json();
     const { idToken } = body;
     
@@ -76,8 +75,7 @@ export const POST = async (req: NextRequest, resp: NextResponse) => {
         }
       });
     }
-    userId = foundUser.id.toString();
-    
+    const userId = foundUser.id.toString();
     const response = NextResponse.json(
       {
         message: 'Successfully logged in with Google',

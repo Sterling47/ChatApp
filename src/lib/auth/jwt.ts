@@ -27,6 +27,7 @@ export const verifyJWT = async ({token, secret}: verifyJWTprops) => {
     return payload;
   }
   catch (error) {
+    console.error('error with JWT', error)
     throw new Error ('Invalid or expired token');
   }
 }
