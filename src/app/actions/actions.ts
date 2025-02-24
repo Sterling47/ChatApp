@@ -82,12 +82,12 @@ export async function initialUserSetup(formData: FormData) {
       throw new Error('Username is required');
     }
 
-    let dbUser = await prisma.user.findUnique({
+    const dbUser = await prisma.user.findUnique({
       where: { email: user.email },
     });
     
     if (dbUser) {
-      const updatedUser = await prisma.user.upsert({
+      await prisma.user.upsert({
         where: {
           email: user.email,
         },
@@ -106,8 +106,9 @@ export async function initialUserSetup(formData: FormData) {
       });
     }
       
-  } catch (err) {
-    return;
+  } catch (error) {
+    console.error('Error setting up user:', error);
+    throw error;
   }
   revalidatePath('/Home')
 }

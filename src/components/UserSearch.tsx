@@ -5,6 +5,7 @@ import { addFriend } from "@/app/actions/actions";
 
 
 interface UserResult {
+  isFriend: boolean;
   id: number;
   username: string;
   email: string;
@@ -70,7 +71,7 @@ export default function UserSearch() {
                 <span className="font-medium">{user.username}</span>
                 <p className="text-sm text-gray-900">{user.email}</p>
 
-                {user.isFrikend ? (
+                {user.isFriend ? (
                   <p className="text-green-500">Already friends</p>
                 ) : (
                   <form action={addFriend}>

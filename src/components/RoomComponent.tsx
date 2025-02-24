@@ -14,7 +14,7 @@ interface RoomComponentProps {
   userID: number
 }
 
-export const RoomComponent:React.FC<RoomComponentProps> = ({RoomID,roomName,initialMessages,userID}) => {
+export const RoomComponent:React.FC<RoomComponentProps> = ({RoomID,initialMessages,userID}) => {
   return (
     <>
         <Messages initialMessages={initialMessages} RoomID={RoomID} creatorID={userID}/>
