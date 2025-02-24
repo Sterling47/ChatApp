@@ -8,9 +8,12 @@ interface PageProps {
     RoomID: string[] 
   } 
 }
+
 const RoomPage: FC<PageProps> = async ({ params }) => {
   try {
-    const roomIDs = params.RoomID.map(Number);
+    const roomIDs = Array.isArray(params.RoomID) 
+      ? params.RoomID.map(Number) 
+      : [Number(params.RoomID)];
     const user = await getUser();
     if (!user) {
       throw new Error("User not found");
