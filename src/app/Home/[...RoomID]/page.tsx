@@ -2,11 +2,18 @@ import prisma from '@/lib/db';
 import MultiRoomChat from '@/components/MultiRoomChat';
 import { getUser } from '@/components/getUser';
 
-export default async function RoomPage ({ params }:{params: {RoomID: string[] | string}}) {
+type PageProps = {
+  params: {
+    RoomID: string[] | string;
+  };
+  searchParams: Record<string, string | string[] | undefined>;
+};
+export default async function RoomPage({ params }: PageProps) {
   try {
     const roomIDs = Array.isArray(params.RoomID) 
       ? params.RoomID.map(Number) 
       : [Number(params.RoomID)];
+      
     const user = await getUser();
     if (!user) {
       throw new Error("User not found");
