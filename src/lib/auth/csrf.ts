@@ -1,5 +1,5 @@
 import { createHmac } from "crypto";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 type CSRFValidationResult = {
   isValid: boolean;
   error?: string;
@@ -24,7 +24,6 @@ export const validateCSRFToken = (token: string | null, secret: string, sessionI
 
 export const csrfProtectionMiddleware = async (
   request: NextRequest,
-  response: NextResponse,
   secret: string
 ): Promise<boolean> => {
     const sessionId = request.cookies.get('sessionId')?.value;

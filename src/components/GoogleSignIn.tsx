@@ -36,7 +36,7 @@ export default function GoogleSignIn({showSuccess}:GoogleSignInProps) {
     } catch (error) {
       console.error('Error during Google sign-in:', error);
     }
-  }, [router]);
+  }, [router,showSuccess]);
 
   useEffect(() => {
     const script = document.createElement('script');

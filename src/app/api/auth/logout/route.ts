@@ -2,7 +2,7 @@ import { csrfProtectionMiddleware } from "@/lib/auth/csrf";
 import { endSession } from "@/lib/auth/session";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest, resp: NextResponse) {
+export async function POST(req: NextRequest) {
   try {
     const secret = process.env.JWT_SECRET!
     const sessionId = req.cookies.get('sessionId')?.value
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest, resp: NextResponse) {
         status: 200
       }
     );
-    await csrfProtectionMiddleware(req, resp, secret);
+    await csrfProtectionMiddleware(req, secret);
     const sessionResponse = endSession(response)
     return sessionResponse
   }
