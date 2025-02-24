@@ -24,7 +24,6 @@ export const validateCSRFToken = (token: string | null, secret: string, sessionI
 
 export const csrfProtectionMiddleware = async (
   request: NextRequest,
-  response: NextResponse,
   secret: string
 ): Promise<boolean> => {
     const sessionId = request.cookies.get('sessionId')?.value;

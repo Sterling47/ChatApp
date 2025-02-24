@@ -3,10 +3,10 @@ import { hashPassword } from '@/components/Password';
 import { NextRequest, NextResponse } from 'next/server';
 import { csrfProtectionMiddleware } from '@/lib/auth/csrf';
 
-export async function POST(req: NextRequest, resp: NextResponse) {
+export async function POST(req: NextRequest) {
   try {
     const secret = process.env.JWT_KEY!
-    await csrfProtectionMiddleware(req, resp, secret);
+    await csrfProtectionMiddleware(req, secret);
     const body = await req.json()
     const { newEmail, newUsername, newPassword, userEmail} = body.updateBody;
     const updateData: {
@@ -38,13 +38,10 @@ export async function POST(req: NextRequest, resp: NextResponse) {
       return NextResponse.json({ success: false, error: 'No changes to update' });
     }
 
-
-    // Commented out updateUser to prevent deployment issues. Uncomment when you have the prisma client setup
-   
-    // const updatedUser = await prisma.user.update({
-    //   where: { email: userEmail },
-    //   data: updateData,
-    // });
+    await prisma.user.update({
+      where: { email: userEmail },
+      data: updateData,
+    });
 
     return NextResponse.json({ success: true, message: 'Profile updated successfully' });
   } catch (err) {
