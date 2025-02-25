@@ -1,6 +1,6 @@
 import prisma from '@/lib/db';
 import MultiRoomChat from '@/components/MultiRoomChat';
-import { getUser } from '@/components/getUser';
+import { getUser } from '@/lib/auth/user';
 
 export default async function RoomPage({ params }: { params: Promise<{RoomID: string[] | string}> }) {
   const {RoomID} = await params

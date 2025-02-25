@@ -4,7 +4,7 @@ import rateLimit from 'next-rate-limit';
 import { createSession } from '@/lib/auth/session';
 import { generateCSRFToken } from '@/lib/auth/csrf';
 import { nanoid } from 'nanoid';
-import { verifyPassword } from '@/components/Password';
+import { verifyPassword } from '@/lib/auth/password';
 
 const limiter = rateLimit({
   interval: 15 * 60 * 1000,

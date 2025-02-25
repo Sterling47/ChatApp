@@ -6,7 +6,7 @@ import { ActiveRoomProvider } from '../contexts/ActiveRoomContext';
 import { UserProvider } from '../contexts/UserContext';
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
-import { seedUser } from '@/components/SeedUser';
+import { seedUser } from '@/lib/auth/user';
 
 export default async function Layout({
   children,

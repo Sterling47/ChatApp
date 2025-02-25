@@ -2,7 +2,7 @@
 
 import { pusher } from '@/lib/pusher'
 import prisma from '@/lib/db';
-import { getUser } from '@/components/getUser';
+import { getUser } from '@/lib/auth/user';
 import { revalidatePath } from 'next/cache';
 
 export async function createRoomAction(formData: FormData) {
