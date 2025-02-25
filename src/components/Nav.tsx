@@ -46,8 +46,7 @@ const Nav: React.FC<RoomProps> = ({ initialRooms }) => {
         )}
       </div>
       <RoomList initialRooms={initialRooms} />
-      <CreateRoom />
-
+      {user?.isGuest === false && <CreateRoom />}
     </nav>
   )
 }
