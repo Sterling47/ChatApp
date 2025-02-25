@@ -18,7 +18,10 @@ export async function GET() {
 
         const friends = await prisma.friend.findMany({
             where: {
-                userID: currentUser.id
+                userID: currentUser.id,
+                friend: {
+                    isGuest: false
+                }
             },
             include: {
                 friend: {

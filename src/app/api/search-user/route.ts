@@ -29,7 +29,8 @@ export async function GET(request: Request) {
                 ],
               }
             : {},
-          { id: { not: currentUser.id } }, 
+          { id: { not: currentUser.id } },
+          { isGuest: false} 
         ],
       },
       select: {
