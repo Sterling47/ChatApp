@@ -10,8 +10,9 @@ const RegisterModal = () => {
   const toggleModal = () => setIsModalOpen(!isModalOpen);
 
   return (
-    <>
-      <Button className='login-btn mx-[3rem] z-20 hover:cursor-pointer bg-transparent hover:bg-transparent'onClick={toggleModal}>
+    <div>
+
+      <Button className='login-btn mx-[3rem] z-20 hover:cursor-pointer bg-transparent hover:bg-transparent' onClick={toggleModal}>
         <span>Sign In</span>
       </Button>
       {isModalOpen && (
@@ -22,12 +23,13 @@ const RegisterModal = () => {
           ></div>
           <div className="fixed inset-0 flex items-center justify-center">
             <div className="bg-white p-6 rounded-lg">
-              <AuthForm toggleModal={toggleModal}/>
+              <AuthForm toggleModal={toggleModal} />
             </div>
           </div>
         </div>
       )}
-    </>
+    </div>
+
   );
 };
 
