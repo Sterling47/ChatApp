@@ -1,69 +1,87 @@
-# Chattr
+# Chatt-r
 ## Summary
-Chattr is a real-time chat application that allows users to join, create and contribute to public and private chatrooms.
+- Chatt-r is a real-time chat application that connects users through seamless communication. The platform allows users to join existing conversations, create chat rooms, and engage in both public and private discussions. Using multiple authentication methods (Google OAuth, email/password, and guest access), Chatt-r maintains security through role-based permissions while accommodating different user needs.
+- Built with NextJS, TypeScript, and WebSockets, the application provides instant message delivery and persistent chat history. Registered users have full access to all features, while guest users can participate in public rooms with limited functionality. Chatt-r supports both private password-protected rooms and open public discussions in a straightforward, responsive interface.
 ## Preview
 <img width="370" alt="Chatt-r Landing Page" src="https://github.com/user-attachments/assets/06491325-a955-4e63-bb53-b22f70d25975" />
 
+## Key Features
 
-## Key Features 
-- User Authentication: 
-- Real-Time Messaging: Messages are instantly shared across users using WebSockets powered by Pusher.js.
-- Persistent Chat History: All messages are stored in a Postgresql DB, allowing users to see previous chats upon loading the app.
-- User-Friendly Interface: A simple, intuitive chat interface with instant updates and responsive design.
+### Core Functionality
+- **Custom Authentication System**: Custom authentication with role-based access control
+- **Real-Time Messaging**: Instant message delivery using WebSockets powered by Pusher.js
+- **Persistent Chat History**: All messages stored in PostgreSQL for continuous conversation access
+- **Public & Private Rooms**: Create open rooms or password-protected private spaces
 
+### Authentication & Access Control
+- **Multiple Login Methods**:
+  - Google OAuth integration for one-click login
+  - Traditional email/password authentication
+  - Guest login for quick access with limited features
+- **Role-Based Permissions**:
+  - Registered users have full access to all features
+  - Guest users can only view and interact with public rooms
+- **Account Management**:
+  - User profile customization options
 
-## MVP
-[x]User logs in <br/>
-[ ] Invite friends to chat <br/>
-[ ] Have open or private rooms the require password to access <br/>
-[ ] User can create private room and assign a password <br/>
-[ ] Private Room (Upon logging in, can see friend list / main chat window where users can invite other users) <br/>
-[ ] Public room (for non-users, cannot chat unless they create an account <br/>
-[ ] 1 room where non-users can interact with users <br/>
-[ ] Visual for how many users are online, if your friends are offline. Last logged in for friends <br/>
-[ ] Light/Dark theme toggle <br/>
-[ ] User Tracking (who’s online?) <br/>
-**Settings to change password / list all private rooms created by the user
-**Read/ Delivered and …User is typing 
-**Hashing private passwords
+### User Experience
+- **Friend Management**: View online friends and invite them to chat rooms (registered users only)
+- **Online Status Tracking**: See who's currently active and when friends were last online
+- **Read/Delivered Receipts**: Know when messages have been received and read
 
-Non-User - Can see friends list/public chat rooms but cannot interact
+## Tech Stack
 
-TechStack: WebSockets(Pusher.js), postgreSQL, ORM(Prisma), NextJS, Authentication(Kinde)
-- To add (Docker/Kubernetes, S3 Buckets(?))
-
-Kubernetes: https://nicwortel.nl/blog/2022/continuous-deployment-to-kubernetes-with-github-actions
-
-Design Inspos: https://cdn.dribbble.com/userupload/3348806/file/original-666b1dfe2c471c22a7f381d095ec57df.png?resize=1200x900
+- **Frontend**: Next.js, TypeScript, Tailwind CSS(shadcn) <br>
+- **Backend**: Prisma ORM, PostgreSQL, Pusher.js(Websocket), Custom Auth (argon2, JWT) <br>
+- **Testing**: Cypress
 
 
- ## Front End: 
-It 1: [x] Initiate Kinde Auth <br/>
-[x] Research Kinde Auth Docs <br/>
-[x] Write up Auth Component in Next <br/>
-[x] Initialize API calls to communicate to BE
-[x] Seed user into prisma db 
+# Implementation Progress
 
+### Completed
+- [x] Custom user authentication system with multiple login options
+  - [x] Google OAuth integration
+  - [x] Email/password authentication
+  - [x] Guest access implementation
+- [x] Role-based access control
+- [x] User database with Prisma
+- [x] Database migrations and seeding
+- [x] WebSocket middleware setup
+- [x] Public/private room creation
+- [x] Tabbable chat rooms
 
-##  Back End: 
-It 1: Initiate PostGres DB (Users) <br/>
-[x] Write Users table with Prisma <br/>
-[x] Design schema for Table/PG <br/>
-[x] Migrate, seed table upon Kinde Auth
-[x] Middleware: Initiate Web Socket (socket.io) 
-[x] Create public/private rooms
+### In Progress
+- [x] E2E testing through Cypress
+- [ ] UI/UX improvements for friends/search
+- [ ] Mobile-responsive design improvements
 
-## Learning Goals: 
-- Authentication with roles
-- User/Non-user can use app features
-- Websockets
-- GitHub Actions for CI/CD, Docker/Kubernetes
-- NextJS
+### Planned
+- [ ] Friend accept invitation system
+- [ ] UI/UX enhancements
+- [ ] Online status tracking for user friends
+- [ ] Expire guest user when session ends but still persists messages
 
+### Installation
+```bash
+# Clone the repository
+git clone https://github.com/Sterling47/chatApp.git
+cd chatApp
 
- ## Next Steps
-[ ] Adding tabbable rooms
-[ ] Inviting users to chat room
-[ ] UI/UX update
+# Install dependencies
+npm install
 
+# Set up environment variables
+Edit .env with your configuration
 
+# Run database migrations
+npx prisma migrate dev
+
+# Start the development server
+npm run dev
+
+# Run end-to-end tests
+npm run cypress
+```
+## Contributors
+- Adam Konber: https://github.com/Sterling47
+- Peter Kim: https://github.com/peterkimpk1
