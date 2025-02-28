@@ -4,7 +4,7 @@ type LoginButtonProps = {
 
 export const LoginButton: React.FC<LoginButtonProps> = ({ children }) => {
   return (
-    <div>
+    <div data-testid="login-button">
       <style>
         {`
         @property --gradient-angle {
