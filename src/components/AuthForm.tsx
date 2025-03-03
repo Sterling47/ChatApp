@@ -154,7 +154,7 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
       };
       setTimeout(() => {
         router.push(result.redirectUrl || '/Home');
-      }, 1500);
+      },100);
     } catch (error) {
       setErrors({
         general: error instanceof Error ? error.message : "An unexpected error occurred"
@@ -173,7 +173,7 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto relative">
+    <div data-testid="auth-form" className="w-full max-w-md mx-auto relative">
       <button
         onClick={toggleModal}
         className="z-50 absolute top-3 right-3 p-1 rounded-lg hover:bg-gray-100 transition"
@@ -276,12 +276,13 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
                   </Button>
                 </div>
                 {guestLogin ? (
-                  <div className="mt-4 p-3 bg-gradient-to-r from-amber-50 to-yellow-100 rounded-lg border border-yellow-200 shadow-md transition-all duration-300 transform hover:scale-105">
-                    <h3 className="text-amber-700 font-medium text-lg text-center">Welcome Guest!</h3>
+                  <div data-testid="welcomeGuest" className="mt-4 p-3 bg-gradient-to-r from-amber-50 to-yellow-100 rounded-lg border border-yellow-200 shadow-md transition-all duration-300 transform hover:scale-105">
+                    <h3  className="text-amber-700 font-medium text-lg text-center">Welcome Guest!</h3>
                     <p className="text-amber-600 text-sm text-center">We&apos;re preparing your experience...</p>
                   </div>
                 ) : (
                   <Button
+                    data-testid="guest-login"
                     variant="secondary"
                     onClick={(e) => handleSubmit(e as unknown as FormEvent<HTMLFormElement>, true)}
                     className="w-full bg-amber-100 text-amber-700 hover:bg-amber-200 transition-colors duration-200"
