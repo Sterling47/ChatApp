@@ -1,5 +1,10 @@
 describe('template spec', () => {
-  it('passes', () => {
-    cy.visit('https://example.cypress.io')
-  })
+ beforeEach(() => {
+   cy.visit('/')
+ })
+
+ it('shows user the Login Page', () => { 
+  cy.get('div').should('be.visible')
+ })
+
 })
