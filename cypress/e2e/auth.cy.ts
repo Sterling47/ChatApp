@@ -7,4 +7,15 @@ describe('template spec', () => {
   cy.get('div').should('be.visible')
  })
 
+ it('Displays Welcome Message', () => {
+  cy.get('h1').contains('Welcome to Chatt-r')
+ })
+
+ it('Displays Login Page and Sign in button and opens RegisterModal on click', () => {
+    cy.get('[data-testid="login-button"]').click() 
+    cy.get('[data-testid="register-modal"]').should('be.visible').within(() => {
+    cy.get('[data-testid="auth-form"').should('be.visible')
+    })
+  })
+
 })
