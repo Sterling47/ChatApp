@@ -18,4 +18,10 @@ describe('template spec', () => {
     })
   })
 
+  it('Navigates to /Home when clicking Continue as Guest', () => {
+    cy.get('[data-testid="login-button"]').click()
+    cy.get('[data-testid="guest-login"]').click() 
+    cy.url().should('include', '/Home')
+  })
+
 })
