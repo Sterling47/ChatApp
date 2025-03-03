@@ -40,7 +40,7 @@ export const seedUser = async (token: string | undefined, secret: string):Promis
     if (!userId) {
       throw new Error('No valid user session found');
     }
-    const baseURL = process.env.KINDE_SITE_URL
+    const baseURL = process.env.NEXT_PUBLIC_SITE_URL
     const resp = await fetch(`${baseURL}/api/seedUser`,{
       method: 'POST',
       headers: {
