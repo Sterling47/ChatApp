@@ -55,12 +55,41 @@ export const POST = async (req: NextRequest) => {
         }
       });
 
-      if (!foundUser || !foundUser.password) {
-        return NextResponse.json(
-          { message: 'Invalid credentials' },
-          { status: 401, headers }
+      if (!foundUser) {
+        const newUser = await prisma.user.create({
+          data: {
+            email: email ?? '',
+            username: '',
+            password: password ?? ''
+          }
+        })
+        const response = NextResponse.json(
+          {
+            message: 'Successfully logged in',
+            redirectUrl: '/Home'
+          },
+          {
+            status: 200,
+            headers
+          }
         );
+        const userId = newUser.id.toString()
+        const sessionResponse = await createSession(response, userId, secret, isGuest);
+        const sessionId = sessionResponse.cookies.get('sessionId')?.value;
+        if (!sessionId) {
+          throw new Error('Failed to create session');
+        }
+        const csrfToken = generateCSRFToken(secret, sessionId);
+        sessionResponse.headers.set('x-csrf-token', csrfToken);
+        sessionResponse.cookies.set('csrfToken', csrfToken, {
+          httpOnly: false,
+          path: '/',
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'strict'
+        });
+        return sessionResponse
       }
+
       const isPasswordValid = await verifyPassword(foundUser.password!, password)
       if (!isPasswordValid) {
         return NextResponse.json(
@@ -73,7 +102,7 @@ export const POST = async (req: NextRequest) => {
 
     const response = NextResponse.json(
       {
-        message: isGuest ? 'Logged in as guest':'Successfully logged in',
+        message: isGuest ? 'Logged in as guest' : 'Successfully logged in',
         redirectUrl: '/Home'
       },
       {

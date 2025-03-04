@@ -25,41 +25,42 @@ describe('template spec', () => {
   })
 
 
-  // it('Logs in as guest and checks the x-login-type header', () => {
-     //   cy.intercept('POST', '/api/auth/login', (req) => {
-     //     expect(req.headers['x-login-type']).to.equal('guest');
-     //     req.reply({ fixture: 'guestLogin.json' });
-     //   }).as('guestLogin');
+  it('Logs in as guest and checks the x-login-type header', () => {
+       cy.intercept('POST', '/api/auth/login', (req) => {
+         expect(req.headers['x-login-type']).to.equal('guest');
+         req.reply({ fixture: 'guestLogin.json' });
+       }).as('guestLogin');
      
-     //   cy.intercept('GET', '/api/seedUser', {
-     //     statusCode: 200,
-     //     body: {
-     //       id: '109',
-     //       isGuest: true,
-     //       name: 'Guest User'
-     //     }
-     //   }).as('getUser');
-     
-   
-     //   cy.get('[data-testid="login-button"]').click();
-     //   cy.get('[data-testid="guest-login"]').click();
-     
-     //   cy.wait('@guestLogin').its('response.statusCode').should('eq', 200).then(() => {
-     //     cy.log('Guest login request completed');
-     //   });
+      //  cy.intercept('GET', '/api/getUser', {
+      //    statusCode: 200,
+      //    body: {
+      //      id: '109',
+      //      isGuest: true,
+      //      name: 'Guest User'
+      //    }
+      //  }).as('getUser');
      
    
-     //   cy.get('[data-testid="welcomeGuest"]', { timeout: 10000 })
-     //     .should('be.visible')
-     //     .within(() => {
-     //       cy.contains('Welcome Guest!').should('be.visible');
-     //       cy.contains("We're preparing your experience...").should('be.visible');
-     //     });
+       cy.get('[data-testid="login-button"]').click();
+       cy.get('[data-testid="guest-login"]').click();
+       cy.url().should('include', '/Home')
      
-     //   cy.wait('@getUser', { timeout: 10000 }).its('response.statusCode').should('eq', 200);
+       cy.wait('@guestLogin').its('response.statusCode').should('eq', 200).then(() => {
+         cy.log('Guest login request completed');
+       });
      
-     //   cy.url().should('include', '/Home');
-     //   cy.get('[data-testid="welcome-message"]', { timeout: 10000 }).should('be.visible');
-     // });
+   
+       cy.get('[data-testid="welcomeGuest"]', { timeout: 10000 })
+         .should('be.visible')
+         .within(() => {
+           cy.contains('Welcome Guest!').should('be.visible');
+           cy.contains("We're preparing your experience...").should('be.visible');
+         });
+     
+       cy.wait('@getUser', { timeout: 10000 }).its('response.statusCode').should('eq', 200);
+     
+       cy.url().should('include', '/Home');
+       cy.get('[data-testid="welcome-message"]', { timeout: 10000 }).should('be.visible');
+     });
 
 })

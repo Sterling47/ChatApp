@@ -5,24 +5,15 @@ import FirstTimeSetup from '@/components/FirstTimeSetup';
 import { ActiveRoomProvider } from '../contexts/ActiveRoomContext';
 import { UserProvider } from '../contexts/UserContext';
 import { redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
-import { seedUser } from '@/lib/auth/user';
+import { getUser } from '@/lib/auth/user';
 
 export default async function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookieStore = await cookies();
-  const secret = process.env.JWT_SECRET;
-  
-  if (!secret) {
-    throw new Error('JWT_SECRET environment variable is not set');
-  }
-
   try {
-    const authToken = cookieStore.get('auth')?.value;
-    const user = await seedUser(authToken, secret);
+    const user = await getUser()
     if (!user) {
       redirect('/') 
     }

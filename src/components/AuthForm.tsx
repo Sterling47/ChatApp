@@ -277,7 +277,7 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
                 </div>
                 {guestLogin ? (
                   <div data-testid="welcomeGuest" className="mt-4 p-3 bg-gradient-to-r from-amber-50 to-yellow-100 rounded-lg border border-yellow-200 shadow-md transition-all duration-300 transform hover:scale-105">
-                    <h3  className="text-amber-700 font-medium text-lg text-center">Welcome Guest!</h3>
+                    <h3 className="text-amber-700 font-medium text-lg text-center">Welcome Guest!</h3>
                     <p className="text-amber-600 text-sm text-center">We&apos;re preparing your experience...</p>
                   </div>
                 ) : (
