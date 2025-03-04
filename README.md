@@ -2,8 +2,13 @@
 ## Summary
 - Chatt-r is a real-time chat application that connects users through seamless communication. The platform allows users to join existing conversations, create chat rooms, and engage in both public and private discussions. Using multiple authentication methods (Google OAuth, email/password, and guest access), Chatt-r maintains security through role-based permissions while accommodating different user needs.
 - Built with NextJS, TypeScript, and WebSockets, the application provides instant message delivery and persistent chat history. Registered users have full access to all features, while guest users can participate in public rooms with limited functionality. Chatt-r supports both private password-protected rooms and open public discussions in a straightforward, responsive interface.
+
+
 ## Preview
 <img width="370" alt="Chatt-r Landing Page" src="https://github.com/user-attachments/assets/06491325-a955-4e63-bb53-b22f70d25975" />
+
+<a href="https://chatt-r.vercel.app" target="_blank">Visit Chatt-r</a>
+
 
 ## Key Features
 
