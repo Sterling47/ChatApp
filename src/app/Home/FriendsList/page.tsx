@@ -10,11 +10,13 @@ interface Friend {
     friendshipId: number;
 }
 
+
 export default function FriendsList() {
     const user = useUser();
     const [friends, setFriends] = useState<Friend[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
 
     const fetchFriends = async () => {
         if (user!.isGuest) {
@@ -71,18 +73,21 @@ export default function FriendsList() {
         );
     }
     return (
-        <div className="row-start-1 row-end-13 col-start-2 col-end-10 bg-slate-500 flex flex-col">
-            <h2>Your Friends</h2>
+        <div className="row-start-1 row-end-13 col-start-2 col-end-10  flex flex-col">
+            <h2 className='text-[2rem] m-8'>Friends List</h2>
             {friends.length === 0 ? (
                 <p>You have no friends yet. Start adding some!</p>
             ) : (
-                <div className='space-y-1'>
+                <div className=' bg-coolGrey m-3 rounded-md h-full flex flex-col items-center '>
                     {friends.map(friend => (
                         <div
                             key={friend.friendshipId}
-                            className="flex items-center justify-start gap-36  w-[97%] rounded-md h-20 bg-white"
+                            className="flex items-center justify-evenly gap-16 m-[1rem] w-[96%] rounded-md h-20 bg-white"
                         >
-                            <div className="grid place-items-center h-14 w-14 rounded-full bg-gradient-to-r from-blue-500 via-green-500 to-yellow-500">
+                            <div
+                                className='grid place-items-center h-14 w-14 rounded-full text-white m-2'
+                                style={{ backgroundColor: `#${Math.floor(Math.random()*16777215).toString(16)}` }}
+                            >
                                 {friend.username[0]}
                             </div>
                             <p className='text-black'>{friend.username}</p>
@@ -91,6 +96,7 @@ export default function FriendsList() {
                                 <span className={`inline-block w-2 h-2 rounded-full ${friend.isOnline ? 'bg-green-400' : 'bg-zinc-500'}`}></span>
                                 <p className='text-black'>{friend.isOnline ? 'Online' : 'Offline'}</p>
                             </div>
+                            <button className='bg-zinc-400 p-2 rounded-sm hover:bg-zinc-500 hover:text-black'>send Message</button>
                         </div>
                     ))}
                 </div>
