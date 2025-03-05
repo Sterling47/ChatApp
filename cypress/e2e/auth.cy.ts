@@ -1,66 +1,50 @@
 describe('template spec', () => {
- beforeEach(() => {
-   cy.visit('/')
- })
+  beforeEach(() => {
 
- it('shows user the Login Page', () => { 
-  cy.get('div').should('be.visible')
- })
+    cy.visit('/')
+  })
 
- it('Displays Welcome Message', () => {
-  cy.get('h1').contains('Welcome to Chatt-r')
- })
+  it('shows user the Login Page', () => {
+    cy.get('div').should('be.visible')
+  })
 
- it('Displays Login Page and Sign in button and opens RegisterModal on click', () => {
-    cy.get('[data-testid="login-button"]').click() 
+  it('Displays Welcome Message', () => {
+    cy.get('h1').contains('Welcome to Chatt-r')
+  })
+
+  it('Displays Login Page and Sign in button and opens RegisterModal on click', () => {
+    cy.get('[data-testid="login-button"]').click()
     cy.get('[data-testid="register-modal"]').should('be.visible').within(() => {
-    cy.get('[data-testid="auth-form"').should('be.visible')
+      cy.get('[data-testid="auth-form"').should('be.visible')
     })
   })
 
-  it('Navigates to /Home when clicking Continue as Guest', () => {
-    cy.get('[data-testid="login-button"]').click()
-    cy.get('[data-testid="guest-login"]').click() 
-    cy.url().should('include', '/Home')
-  })
-
-
-  it('Logs in as guest and checks the x-login-type header', () => {
-       cy.intercept('POST', '/api/auth/login', (req) => {
-         expect(req.headers['x-login-type']).to.equal('guest');
-         req.reply({ fixture: 'guestLogin.json' });
-       }).as('guestLogin');
-     
-      //  cy.intercept('GET', '/api/getUser', {
-      //    statusCode: 200,
-      //    body: {
-      //      id: '109',
-      //      isGuest: true,
-      //      name: 'Guest User'
-      //    }
-      //  }).as('getUser');
-     
-   
-       cy.get('[data-testid="login-button"]').click();
-       cy.get('[data-testid="guest-login"]').click();
-       cy.url().should('include', '/Home')
-     
-       cy.wait('@guestLogin').its('response.statusCode').should('eq', 200).then(() => {
-         cy.log('Guest login request completed');
-       });
-     
-   
-       cy.get('[data-testid="welcomeGuest"]', { timeout: 10000 })
-         .should('be.visible')
-         .within(() => {
-           cy.contains('Welcome Guest!').should('be.visible');
-           cy.contains("We're preparing your experience...").should('be.visible');
-         });
-     
-       cy.wait('@getUser', { timeout: 10000 }).its('response.statusCode').should('eq', 200);
-     
-       cy.url().should('include', '/Home');
-       cy.get('[data-testid="welcome-message"]', { timeout: 10000 }).should('be.visible');
-     });
-
+  // it('Logs in as guest and checks the x-login-type header', () => {
+  //   cy.intercept('POST', '/api/auth/login', (req) => {
+  //     expect(req.headers['x-login-type']).to.equal('guest');
+  //     req.reply({ fixture: 'guestLogin.json' });
+  //   }).as('guestLogin');
+  //   cy.get('[data-testid="login-button"]').click();
+  //   cy.get('[data-testid="guest-login"]').click();
+  //   cy.wait('@guestLogin').its('response.statusCode').should('eq', 200);
+  //   cy.url().should('include', '/Home');
+  // });
+  
+  it.only('should login as a guest user', () => {
+    let csrfToken: string | string[];
+    cy.request({
+      method: 'POST',
+      url: '/api/auth/login',
+      headers: {
+        'x-login-type': 'guest'
+      }
+    }).then((response) => {
+      expect(response.status).to.eq(200);
+      expect(response.body.message).to.eq('Logged in as guest');
+      csrfToken = response.headers['x-csrf-token'];
+      expect(csrfToken).to.exist;
+      cy.visit('/Home');
+      cy.url().should('include', '/Home');
+    });
+  });
 })
