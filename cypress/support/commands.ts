@@ -1,5 +1,10 @@
 export {};
 
+interface User {
+  email: string;
+  username: string;
+  password: string;
+}
 declare global {
   namespace Cypress {
     interface Chainable {
@@ -10,9 +15,11 @@ declare global {
        * @param password - Password for credential login (optional for guest)
        */
       login(type: 'guest' | 'credentials', email?: string, password?: string): Chainable;
+      registerUser(user: User): Chainable<void>
     }
   }
 }
+
 Cypress.Commands.add('login', (type: 'guest' | 'credentials', email?: string, password?: string) => {
   const headers: Record<string, string> = {};
   const body: Record<string, string> = {};
@@ -47,3 +54,28 @@ Cypress.Commands.add('login', (type: 'guest' | 'credentials', email?: string, pa
     }
   });
 });
+
+Cypress.Commands.add('registerUser', (user: User) => {
+  cy.get('.login-btn').click()
+  cy.get('[data-testid="register-button"]').click()
+  cy.get('input[name="signup-username"]').type(user.username)
+  cy.get('input[name="signup-email"]').type(user.email)
+  cy.get('input[name="signup-password"]').type(user.password)
+  cy.intercept('POST', '/api/auth/register', {
+    statusCode: 200,
+    body: {
+      username: user.username,
+      email: user.email,
+      password: user.password
+    }
+  }).as('registerUser');
+  cy.intercept('POST', '/api/auth/login', {
+    statusCode: 200,
+    body: {
+      email: user.email,
+      password: user.password
+    }
+  }).as('loginUser');
+  cy.get('[data-testid="signup-button"]').click();
+  cy.wait('@registerUser');
+})
