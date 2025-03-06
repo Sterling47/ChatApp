@@ -5,7 +5,8 @@ interface incomingMessageProps {
   userID: number | undefined,
   roomID: number | undefined,
   timeStamp: Date,
-  id: number
+  id: number,
+  username: string
 }
 type MessageStore = {
   messages: Record<string, incomingMessageProps[]>; 

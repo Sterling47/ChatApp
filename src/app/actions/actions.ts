@@ -59,9 +59,20 @@ export async function sendMessageAction(formData: FormData) {
         content: message,
         userID: userID,
         roomID: roomID,
+      },
+      include: {
+        user: {
+          select: {
+            username: true
+          }
+        }
       }
     })
-    pusher.trigger(`${roomID}`, 'incoming-message', messageContent)
+    
+    pusher.trigger(`${roomID}`, 'incoming-message', {
+      ...messageContent,
+      username: messageContent.user.username
+    })
   }
   catch (err) {
     console.error('Error creating room:', err);
