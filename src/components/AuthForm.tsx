@@ -154,7 +154,7 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
       };
       setTimeout(() => {
         router.push(result.redirectUrl || '/Home');
-      },100);
+      }, 100);
     } catch (error) {
       setErrors({
         general: error instanceof Error ? error.message : "An unexpected error occurred"
@@ -265,6 +265,7 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <Button
+                    data-testid="register-button"
                     variant="link"
                     className="px-0 text-sm"
                     onClick={toggleSignUp}
@@ -323,9 +324,7 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
                     className={errors.username ? "border-red-500" : ""}
                     aria-invalid={errors.username ? "true" : "false"}
                   />
-                  {errors.username && (
-                    <p className="text-sm text-red-500 mt-1">{errors.username}</p>
-                  )}
+
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="signup-email">Email</Label>
@@ -336,8 +335,10 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
                     placeholder="m@example.com"
                     className={errors.email ? "border-red-500" : ""}
                     aria-invalid={errors.email ? "true" : "false"}
-                    required
                   />
+                  {errors.email && (
+                    <p data-test="email-error" className="text-sm text-red-500 mt-1">{errors.email}</p>
+                  )}
                 </div>
                 <div className="space-y-2 relative">
                   <Label htmlFor="signup-password">Password</Label>
@@ -347,10 +348,10 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
                     type={showPassword ? "text" : "password"}
                     className={errors.password ? "border-red-500" : ""}
                     aria-invalid={errors.password ? "true" : "false"}
-                    required
+
                   />
                   {errors.password && (
-                    <p className="text-sm text-red-500 mt-1">{errors.password}</p>
+                    <p data-test="password-error" className="text-sm text-red-500 mt-1">{errors.password}</p>
                   )}
                   <button
                     type="button"
@@ -362,6 +363,7 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
                 </div>
                 <div className="flex items-center justify-between">
                   <Button
+                    data-testid="signup-button"
                     type="submit"
                     className="w-[48%] bg-orange-500 hover:bg-orange-600 transition"
                     disabled={isSubmitting}
