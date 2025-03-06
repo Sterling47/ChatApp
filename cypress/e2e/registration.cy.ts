@@ -1,6 +1,10 @@
-describe('template spec', () => {
+import { generateUniqueUser } from "cypress/fixtures/user"
+describe('registration spec', () => {
   beforeEach(() =>{
     cy.visit('/')
+    cy.task('cleanupTestUsers').then((deletedCount) => {
+      cy.log(`Deleted ${deletedCount} test users`);
+    });
   })
   it('Should see username, email, and password fields for signup', () => {
     cy.get('.login-btn').click()
@@ -16,27 +20,32 @@ describe('template spec', () => {
     cy.get('[data-test="email-error"]').should('be.visible');
     cy.get('[data-test="password-error"]').should('be.visible');
   })
-  it.only('Should allow the user to create an account with a username', () => {
-    cy.intercept('POST', '/api/auth/register', {
-      fixture: 'registerUser',
-      statusCode: 200
-    }).as('registerUser')
-    cy.intercept('POST', '/api/auth/login',{
-      fixture: 'registerUserLogin',
-      statusCode: 200
-    }).as('loginRequest');
+  it('Should allow the user to create an account with a username', () => {
+    const user = generateUniqueUser()
     cy.get('.login-btn').click()
     cy.get('[data-testid="register-button"]').click()
-    cy.get('input[name="signup-username"]').type('test-user')
-    cy.get('input[name="signup-email"]').type('email@email.com')
-    cy.get('input[name="signup-password"]').type('password')
+    cy.get('input[name="signup-username"]').type(user.username)
+    cy.get('input[name="signup-email"]').type(user.email)
+    cy.get('input[name="signup-password"]').type(user.password)
+    cy.intercept('POST', '/api/auth/register', {
+      statusCode: 200,
+      body: {
+        username: user.username,
+        email: user.email,
+        password: user.password
+      }
+    }).as('registerUser');
+    cy.intercept('POST', '/api/auth/login', {
+      statusCode: 200,
+      body: {
+        email: user.email,
+        password: user.password
+      }
+    }).as('loginUser');
     cy.get('[data-testid="signup-button"]').click();
     cy.wait('@registerUser');
-    cy.fixture('registerUser').then((fixture) => {
-      cy.login('credentials', fixture.email, fixture.password).then(() => {
-        cy.visit('/Home');
-        cy.url().should('include', '/Home');
-      });
-    })
+    cy.login('credentials', user.email, user.password).then(() => {
+      cy.url().should('include','Home')
+    });
   })
 })
