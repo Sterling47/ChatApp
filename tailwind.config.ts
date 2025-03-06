@@ -61,7 +61,7 @@ module.exports = {
   			},
   			border: 'hsl(var(--border))',
 				bubble: '1px solid rgba(255, 255, 255, 0.1)',
-				bg_bubble: 'hsl(0, 0%, 23%)',
+				bg_bubble: ' hsl(210, 25%, 29%)',
   			input: 'hsl(var(--input))',
   			ring: 'hsl(var(--ring))',
   			chart: {
