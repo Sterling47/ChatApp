@@ -64,7 +64,7 @@ Cypress.Commands.add('registerUser', (user: User) => {
   cy.intercept('POST', '/api/auth/register', {
     statusCode: 200,
     body: {
-      username: user.username,
+      username: user.username ?? '',
       email: user.email,
       password: user.password
     }
@@ -78,4 +78,5 @@ Cypress.Commands.add('registerUser', (user: User) => {
   }).as('loginUser');
   cy.get('[data-testid="signup-button"]').click();
   cy.wait('@registerUser');
+  cy.wait('@loginUser')
 })
