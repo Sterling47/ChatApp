@@ -11,7 +11,8 @@ interface MessageProps {
     content: string,
     id: number,
     userID: number,
-    timeStamp: Date
+    timeStamp: Date,
+    username: string
   }[],
   creatorID: number | undefined
 }
@@ -20,7 +21,8 @@ interface incomingMessageProps {
   userID: number | undefined,
   roomID: number | undefined,
   timeStamp: Date,
-  id: number
+  id: number,
+  username: string
 }
 
 export const Messages: React.FC<MessageProps> = ({ RoomID, initialMessages, creatorID }) => {
@@ -59,7 +61,7 @@ export const Messages: React.FC<MessageProps> = ({ RoomID, initialMessages, crea
     return Object.entries(groups).sort(([a], [b]) => new Date(b).getTime() - new Date(a).getTime())
   }
   const groupedMessages = processMessages();
-
+  console.log(groupedMessages)
   if (!groupedMessages) {
     return (
       <div className='flex flex-col h-[90%]'>
@@ -77,14 +79,18 @@ export const Messages: React.FC<MessageProps> = ({ RoomID, initialMessages, crea
             <DateDivider date={date} />
             {messages
               .sort((a, b) => new Date(a.timeStamp).getTime() - new Date(b.timeStamp).getTime())
-              .map((message) => (
+              .map((message, i, sortedArray) => {
+                const prevMessage = i > 0 ? sortedArray[i - 1] : null;
+                const showUsername = !prevMessage || prevMessage.userID !== message.userID;
+                return (
                 <div
                   key={message.id}
-                  className={`flex w-full ${creatorID === message.userID ? 'justify-end' : 'justify-start'
+                  className={`flex w-full pb-2 ${creatorID === message.userID ? 'justify-end' : 'justify-start'
                     }`}
                 >
                   <MessageBubble
                     direction={creatorID === message.userID ? 'outgoing' : 'incoming'}
+                    username={showUsername ? message.username : undefined}
                   >
                     <p>{message.content}</p>
                     <p className="absolute bottom-0 right-0 text-[.5rem] text-white/70 pr-2 pb-1">
@@ -92,7 +98,8 @@ export const Messages: React.FC<MessageProps> = ({ RoomID, initialMessages, crea
                     </p>
                   </MessageBubble>
                 </div>
-              ))}
+                )
+              })}
           </div>
         ))}
       </div>

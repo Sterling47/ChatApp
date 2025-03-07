@@ -13,6 +13,7 @@ interface RoomTab {
     id: number;
     userID: number;
     timeStamp: Date;
+    username: string;
   }[];
   userID: number;
 }

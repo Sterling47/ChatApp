@@ -2,8 +2,8 @@ import prisma from '@/lib/db';
 import MultiRoomChat from '@/components/MultiRoomChat';
 import { getUser } from '@/components/getUser';
 
-export default async function RoomPage({ params }: { params: Promise<{RoomID: string[] | string}> }) {
-  const {RoomID} = await params
+export default async function RoomPage({ params }: { params: Promise<{ RoomID: string[] | string }> }) {
+  const { RoomID } = await params
   const roomIDs = Array.isArray(RoomID)
     ? RoomID.map(Number)
     : [Number(RoomID)];
@@ -14,7 +14,16 @@ export default async function RoomPage({ params }: { params: Promise<{RoomID: st
 
   const allRooms = await Promise.all(
     roomIDs.map(async (roomID) => {
-      const messages = await prisma.message.findMany({ where: { roomID } });
+      const messages = await prisma.message.findMany({
+        where: { roomID }, 
+        include: {
+          user: {
+            select: {
+              username: true
+            }
+          }
+        }
+      });
       const foundRoom = await prisma.room.findFirst({ where: { id: roomID } });
 
       if (!foundRoom) {
@@ -25,6 +34,7 @@ export default async function RoomPage({ params }: { params: Promise<{RoomID: st
         id: message.id,
         content: message.content,
         userID: message.userID,
+        username: message.user.username,
         timeStamp: message.timeStamp,
       }));
 

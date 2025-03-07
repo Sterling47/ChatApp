@@ -9,7 +9,8 @@ interface RoomComponentProps {
     content: string,
     id: number,
     userID: number,
-    timeStamp: Date
+    timeStamp: Date,
+    username: string
   }[],
   userID: number
 }
