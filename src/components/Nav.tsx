@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useActiveRoom } from "@/app/contexts/ActiveRoomContext";
 import { useUser } from "@/app/contexts/UserContext";
 import { LogoutButton } from "./LogoutButton";
+import { Users, Search, Settings } from 'lucide-react';
 interface RoomProps {
   initialRooms: Room[]
 }
@@ -32,16 +33,21 @@ const Nav: React.FC<RoomProps> = ({ initialRooms }) => {
         {isModalOpen && (
           <div className="flex flex-col absolute top-10 left-2 bg-primary p-2 z-10">
             <Link href="/Home/FriendsList"
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors hover:text-black" onClick={toggleSearch}>Friends</Link>
+              className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-lg transition-colors hover:text-black" onClick={toggleSearch}>
+              <Users size={18} />
+              <span className="text-sm">Friends</span>
+            </Link>
             <Link href="/Home/SearchUser"
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors hover:text-black" onClick={toggleSearch}>
-              <span className="text-sm">Search User</span>
+              className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-lg transition-colors hover:text-black" onClick={toggleSearch}>
+              <Search size={18} />
+              <span className="text-sm">Search</span>
             </Link>
             <Link href="/Home/Settings/Profile"
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors hover:text-black">
+              className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-lg transition-colors hover:text-black">
+              <Settings size={18} />
               <span className="text-sm">Settings</span>
             </Link>
-            <LogoutButton/>
+            <LogoutButton />
           </div>
         )}
       </div>
