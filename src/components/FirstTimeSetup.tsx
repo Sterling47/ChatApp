@@ -10,9 +10,9 @@ const FirstTimeSetup = () => {
         <form action={initialUserSetup} className="flex h-[70%] flex-col justify-evenly items-center w-full">
           <label className="flex flex-col w-full">
             Create Username:
-            <input type="text" name="username" required className="mt-1 p-2 border text-black rounded w-[20rem]" />
+            <input data-testid='create-username'type="text" name="username" required className="mt-1 p-2 border text-black rounded w-[20rem]" />
           </label>
-          <button type="submit" className="p-[.5rem] bg-black text-white rounded-lg hover:bg-gray-800 transition">Submit</button>
+          <button data-testid='create-username-submit' type="submit" className="p-[.5rem] bg-black text-white rounded-lg hover:bg-gray-800 transition">Submit</button>
         </form>
       </div>
     </div>

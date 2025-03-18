@@ -1,5 +1,5 @@
 import prisma from '@/lib/db';
-import { hashPassword } from '@/components/Password';
+import { hashPassword } from '@/lib/auth/password';
 import { NextRequest, NextResponse } from 'next/server';
 import { csrfProtectionMiddleware } from '@/lib/auth/csrf';
 

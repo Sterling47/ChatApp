@@ -1,0 +1,23 @@
+{
+    "request": {
+      "method": "POST",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "email": "testuser@example.com",
+        "password": "SecurePass123"
+      }
+    },
+    "response": {
+      "statusCode": 200,
+      "body": {
+        "sub": "109",
+        "jti": "b63cc12f-9c9d-4155-8b58-322c55c57bd5",
+        "guest": true,
+        "iat": 1740775397,
+        "exp": 1740778997
+      }
+    }
+  }
+  

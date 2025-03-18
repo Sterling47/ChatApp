@@ -154,7 +154,7 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
       };
       setTimeout(() => {
         router.push(result.redirectUrl || '/Home');
-      }, 1500);
+      }, 100);
     } catch (error) {
       setErrors({
         general: error instanceof Error ? error.message : "An unexpected error occurred"
@@ -173,7 +173,7 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto relative">
+    <div data-testid="auth-form" className="w-full max-w-md mx-auto relative">
       <button
         onClick={toggleModal}
         className="z-50 absolute top-3 right-3 p-1 rounded-lg hover:bg-gray-100 transition"
@@ -265,6 +265,7 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <Button
+                    data-testid="register-button"
                     variant="link"
                     className="px-0 text-sm"
                     onClick={toggleSignUp}
@@ -276,12 +277,13 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
                   </Button>
                 </div>
                 {guestLogin ? (
-                  <div className="mt-4 p-3 bg-gradient-to-r from-amber-50 to-yellow-100 rounded-lg border border-yellow-200 shadow-md transition-all duration-300 transform hover:scale-105">
+                  <div data-testid="welcomeGuest" className="mt-4 p-3 bg-gradient-to-r from-amber-50 to-yellow-100 rounded-lg border border-yellow-200 shadow-md transition-all duration-300 transform hover:scale-105">
                     <h3 className="text-amber-700 font-medium text-lg text-center">Welcome Guest!</h3>
                     <p className="text-amber-600 text-sm text-center">We&apos;re preparing your experience...</p>
                   </div>
                 ) : (
                   <Button
+                    data-testid="guest-login"
                     variant="secondary"
                     onClick={(e) => handleSubmit(e as unknown as FormEvent<HTMLFormElement>, true)}
                     className="w-full bg-amber-100 text-amber-700 hover:bg-amber-200 transition-colors duration-200"
@@ -322,9 +324,7 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
                     className={errors.username ? "border-red-500" : ""}
                     aria-invalid={errors.username ? "true" : "false"}
                   />
-                  {errors.username && (
-                    <p className="text-sm text-red-500 mt-1">{errors.username}</p>
-                  )}
+
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="signup-email">Email</Label>
@@ -335,8 +335,10 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
                     placeholder="m@example.com"
                     className={errors.email ? "border-red-500" : ""}
                     aria-invalid={errors.email ? "true" : "false"}
-                    required
                   />
+                  {errors.email && (
+                    <p data-test="email-error" className="text-sm text-red-500 mt-1">{errors.email}</p>
+                  )}
                 </div>
                 <div className="space-y-2 relative">
                   <Label htmlFor="signup-password">Password</Label>
@@ -346,10 +348,10 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
                     type={showPassword ? "text" : "password"}
                     className={errors.password ? "border-red-500" : ""}
                     aria-invalid={errors.password ? "true" : "false"}
-                    required
+
                   />
                   {errors.password && (
-                    <p className="text-sm text-red-500 mt-1">{errors.password}</p>
+                    <p data-test="password-error" className="text-sm text-red-500 mt-1">{errors.password}</p>
                   )}
                   <button
                     type="button"
@@ -361,6 +363,7 @@ const AuthForm = ({ toggleModal }: AuthFormProps) => {
                 </div>
                 <div className="flex items-center justify-between">
                   <Button
+                    data-testid="signup-button"
                     type="submit"
                     className="w-[48%] bg-orange-500 hover:bg-orange-600 transition"
                     disabled={isSubmitting}

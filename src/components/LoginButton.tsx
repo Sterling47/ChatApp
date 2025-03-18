@@ -1,10 +1,10 @@
 type LoginButtonProps = {
-  children: React.ReactNode;
+ onClick: () => void;
 }
 
-export const LoginButton: React.FC<LoginButtonProps> = ({ children }) => {
+export const LoginButton: React.FC<LoginButtonProps> = ({ onClick }) => {
   return (
-    <div>
+    <div data-testid="login-button">
       <style>
         {`
         @property --gradient-angle {
@@ -71,7 +71,9 @@ export const LoginButton: React.FC<LoginButtonProps> = ({ children }) => {
         }
       `}
       </style>
-      {children}
+      <button className="login-btn mx-[3rem] z-20 hover:cursor-pointer bg-transparent hover:bg-transparent" onClick={onClick}>
+          <span>Sign In</span>
+      </button>
     </div>
   )
 }

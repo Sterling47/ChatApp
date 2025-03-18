@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { addFriend } from "@/app/actions/actions";
+import { useUser } from "@/app/contexts/UserContext";
 
 
 interface UserResult {
@@ -15,8 +16,10 @@ export default function UserSearch() {
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState<UserResult[]>([]);
   const [filteredUsers, setFilteredUsers] = useState<UserResult[]>([]);
-
+  const user = useUser()
+  const isAuthenticated = !user!.isGuest;
   const fetchUsers = async (query = "") => {
+    if (user!.isGuest) return;
     try {
       const baseURL = process.env.NEXT_PUBLIC_SITE_URL || ""; 
       const response = await fetch(`${baseURL}/api/search-user?query=${query}`);
@@ -30,7 +33,7 @@ export default function UserSearch() {
 
   useEffect(() => {
     fetchUsers(); 
-  }, []);
+  }, [user!.isGuest]);
 
   const handleSearch = (term: string) => {
     setSearchTerm(term);
@@ -46,7 +49,24 @@ export default function UserSearch() {
       )
     );
   };
-
+  if (user!.isGuest) {
+    return (
+      <div className="p-4 h-full flex flex-col items-center justify-center text-center text-white">
+        <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-6 max-w-md shadow-md">
+          <h3 className="text-xl font-semibold mb-2">👋 Looking for friends?</h3>
+          <p className="mb-4 text-zinc-300">Guest users cannot search or add friends. Sign up for an account to connect with others!</p>
+          <div className="flex gap-3 justify-center">
+            <a href="/api/auth/signin" className="bg-[#E79140] hover:bg-[#d07d30] text-white px-4 py-2 rounded-md transition-colors">
+              Sign In
+            </a>
+            <a href="/register" className="bg-zinc-700 hover:bg-zinc-600 text-white px-4 py-2 rounded-md transition-colors">
+              Create Account
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="p-4 h-full flex flex-col">
       <div className="flex items-center gap-2 mb-4">
@@ -59,7 +79,6 @@ export default function UserSearch() {
           onChange={(e) => handleSearch(e.target.value)}
         />
       </div>
-
       <div className="flex-1 overflow-y-auto">
         {filteredUsers.length > 0 ? (
           filteredUsers.map((user) => (

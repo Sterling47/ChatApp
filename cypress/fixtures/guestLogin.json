@@ -1,0 +1,16 @@
+{
+    "headers": {
+      "X-Type": "guest",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "token": "mock-guest-token",
+      "sub": "19",
+      "jti": "b63cc12f-9c9d-4155-8b58-322c55c57bd5",
+      "guest": true,
+      "iat": 1740775397,
+      "exp": 1740778997,
+      "redirectUrl": "/Home"
+    }
+  }
+  
