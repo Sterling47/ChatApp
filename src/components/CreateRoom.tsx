@@ -16,17 +16,19 @@ const CreateRoom = () => {
         <AddIcon />
       </Fab>
       {isModalOpen && 
-      (<div className="flex flex-col justify-evenly fixed bottom-20 left-4 bg-primary rounded-room}
-      text-white rounded-lg p-4 w-[20%] h-auto shadow-room z-21">
-        <form action={async(formData: FormData) => {
-          await createRoomAction(formData)
-        }}>
-            <label>Room Name:
-            <input type='text' name='room-name' className='bg-gray-500 border-none'></input></label>
-            <label>Private:
-            <input type='checkbox' name='private' className='bg-gray-500 border-none'></input></label>
-            <button type='submit' className='w-[30%] flex justify-center items-center p-0 bg-primary text-white'>Submit</button>
-        </form></div>
+      (<div className="fixed inset-0 flex bg-coolGrey items-center justify-center z-21">
+        <div className="flex flex-col justify-evenly items-center bg-primary text-white rounded-lg  w-[40%] h-[50%] shadow-room">
+          <form className='flex flex-col h-[90%] w-[90%] justify-around items-start' action={async(formData: FormData) => {
+            await createRoomAction(formData)
+          }}>
+              <label>Room Name:
+              <input type='text' name='room-name' className='bg-gray-500 border-none'></input></label>
+              <label>Private:
+              <input type='checkbox' name='private' className='bg-gray-500 border-none'></input></label>
+              <button type='submit' className='w-[30%] flex justify-center items-center p-0 bg-primary text-white'>Submit</button>
+          </form>
+        </div>
+      </div>
       )}
     </div>
   )
