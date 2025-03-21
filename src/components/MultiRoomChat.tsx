@@ -41,7 +41,7 @@ const MultiRoomChat = ({ rooms }: { rooms: RoomTab[] }) => {
   };
 
   return (
-    <div className="row-start-1 row-end-13 col-start-2 col-end-10 h-full flex flex-col bg-[#1e1e1e] p-1">
+    <div className="row-start-3 row-end-13 col-start-1 col-end-10 lg:row-start-1 lg:row-end-13 lg:col-start-3 h-full flex flex-col bg-[#1e1e1e] p-1">
       <div className="flex relative bg-[#1e1e1e] text-white rounded-lg shadow-md">
         <div
           key="search"
