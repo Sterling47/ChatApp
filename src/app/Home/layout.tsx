@@ -25,9 +25,12 @@ export default async function Layout({
     return (
       <ActiveRoomProvider>
         <UserProvider user={user}>
-          <div className="grid h-screen grid-cols-9 grid-rows-12 p-0.25">
+            <div className="grid  h-screen p-0.25 grid-cols-1 md:grid-cols-9 grid-rows-12">
             <Nav initialRooms={rooms} />
-            {user.isFirstLogin && user.isGuest === false? <FirstTimeSetup /> : children}
+            {user.isFirstLogin && user.isGuest === false? <FirstTimeSetup /> :
+             <div className='  row-start-3 row-end-13 col-start-1 col-end-10  md:row-start-1 md:row-end-13 md:col-start-3 md:col-end-10 lg:col-start-3 lg:col-end-10 lg:border-none lg:row-start-1 lg:row-end-13 '> 
+             {children}
+              </div>}
           </div>
         </UserProvider>
       </ActiveRoomProvider>
