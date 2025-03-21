@@ -26,7 +26,7 @@ module.exports = {
 				room: '2px solid rgba(47,47,42,0.726)',
   		},
   		colors: {
-			coolGrey: 'rgba(47,47,42,0.426)',
+			coolGrey: 'rgba(47,47,42,0.626)',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
