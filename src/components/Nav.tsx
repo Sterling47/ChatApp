@@ -8,9 +8,12 @@ import { useActiveRoom } from "@/app/contexts/ActiveRoomContext";
 import { useUser } from "@/app/contexts/UserContext";
 import { LogoutButton } from "./LogoutButton";
 import { Users, Search, Settings } from 'lucide-react';
+import RoomModalforMobile from "./RoomModalforMobile";
+
 interface RoomProps {
   initialRooms: Room[]
 }
+
 const Nav: React.FC<RoomProps> = ({ initialRooms }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const user = useUser();
@@ -25,9 +28,9 @@ const Nav: React.FC<RoomProps> = ({ initialRooms }) => {
   }
 
   return (
-    <nav className="flex flex-col justify-start m-0.5 rounded-md list-none col-span-1 row-start-1 row-end-13 overflow-hidden">
-      <div className="flex flex-row justify-around m-0.5 rounded-md bg-primary">
-        <button className="bg-transparent text-white h-auto w-auto p-2 hover:cursor-pointer hover:text-[#ff7f11]" onClick={toggleModal}>
+    <nav className="flex flex-col justify-start m-0.5 rounded-md list-none col-start-1 col-end-13 row-start-1 row-end-3 bg-black md:row-start-1 md:row-end-13 md:col-start-1 md:col-end-3 lg:col-start-1 lg:col-end-3 overflow-hidden">
+      <div className="flex flex-row  justify-around items-center bg-primary rounded-md h-full md:h-[10%]">
+        <button className="bg-transparent text-white  p-4 w-auto hover:cursor-pointer hover:text-[#ff7f11]" onClick={toggleModal}>
           <h4 className="hover:cursor-pointer" id='username'>{user?.username}</h4>
         </button>
         {isModalOpen && (
@@ -50,8 +53,11 @@ const Nav: React.FC<RoomProps> = ({ initialRooms }) => {
             <LogoutButton />
           </div>
         )}
+        <RoomModalforMobile initialRooms={initialRooms} />
       </div>
-      <RoomList initialRooms={initialRooms} />
+      <div className="hidden h-full md:block">
+        <RoomList initialRooms={initialRooms} />
+      </div>
       {user?.isGuest === false && <CreateRoom />}
     </nav>
   )
