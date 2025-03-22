@@ -6,16 +6,16 @@ import { IconContext } from "react-icons";
 
 const SendMessage = ({RoomID,userID}:{RoomID:number,userID: number | undefined}) => {
   return (
-    <div className="flex bg-white justify-evenly items-center row-start-12 row-end-13 col-start-3 h-full w-full rounded-[16px]
+    <div className="flex bg-white justify-evenly items-center h-[40%] w-[85%] md:w-full lg:h- rounded-[16px]
       focus-within:outline focus-within:outline-2 focus-within:outline-[#175DFF]">
-        <form  className='flex justify-evenly items-center w-full h-full '
+        <form  className='flex justify-between items-center w-full h-full '
         action={sendMessageAction}
         >
           <input type='hidden' name='RoomID' value={RoomID.toString()}/>
           <input type='hidden' name='userID' value={userID?.toString() || '1'}/>
-          <textarea className='w-[90%] h-[70%] px-4 py-2 bg-white resize-none focus:outline-none rounded-xl text-black text-lg overflow-hidden' 
+          <textarea className='w-[87%] h-full p-2 resize-none focus:outline-none rounded-xl text-black text-lg overflow-hidden' 
           name='message' placeholder='Send a chat...' autoFocus/>
-          <button className='grid place-items-center bg-white w-[8%] h-[70%] rounded-xl m-[0.2rem] '>
+          <button className='grid place-items-center bg-white w-[13%] h-[70%] rounded-xl  '>
             <IconContext.Provider value={{className:`text-black w-10 h-10 hover:cursor-pointer hover:text-[#175DFF]`}}>
               <LuSendHorizontal/>
             </IconContext.Provider>
