@@ -38,7 +38,7 @@ export const RoomTabs: React.FC<RoomTabProps> = ({ rooms }) => {
         key="search"
         className={`relative transition-colors duration-200 rounded-t-lg
         ${activeRoomId === 'search'
-            ? 'bg-[#292929] border-t border-l border-r border-white z-10'
+            ? 'bg-[#292929] border-t border-l border-r border-white z-5'
             : 'bg-[#1e1e1e] hover:bg-[#292929]'
           }`}
       >
@@ -62,7 +62,7 @@ export const RoomTabs: React.FC<RoomTabProps> = ({ rooms }) => {
           key={room.RoomID}
           className={`relative transition-colors duration-200 rounded-t-lg 
           ${activeRoomId === room.RoomID
-              ? 'bg-[#292929] border-t border-l border-r border-white z-10'
+              ? 'bg-[#292929] border-t border-l border-r border-white z-5'
               : 'bg-[#1e1e1e] hover:bg-[#292929]'
             }
           ${index > 0 ? '-ml-px' : ''}`}

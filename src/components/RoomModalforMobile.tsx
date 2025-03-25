@@ -28,7 +28,7 @@ const RoomModalforMobile: React.FC<RoomModalforMobileProps> = ({ initialRooms })
     }, []);
 
     const renderRoomLink = (room: Room) => (
-        <div className='flex items-center overflow-y-auto' key={room.id}>
+        <div className='flex items-center overflow-hidden' key={room.id}>
             <IconContext.Provider value={{ className: "text-[#ff7f11] w-6 h-6 flex-shrink-0" }}>
                 {room.isPrivate ? <RiGitRepositoryPrivateFill /> : <MdOutlinePublic />}
             </IconContext.Provider>
@@ -50,7 +50,8 @@ const RoomModalforMobile: React.FC<RoomModalforMobileProps> = ({ initialRooms })
             <button onClick={() => setIsOpen(true)} className="text-white rounded-md">Chat Rooms</button>
             {isOpen && (
                 <div className="fixed inset-0 z-10 flex items-center justify-center bg-black  bg-opacity-50">
-                    <div className=" flex flex-col justify-between bg-primary rounded-2xl w-[60%] h-[50%] p-6 shadow-xl">
+                    <div className=" flex flex-col justify-between bg-primary rounded-2xl w-[60%] min-h-[30%] max-h-[80%] p-6 shadow-xl
+                    overflow-y-auto z-10">
                         <h3 className="text-lg font-medium leading-6 text-white">Rooms</h3>
                         <div className="flex flex-col gap-3 mt-2 h-[80%]">
                             {rooms.map(renderRoomLink)}
