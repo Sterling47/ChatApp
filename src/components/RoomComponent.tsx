@@ -19,7 +19,7 @@ export const RoomComponent:React.FC<RoomComponentProps> = ({RoomID,initialMessag
   return (
     <div className="flex flex-col h-full w-full ">
         <Messages initialMessages={initialMessages} RoomID={RoomID} creatorID={userID}/>
-        <div className="flex justify-end items-end h-[18%] w-full ">
+        <div className="flex justify-end items-end w-full ">
           <SendMessage RoomID={RoomID} userID={userID} />
         </div>
     </div>
