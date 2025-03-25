@@ -13,10 +13,10 @@ const SendMessage = ({RoomID,userID}:{RoomID:number,userID: number | undefined})
         >
           <input type='hidden' name='RoomID' value={RoomID.toString()}/>
           <input type='hidden' name='userID' value={userID?.toString() || '1'}/>
-          <textarea className='w-[87%] h-full p-2 resize-none focus:outline-none rounded-xl text-black text-lg overflow-hidden' 
+          <textarea className='w-[87%] h-full lg:text-lg lg:p-4 p-2 px-3 resize-none focus:outline-none rounded-xl text-black overflow-hidden' 
           name='message' placeholder='Send a chat...' autoFocus/>
-          <button className='grid place-items-center bg-white w-[13%] h-[70%] rounded-xl  '>
-            <IconContext.Provider value={{className:`text-black w-10 h-10 hover:cursor-pointer hover:text-[#175DFF]`}}>
+          <button className='flex items-center justify-center bg-white w-auto h-full rounded-xl min-w-[44px] aspect-square'>
+            <IconContext.Provider value={{className:`text-black lg:w-10 lg:h-10 w-8 h-8 hover:cursor-pointer hover:text-[#175DFF]`}}>
               <LuSendHorizontal/>
             </IconContext.Provider>
           </button>
