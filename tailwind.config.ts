@@ -97,7 +97,45 @@ module.exports = {
   		}
   	}
   },
-  plugins: [require("tailwindcss-animate"), addVariablesForColors],
+  plugins: [
+    // Custom scrollbar utilities
+    function({ addUtilities }: any) {
+			const newUtilities = {
+        '.scrollbar-accessible': {
+          '&::-webkit-scrollbar': {
+            width: '12px',  
+            height: '12px',
+          },
+        },
+        '.scrollbar-thumb-gray-600': {
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#4B5563',
+            borderRadius: '6px', 
+            border: '3px solid transparent',
+            backgroundClip: 'content-box',
+          },
+        },
+        '.scrollbar-thumb-gray-500': {
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#6B7280',
+            borderRadius: '6px',
+            border: '3px solid transparent',
+            backgroundClip: 'content-box',
+          },
+        },
+        '.scrollbar-track-gray-800': {
+          '&::-webkit-scrollbar-track': {
+            backgroundColor: '#292929',
+            borderRadius: '6px',
+          },
+        },
+      }
+      addUtilities(newUtilities, ['responsive', 'hover']);
+    },
+    require("tailwindcss-animate"),
+    addVariablesForColors
+  ],
+	
 }
 
 
