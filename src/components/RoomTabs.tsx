@@ -33,7 +33,7 @@ export const RoomTabs: React.FC<RoomTabProps> = ({ rooms }) => {
 
   return (
     <div
-      className="flex relative bg-[#1e1e1e] text-white rounded-lg shadow-md">
+      className="flex relative bg-[#1e1e1e] text-white rounded-lg shadow-md overflow-x-auto">
       <div
         key="search"
         className={`relative transition-colors duration-200 rounded-t-lg

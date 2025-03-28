@@ -17,7 +17,7 @@ interface RoomComponentProps {
 
 export const RoomComponent:React.FC<RoomComponentProps> = ({RoomID,initialMessages,userID}) => {
   return (
-    <div className="flex flex-col h-full w-full ">
+    <div className="flex flex-col justify-end h-full w-full ">
         <Messages initialMessages={initialMessages} RoomID={RoomID} creatorID={userID}/>
         <div className="flex justify-end items-end w-full ">
           <SendMessage RoomID={RoomID} userID={userID} />
